@@ -4,11 +4,11 @@ package model;
  * Created by raed on 13.03.17.
  */
 
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
-public class ville {
+@XmlType
+public class Ville {
     private String nom;
     private int longitude;
     private int latitude;

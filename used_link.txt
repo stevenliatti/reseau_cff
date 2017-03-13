@@ -1,0 +1,7 @@
+- JDOM2 :
+http://cynober.developpez.com/tutoriel/java/xml/jdom/#LI-C
+http://www.jdom.org/dist/binary/
+
+- JAXB :
+https://www.mkyong.com/java/jaxb-hello-world-example/
+https://jaxb.java.net/

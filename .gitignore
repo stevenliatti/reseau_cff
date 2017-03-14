@@ -1,4 +1,7 @@
 *.class
-*~
-.idea
 *.iml
+*.xml
+#exept villes.xml file
+!villes.xml
+*~
+.idea/**

@@ -10,6 +10,7 @@ import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by raed on 14.03.17.
@@ -19,6 +20,7 @@ public class GraphManagement {
     private ArrayList<String> cityNamesArrayList;
     private int[][] weightMatrix;
     private ArrayList<String>[] weightList;
+    private Map<City, List<Connection>> listMap;
 
     public GraphManagement(String filePath) {
         try {

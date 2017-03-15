@@ -5,11 +5,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * Created by raed on 13.03.17.
  */
-@XmlType
+@XmlType(propOrder = {"vil_1", "vil_2", "duratin"})
 public class Connection {
     private String vil_1;
     private String vil_2;
-    private int temps;
+    private int duratin;
 
     public String getVil_1() {
         return vil_1;
@@ -27,11 +27,11 @@ public class Connection {
         this.vil_2 = vil_2;
     }
 
-    public int getTemps() {
-        return temps;
+    public int getDuratin() {
+        return duratin;
     }
 
-    public void setTemps(int temps) {
-        this.temps = temps;
+    public void setDuratin(int duratin) {
+        this.duratin = duratin;
     }
 }

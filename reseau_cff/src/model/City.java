@@ -6,7 +6,7 @@ package model;
 
 import javax.xml.bind.annotation.XmlType;
 
-@XmlType
+@XmlType(propOrder = {"name", "longitude", "latitude"})
 public class City {
     private String name;
     private int longitude;

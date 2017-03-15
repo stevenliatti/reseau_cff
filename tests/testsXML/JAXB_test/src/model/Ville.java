@@ -4,7 +4,6 @@ package model;
  * Created by raed on 13.03.17.
  */
 
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlType

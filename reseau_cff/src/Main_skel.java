@@ -24,10 +24,8 @@ public class Main_skel {
 
 		String filePath = System.getProperty("user.dir") + File.separator + "villes.xml";
 		//lire le fichier villes.xml avec votre code
-		//////////////
 		GraphManagement graphManagement = new GraphManagement(filePath);
-		/////////////
-		//System.err.println("Le fichier XML " + filePath + " a été chargé\n");
+		System.err.println("Le fichier XML " + filePath + " a été chargé\n");
 		int choix = 0;
 		do {
 		   	// les impressions du menu sont envoyées sur le canal d'erreur
@@ -58,30 +56,33 @@ public class Main_skel {
 			switch(choix) {
 			case 1:
 			   	// format de sortie -> à générer avec votre code
-			   	//System.out.println("[0:Geneve] [1:Lausanne] [2:Neuchatel] [3:Delemont] [4:Bale] [5:Berne] [6:Lucerne] [7:Zurich] [8:Schaffouse] [9:St.-Gall] [10:Coire] [11:St.-Moritz] [12:Bellinzone] [13:Andermatt] [14:Sion]");
-				graphManagement.displayCityNames();
+				graphManagement.displayCityNamesArrayList();
 				break;
 			case 2:
+				//TODO-Raed : matrice des poids
 				// format de sortie -> à générer avec votre code
 				// imprimer "inf" à la place Integer.MAX_VALUE
-				System.out.println("0 34 inf inf inf inf inf inf inf inf inf inf inf inf inf");
-				System.out.println("34 0 40 inf inf 67 inf inf inf inf inf inf inf inf 67");
-				System.out.println("inf 40 0 49 87 42 inf inf inf inf inf inf inf inf inf");
-				System.out.println("inf inf 49 0 34 60 inf inf inf inf inf inf inf inf inf");
-				System.out.println("inf inf 87 34 0 66 73 60 inf inf inf inf inf inf inf");
-				System.out.println("inf 67 42 60 66 0 83 79 inf inf inf inf inf inf 157");
-				System.out.println("inf inf inf inf 73 83 0 46 inf inf inf inf 132 102 inf");
-				System.out.println("inf inf inf inf 60 79 46 0 42 66 91 inf inf inf inf");
-				System.out.println("inf inf inf inf inf inf inf 42 0 87 inf inf inf inf inf");
-				System.out.println("inf inf inf inf inf inf inf 66 87 0 99 inf inf inf inf");
-				System.out.println("inf inf inf inf inf inf inf 91 inf 99 0 116 inf 100 inf");
-				System.out.println("inf inf inf inf inf inf inf inf inf inf 116 0 inf inf inf");
-				System.out.println("inf inf inf inf inf inf 132 inf inf inf inf inf 0 84 inf");
-				System.out.println("inf inf inf inf inf inf 102 inf inf inf 100 inf 84 0 162");
-				System.out.println("inf 67 inf inf inf 157 inf inf inf inf inf inf inf 162 0");
+				graphManagement.displayWeightMatrix();
+//				System.out.println("0 34 inf inf inf inf inf inf inf inf inf inf inf inf inf");
+//				System.out.println("34 0 40 inf inf 67 inf inf inf inf inf inf inf inf 67");
+//				System.out.println("inf 40 0 49 87 42 inf inf inf inf inf inf inf inf inf");
+//				System.out.println("inf inf 49 0 34 60 inf inf inf inf inf inf inf inf inf");
+//				System.out.println("inf inf 87 34 0 66 73 60 inf inf inf inf inf inf inf");
+//				System.out.println("inf 67 42 60 66 0 83 79 inf inf inf inf inf inf 157");
+//				System.out.println("inf inf inf inf 73 83 0 46 inf inf inf inf 132 102 inf");
+//				System.out.println("inf inf inf inf 60 79 46 0 42 66 91 inf inf inf inf");
+//				System.out.println("inf inf inf inf inf inf inf 42 0 87 inf inf inf inf inf");
+//				System.out.println("inf inf inf inf inf inf inf 66 87 0 99 inf inf inf inf");
+//				System.out.println("inf inf inf inf inf inf inf 91 inf 99 0 116 inf 100 inf");
+//				System.out.println("inf inf inf inf inf inf inf inf inf inf 116 0 inf inf inf");
+//				System.out.println("inf inf inf inf inf inf 132 inf inf inf inf inf 0 84 inf");
+//				System.out.println("inf inf inf inf inf inf 102 inf inf inf 100 inf 84 0 162");
+//				System.out.println("inf 67 inf inf inf 157 inf inf inf inf inf inf inf 162 0");
 				break;
 			case 3:
+				//TODO-Raed : liste des poids
 			   // format de sortie -> à générer avec votre code
+				graphManagement.displayWeightList();
 				System.out.println("Geneve [Lausanne:34]");
 				System.out.println("Lausanne [Geneve:34] [Neuchatel:40] [Berne:67] [Sion:67]");
 				System.out.println("Neuchatel [Lausanne:40] [Delemont:49] [Bale:87] [Berne:42]");
@@ -99,6 +100,7 @@ public class Main_skel {
 				System.out.println("Sion [Lausanne:67] [Berne:157] [Andermatt:162]");
 				break;
 			case 4:
+				//TODO-Raed : matrice des temps de parcours (Floyd)
 			   	// format de sortie -> à générer avec votre code
 			   	// imprimer "inf" à la place Integer.MAX_VALUE
 				System.out.println("0 34 74 123 157 101 184 180 222 246 271 387 316 263 101");
@@ -118,6 +120,7 @@ public class Main_skel {
 				System.out.println("101 67 107 156 190 134 217 213 255 279 262 378 246 162 0");
 				break;
 			case 5:
+				//TODO-Raed : matrice des précédences (Floyd)
 			   	// format de sortie -> à générer avec votre code
 			   	// imprimer -1 si pas de prédécesseur
 				System.out.println("-1 0 1 2 3 1 5 5 7 7 7 10 6 14 1");
@@ -137,6 +140,7 @@ public class Main_skel {
 				System.out.println("1 14 1 2 3 1 5 5 7 7 13 10 13 14 -1");
 				break;
 			case 6:
+				//TODO-Raed : temps de parcours entre deux villes (Floyd)
 				System.err.println("City d'origine:");
 				str1 = in.next();
 				System.err.println("City de destination:");
@@ -146,6 +150,7 @@ public class Main_skel {
 				System.out.println(123); // valeur pour Geneve à Delemont
 				break;
 			case 7:
+				//TODO-Raed : parcours entre deux villes (Floyd)
 				System.err.println("City d'origine:");
 				str1 = in.next();
 				System.err.println("City de destination:");
@@ -155,18 +160,21 @@ public class Main_skel {
 				System.out.println("[Geneve:Lausanne:Berne:Zurich:Coire]"); // résultat pour Geneve à Coire
 				break;
 			case 8:
-			   System.err.println("City d'origine:");
+				//TODO-Steven : tableau des temps de parcours (Dijkstra)
+			   	System.err.println("City d'origine:");
 				str1 = in.next();
 				// format de sortie -> à générer avec votre code
 				System.out.println("[Geneve:0] [Lausanne:34] [Neuchatel:74] [Delemont:123] [Bale:157] [Berne:101] $[Lucerne:184] [Zurich:180] [Schaffouse:222] [St.-Gall:246] [Coire:271] [St.-Moritz:387] [Bellinzone:316] [Andermatt:263] [Sion:101]"); // résultat pour Geneve
 				break;
 			case 9:
+				//TODO-Steven : tableau des précédences (Dijkstra)
 				System.err.println("City d'origine:");
 				str1 = in.next();
 				// format de sortie -> à générer avec votre code
 				System.out.println("[Geneve<-Lausanne] [Lausanne<-Neuchatel] [Neuchatel<-Delemont] [Delemont<-Bale] [Lausanne<-Berne] [Berne<-Lucerne] [Berne<-Zurich] [Zurich<-Schaffouse] [Zurich<-St.-Gall] [Zurich<-Coire] [Coire<-St.-Moritz] [Lucerne<-Bellinzone] [Sion<-Andermatt] [Lausanne<-Sion]"); // résultat pour Geneve
 				break;
 			case 10:
+				//TODO-Steven : temps de parcours entre deux villes (Dijkstra)
 				System.err.println("City d'origine:");
 				str1 = in.next();
 				System.err.println("City de destination:");
@@ -177,6 +185,7 @@ public class Main_skel {
 				System.out.println(267); // résultat pour Bale à St.-Moritz
 				break;
 			case 11:
+				//TODO-Steven : parcours entre deux villes (Dijkstra)
 				System.err.println("City d'origine:");
 				str1 = in.next();
 				System.err.println("City de destination:");
@@ -186,11 +195,13 @@ public class Main_skel {
 				System.out.println("[Bale:Zurich:Coire:St.-Moritz]"); // résultat pour Bale à St.-Moritz
 				break;
 			case 12:
+				//TODO-Steven : ajout d'une ville
 				System.err.println("Nom de la ville:");
 				str1 = in.next();
 				// mise à jour à faire avec votre code
 				break;
 			case 13:
+				//TODO-Raed : ajout d'une liaison
 				System.err.println("City d'origine:");
 				str1 = in.next();
 				System.err.println("City de destination:");
@@ -200,11 +211,13 @@ public class Main_skel {
 				// mise à jour à faire avec votre code
 				break;
 			case 14:
+				//TODO-Steven : suppression d'une ville
 				System.err.println("Nom de la ville:");
 				str1 = in.next();
 				// mise à jour à faire avec votre code
 				break;
 			case 15:
+				//TODO-Raed : suppression d'une liaison
 				System.err.println("City d'origine:");
 				str1 = in.next();
 				System.err.println("City de destination:");
@@ -216,6 +229,7 @@ public class Main_skel {
 				System.out.println(true); // réponse true ou false
 				break;
 			case 17:
+				//TODO-Raed : sauver (format XML)
 				System.err.println("Nom du fichier XML:");
 				str1 = in.next();
 				// sauvegarde à faire avec votre code

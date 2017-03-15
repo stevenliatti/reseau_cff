@@ -10,20 +10,20 @@ import java.util.List;
  */
 
 @XmlRootElement(name = "reseau")
-@XmlType
+@XmlType(propOrder = {"title", "villeList", "liaisonList"})
 public class Reseau {
-    private String titre;
+    private String title;
 
     List<Ville> villeList;
 
     List<Liaison> liaisonList;
 
-    public String getTitre() {
-        return titre;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTitre(String titre) {
-        this.titre = titre;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @XmlElement(name = "ville")

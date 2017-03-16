@@ -167,10 +167,10 @@ public class Main_skel {
 					System.out.println("Ville(s) inconnue(s)!");
 				} else {
 					System.out.print("[");
-					for (String city : pathTowCities) {
-						System.out.print(city + ":");
+					for (int i = 0; i < pathTowCities.size() - 1; i++) {
+						System.out.print(pathTowCities.get(i) + ":");
 					}
-					System.out.println("]");
+					System.out.println(pathTowCities.get(pathTowCities.size() - 1) + "]");
 				}
 				//System.out.println("[Geneve:Lausanne:Berne:Zurich:Coire]"); // résultat pour Geneve à Coire
 				break;
@@ -224,6 +224,10 @@ public class Main_skel {
 				System.err.println("Temps de parcours:");
 				str3 = in.next();
 				// mise à jour à faire avec votre code
+				int result = graphManagement.addNewConnection(str1, str2, str3);
+				if (result == -1) {
+					System.out.println("Erreur");
+				}
 				break;
 			case 14:
 				//TODO-Steven : suppression d'une ville
@@ -238,6 +242,10 @@ public class Main_skel {
 				System.err.println("City de destination:");
 				str2 = in.next();
 				// mise à jour à faire avec votre code
+				result = graphManagement.removeConnection(str1, str2);
+				if (result == -1) {
+					System.out.println("Erreur");
+				}
 				break;
 			case 16:
 			   // format de sortie -> à générer avec votre code

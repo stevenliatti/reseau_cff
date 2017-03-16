@@ -39,7 +39,7 @@ public class GraphManagement {
             //matrice des poids
             buildInitialWeightMatrix();
             //liste des poids
-            buildWeightList();
+            //buildWeightList();
             //matrice des poids et matrice de précédence Floyd
             buildMatrixFloyd();
 
@@ -196,5 +196,49 @@ public class GraphManagement {
         path.add(0, city1);
         path.add(city2);
         return path;
+    }
+
+    public int addNewConnection(String city1, String city2, String durationString) {
+        if (!cityNamesArrayList.contains(city1)) {
+            return -1;
+        }
+        if (!cityNamesArrayList.contains(city2)) {
+            return -1;
+        }
+        int duration = -1;
+        try {
+            duration = Integer.parseInt(durationString);
+        } catch (Exception e) {}
+        if (duration == -1) {
+            return -1;
+        }
+        Connection newConnection = new Connection(city1, city2, duration);
+        this.net.getConnectionList().add(newConnection);
+        uodateAfterConnectionChanges();
+        return 0;
+    }
+
+    public int removeConnection(String city1, String city2) {
+        if (!cityNamesArrayList.contains(city1)) {
+            return -1;
+        }
+        if (!cityNamesArrayList.contains(city2)) {
+            return -1;
+        }
+        for (int i = 0; i < net.getConnectionList().size(); i++) {
+            String c1 = net.getConnectionList().get(i).getVil_1();
+            String c2 = net.getConnectionList().get(i).getVil_1();
+            if ((c1.equals(city1) && c2.equals(city2)) ||
+                    c1.equals(city2) && c2.equals(city1)) {
+                net.getConnectionList().remove(i);
+            }
+        }
+        uodateAfterConnectionChanges();
+        return 0;
+    }
+
+    private void uodateAfterConnectionChanges() {
+        buildInitialWeightMatrix();
+        buildMatrixFloyd();
     }
 }

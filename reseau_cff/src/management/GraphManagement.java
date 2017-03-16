@@ -9,7 +9,6 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by raed on 14.03.17.
@@ -17,8 +16,11 @@ import java.util.List;
 public class GraphManagement {
     private Net net;
     private ArrayList<String> cityNamesArrayList;
-    private int[][] weightMatrix;
+    private int[][] initialWeightMatrix;
     private ArrayList<String>[] weightList;
+
+    private int[][] weightMatrixFloyd;
+    private int[][] precMatrixFloyd;
 
     public GraphManagement(String filePath) {
         try {
@@ -32,12 +34,26 @@ public class GraphManagement {
             //liste des villes
             buildCityNamesArrayList();
             //matrice des poids
-            buildWeightMatrix();
+            buildInitialWeightMatrix();
             //liste des poids
             buildWeightList();
+            //matrice des poids et matrice de précédence Floyd
+            buildMatrixFloyd();
 
         } catch (JAXBException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void displayMatrix(int[][] m) {
+        for (int i = 0; i < m.length; i++) {
+            for (int j = 0; j < m.length; j++) {
+                if (m[i][j] == Integer.MAX_VALUE)
+                    System.out.print("inf ");
+                else
+                    System.out.print(m[i][j] + " ");
+            }
+            System.out.println();
         }
     }
 
@@ -55,37 +71,30 @@ public class GraphManagement {
         System.out.println();
     }
 
-    public void buildWeightMatrix() {
-        weightMatrix = new int[cityNamesArrayList.size()][cityNamesArrayList.size()];
-        for (int i = 0; i < cityNamesArrayList.size(); i++) {
-            for (int j = 0; j < cityNamesArrayList.size(); j++) {
+    public void buildInitialWeightMatrix() {
+        int n = net.getCityList().size();
+        initialWeightMatrix = new int[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
                 if (i == j)
-                    weightMatrix[i][j] = 0;
+                    initialWeightMatrix[i][j] = 0;
                 else
-                    weightMatrix[i][j] = Integer.MAX_VALUE;
+                    initialWeightMatrix[i][j] = Integer.MAX_VALUE;
             }
         }
         for (Connection c : net.getConnectionList()) {
             int i = cityNamesArrayList.indexOf(c.getVil_1());
             int j = cityNamesArrayList.indexOf(c.getVil_2());
-            weightMatrix[i][j] = c.getDuratin();
+            initialWeightMatrix[i][j] = c.getDuratin();
             int x = i;
             i = j;
             j = x;
-            weightMatrix[i][j] = c.getDuratin();
+            initialWeightMatrix[i][j] = c.getDuratin();
         }
     }
 
-    public void displayWeightMatrix() {
-        for (int i = 0; i < cityNamesArrayList.size(); i++) {
-            for (int j = 0; j < cityNamesArrayList.size(); j++) {
-                if (weightMatrix[i][j] == Integer.MAX_VALUE)
-                    System.out.print("inf ");
-                else
-                    System.out.print(weightMatrix[i][j] + " ");
-            }
-            System.out.println();
-        }
+    public void displayInitialWeightMatrix() {
+        displayMatrix(initialWeightMatrix);
     }
 
     public void buildWeightList() {
@@ -113,5 +122,76 @@ public class GraphManagement {
             }
             System.out.println();
         }
+    }
+
+    private void buildMatrixFloyd() {
+        int n = net.getCityList().size();
+        weightMatrixFloyd = new int[n][n];
+        precMatrixFloyd = new int[n][n];
+        initMatrixFloyd();
+        for (int k = 0; k < n; k++) {
+            for (int i = 0; i < n; i++) {
+                if (i != k && weightMatrixFloyd[i][k] != Integer.MAX_VALUE) {
+                    for (int j = 0; j < n; j++) {
+                        if (i != j && j != k && weightMatrixFloyd[k][j] != Integer.MAX_VALUE) {
+                            if (weightMatrixFloyd[i][k] + weightMatrixFloyd[k][j] < weightMatrixFloyd[i][j]) {
+                                weightMatrixFloyd[i][j] = weightMatrixFloyd[i][k] + weightMatrixFloyd[k][j];
+                                precMatrixFloyd[i][j] = precMatrixFloyd[k][j];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void dispayWeightMatrixFloyd() {
+        displayMatrix(weightMatrixFloyd);
+    }
+
+    public void dispayPrecMatrixFloyd() {
+        displayMatrix(precMatrixFloyd);
+    }
+
+    private void initMatrixFloyd() {
+        int n = net.getCityList().size();
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                weightMatrixFloyd[i][j] = initialWeightMatrix[i][j];
+                if (i == j || initialWeightMatrix[i][j] == Integer.MAX_VALUE)
+                    precMatrixFloyd[i][j] = -1;
+                else
+                    precMatrixFloyd[i][j] = i;
+            }
+        }
+    }
+
+    public int timeTowCitiesFloyd(String city1, String city2) {
+        if (!cityNamesArrayList.contains(city1) || !cityNamesArrayList.contains(city2)) {
+            return -1;
+        }
+        int i = cityNamesArrayList.indexOf(city1);
+        int j = cityNamesArrayList.indexOf(city2);
+        return weightMatrixFloyd[i][j];
+    }
+
+    public ArrayList<String> pathTowCitiesFloyd(String city1, String city2) {
+        if (!cityNamesArrayList.contains(city1)) {
+            return null;
+        }
+        if (!cityNamesArrayList.contains(city2)) {
+            return null;
+        }
+        int i = cityNamesArrayList.indexOf(city1);
+        int j = cityNamesArrayList.indexOf(city2);
+        ArrayList<String> path = new ArrayList<>();
+        int previous = precMatrixFloyd[i][j];
+        while (previous != i && previous != -1) {
+            path.add(0, cityNamesArrayList.get(previous));
+            previous = precMatrixFloyd[i][previous];
+        }
+        path.add(0, city1);
+        path.add(city2);
+        return path;
     }
 }

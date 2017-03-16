@@ -11,6 +11,14 @@ public class Connection {
     private String vil_2;
     private int duratin;
 
+    public Connection() {}
+
+    public Connection(String vil_1, String vil_2, int duratin) {
+        this.vil_1 = vil_1;
+        this.vil_2 = vil_2;
+        this.duratin = duratin;
+    }
+
     public String getVil_1() {
         return vil_1;
     }

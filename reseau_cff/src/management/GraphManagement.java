@@ -9,8 +9,8 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.util.ArrayList;
-//import java.util.List;
-//import java.util.Map;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by raed on 14.03.17.
@@ -20,7 +20,7 @@ public class GraphManagement {
     private ArrayList<String> cityNamesArrayList;
     private int[][] initialWeightMatrix;
     private ArrayList<String>[] weightList;
-    //private Map<City, List<Connection>> listMap;
+    private Map<City, List<Connection>> listMap;
 
     private int[][] weightMatrixFloyd;
     private int[][] precMatrixFloyd;

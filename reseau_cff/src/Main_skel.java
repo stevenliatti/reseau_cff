@@ -79,24 +79,23 @@ public class Main_skel {
 //				System.out.println("inf 67 inf inf inf 157 inf inf inf inf inf inf inf 162 0");
 				break;
 			case 3:
-				//TODO-Steven : liste des poids
-			   // format de sortie -> à générer avec votre code
+			    // format de sortie -> à générer avec votre code
 				graphManagement.displayWeightList();
-				System.out.println("Geneve [Lausanne:34]");
-				System.out.println("Lausanne [Geneve:34] [Neuchatel:40] [Berne:67] [Sion:67]");
-				System.out.println("Neuchatel [Lausanne:40] [Delemont:49] [Bale:87] [Berne:42]");
-				System.out.println("Delemont [Neuchatel:49] [Bale:34] [Berne:60]");
-				System.out.println("Bale [Neuchatel:87] [Delemont:34] [Berne:66] [Lucerne:73] [Zurich:60]");
-				System.out.println("Berne [Lausanne:67] [Neuchatel:42] [Delemont:60] [Bale:66] [Lucerne:83] [Zurich:79] [Sion:157]");
-				System.out.println("Lucerne [Bale:73] [Berne:83] [Zurich:46] [Bellinzone:132] [Andermatt:102]");
-				System.out.println("Zurich [Bale:60] [Berne:79] [Lucerne:46] [Schaffouse:42] [St.-Gall:66] [Coire:91]");
-				System.out.println("Schaffouse [Zurich:42] [St.-Gall:87]");
-				System.out.println("St.-Gall [Zurich:66] [Schaffouse:87] [Coire:99]");
-				System.out.println("Coire [Zurich:91] [St.-Gall:99] [St.-Moritz:116] [Andermatt:100]");
-				System.out.println("St.-Moritz [Coire:116]");
-				System.out.println("Bellinzone [Lucerne:132] [Andermatt:84]");
-				System.out.println("Andermatt [Lucerne:102] [Coire:100] [Bellinzone:84] [Sion:162]");
-				System.out.println("Sion [Lausanne:67] [Berne:157] [Andermatt:162]");
+//				System.out.println("Geneve [Lausanne:34]");
+//				System.out.println("Lausanne [Geneve:34] [Neuchatel:40] [Berne:67] [Sion:67]");
+//				System.out.println("Neuchatel [Lausanne:40] [Delemont:49] [Bale:87] [Berne:42]");
+//				System.out.println("Delemont [Neuchatel:49] [Bale:34] [Berne:60]");
+//				System.out.println("Bale [Neuchatel:87] [Delemont:34] [Berne:66] [Lucerne:73] [Zurich:60]");
+//				System.out.println("Berne [Lausanne:67] [Neuchatel:42] [Delemont:60] [Bale:66] [Lucerne:83] [Zurich:79] [Sion:157]");
+//				System.out.println("Lucerne [Bale:73] [Berne:83] [Zurich:46] [Bellinzone:132] [Andermatt:102]");
+//				System.out.println("Zurich [Bale:60] [Berne:79] [Lucerne:46] [Schaffouse:42] [St.-Gall:66] [Coire:91]");
+//				System.out.println("Schaffouse [Zurich:42] [St.-Gall:87]");
+//				System.out.println("St.-Gall [Zurich:66] [Schaffouse:87] [Coire:99]");
+//				System.out.println("Coire [Zurich:91] [St.-Gall:99] [St.-Moritz:116] [Andermatt:100]");
+//				System.out.println("St.-Moritz [Coire:116]");
+//				System.out.println("Bellinzone [Lucerne:132] [Andermatt:84]");
+//				System.out.println("Andermatt [Lucerne:102] [Coire:100] [Bellinzone:84] [Sion:162]");
+//				System.out.println("Sion [Lausanne:67] [Berne:157] [Andermatt:162]");
 				break;
 			case 4:
 			   	// format de sortie -> à générer avec votre code

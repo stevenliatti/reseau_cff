@@ -148,11 +148,11 @@ public class GraphManagement {
         }
     }
 
-    public void dispayWeightMatrixFloyd() {
+    public void displayWeightMatrixFloyd() {
         displayMatrix(weightMatrixFloyd);
     }
 
-    public void dispayPrecMatrixFloyd() {
+    public void displayPrecMatrixFloyd() {
         displayMatrix(precMatrixFloyd);
     }
 

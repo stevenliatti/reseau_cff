@@ -13,10 +13,8 @@ import java.util.List;
 @XmlType(propOrder = {"title", "cityList", "connectionList"})
 public class Net {
     private String title;
-
-    List<City> cityList;
-
-    List<Connection> connectionList;
+    private List<City> cityList;
+    private List<Connection> connectionList;
 
     public String getTitle() {
         return title;

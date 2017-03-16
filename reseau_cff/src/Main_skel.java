@@ -101,7 +101,7 @@ public class Main_skel {
 			case 4:
 			   	// format de sortie -> à générer avec votre code
 			   	// imprimer "inf" à la place Integer.MAX_VALUE
-				graphManagement.dispayWeightMatrixFloyd();
+				graphManagement.displayWeightMatrixFloyd();
 //				System.out.println("0 34 74 123 157 101 184 180 222 246 271 387 316 263 101");
 //				System.out.println("34 0 40 89 123 67 150 146 188 212 237 353 282 229 67");
 //				System.out.println("74 40 0 49 83 42 125 121 163 187 212 328 257 227 107");
@@ -121,7 +121,7 @@ public class Main_skel {
 			case 5:
 			   	// format de sortie -> à générer avec votre code
 			   	// imprimer -1 si pas de prédécesseur
-				graphManagement.dispayPrecMatrixFloyd();
+				graphManagement.displayPrecMatrixFloyd();
 //				System.out.println("-1 0 1 2 3 1 5 5 7 7 7 10 6 14 1");
 //				System.out.println("1 -1 1 2 3 1 5 5 7 7 7 10 6 14 1");
 //				System.out.println("1 2 -1 2 3 2 5 5 7 7 7 10 6 6 1");

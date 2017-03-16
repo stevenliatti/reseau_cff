@@ -19,7 +19,7 @@ public class GraphManagement {
     private Net net;
     private ArrayList<String> cityNamesArrayList;
     private int[][] initialWeightMatrix;
-    private ArrayList<String>[] weightList;
+    private ArrayList<ArrayList<String>> weightList;
     private Map<City, List<Connection>> listMap;
 
     private int[][] weightMatrixFloyd;
@@ -101,7 +101,10 @@ public class GraphManagement {
     }
 
     public void buildWeightList() {
-        weightList = new ArrayList[net.getCityList().size()];
+        weightList = new ArrayList<ArrayList<String>>(net.getCityList().size());
+        for (City city : net.getCityList()) {
+
+        }
         for (int i = 0; i < weightList.length; i++) {
             weightList[i] = new ArrayList<>();
             String startCity = net.getCityList().get(i).getName();

@@ -79,6 +79,7 @@ public class Main_skel {
 //				System.out.println("inf 67 inf inf inf 157 inf inf inf inf inf inf inf 162 0");
 				break;
 			case 3:
+				//TODO-Steven : liste des poids
 			    // format de sortie -> à générer avec votre code
 				graphManagement.displayWeightList();
 //				System.out.println("Geneve [Lausanne:34]");

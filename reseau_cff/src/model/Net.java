@@ -4,6 +4,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by raed on 13.03.17.
@@ -15,6 +16,9 @@ public class Net {
     private String title;
     private List<City> cityList;
     private List<Connection> connectionList;
+    // Cet attribut va servir pour créer la liste des poids/d'adjacence.
+    // C'est une map qui associe une ville à une liste de paire ville/duration
+    private Map<City, List<Map.Entry<City, Integer>>> neighbours;
 
     public String getTitle() {
         return title;

@@ -35,4 +35,9 @@ public class City {
     public void setLatitude(int latitude) {
         this.latitude = latitude;
     }
+
+    @Override
+    public String toString() {
+        return "[" + name + ", " + longitude + ", " + latitude + "]";
+    }
 }

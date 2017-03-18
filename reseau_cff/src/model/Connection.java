@@ -42,4 +42,9 @@ public class Connection {
     public void setDuratin(int duratin) {
         this.duratin = duratin;
     }
+
+    @Override
+    public String toString() {
+        return "[" + vil_1 + " - " + vil_2 + ", " + duratin + "]";
+    }
 }

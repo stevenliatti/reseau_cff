@@ -2,15 +2,14 @@ package management;
 
 import model.City;
 import model.Connection;
+import model.Neighbour;
 import model.Net;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by raed on 14.03.17.
@@ -19,8 +18,8 @@ public class GraphManagement {
     private Net net;
     private ArrayList<String> cityNamesArrayList;
     private int[][] initialWeightMatrix;
-    private ArrayList<ArrayList<String>> weightList;
-    private Map<City, List<Connection>> listMap;
+    private Map<String, List<Neighbour>> weightList;
+//    private Map<City, List<Connection>> listMap;
 
     private int[][] weightMatrixFloyd;
     private int[][] precMatrixFloyd;
@@ -39,7 +38,7 @@ public class GraphManagement {
             //matrice des poids
             buildInitialWeightMatrix();
             //liste des poids
-            //buildWeightList();
+            buildWeightList();
             //matrice des poids et matrice de précédence Floyd
             buildMatrixFloyd();
 
@@ -100,31 +99,26 @@ public class GraphManagement {
         displayMatrix(initialWeightMatrix);
     }
 
-    public void buildWeightList() {
-        weightList = new ArrayList<ArrayList<String>>(net.getCityList().size());
-        for (City city : net.getCityList()) {
-
+    private void addNeighbour(String city, String neighbour, int duration) {
+        if (!weightList.containsKey(city)) {
+            weightList.put(city, new LinkedList<>());
         }
-        for (int i = 0; i < weightList.length; i++) {
-            weightList[i] = new ArrayList<>();
-            String startCity = net.getCityList().get(i).getName();
-            weightList[i].add(startCity);
-            for (Connection connection : net.getConnectionList()) {
-                if (connection.getVil_1().equals(startCity)) {
-                    weightList[i].add(connection.getVil_2() + ":" + connection.getDuratin());
-                }
-                if (connection.getVil_2().equals(startCity)) {
-                    weightList[i].add(connection.getVil_1() + ":" + connection.getDuratin());
-                }
-            }
+        weightList.get(city).add(new Neighbour(neighbour, duration));
+    }
+
+    public void buildWeightList() {
+        weightList = new LinkedHashMap<>();
+        for (Connection c : net.getConnectionList()) {
+            addNeighbour(c.getVil_1(), c.getVil_2(), c.getDuratin());
+            addNeighbour(c.getVil_2(), c.getVil_1(), c.getDuratin());
         }
     }
 
     public void displayWeightList() {
-        for (int i = 0; i < weightList.length; i++) {
-            System.out.print(weightList[i].get(0) + " ");
-            for (int j = 1; j < weightList[i].size(); j++) {
-                System.out.print("[" + weightList[i].get(j) + "] ");
+        for (String city : weightList.keySet()) {
+            System.out.print(city);
+            for (Neighbour neighbour : weightList.get(city)) {
+                System.out.print(" " + neighbour);
             }
             System.out.println();
         }
@@ -217,7 +211,7 @@ public class GraphManagement {
         }
         Connection newConnection = new Connection(city1, city2, duration);
         this.net.getConnectionList().add(newConnection);
-        uodateAfterConnectionChanges();
+        updateAfterConnectionChanges();
         return 0;
     }
 
@@ -236,11 +230,11 @@ public class GraphManagement {
                 net.getConnectionList().remove(i);
             }
         }
-        uodateAfterConnectionChanges();
+        updateAfterConnectionChanges();
         return 0;
     }
 
-    private void uodateAfterConnectionChanges() {
+    private void updateAfterConnectionChanges() {
         buildInitialWeightMatrix();
         buildMatrixFloyd();
     }

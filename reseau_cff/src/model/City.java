@@ -12,6 +12,14 @@ public class City {
     private int longitude;
     private int latitude;
 
+    public City() {}
+
+    public City(String name) {
+        this.name = name;
+        longitude = 0;
+        latitude = 0;
+    }
+
     public String getName() {
         return name;
     }

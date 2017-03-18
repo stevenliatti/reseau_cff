@@ -195,6 +195,16 @@ public class GraphManagement {
         return path;
     }
 
+    public boolean addCity(String city) {
+        updateAfterConnectionChanges();
+        return cityNamesArrayList.contains(city) ? false : cityNamesArrayList.add(city);
+    }
+
+    public boolean removeCity(String city) {
+        updateAfterConnectionChanges();
+        return cityNamesArrayList.remove(city);
+    }
+
     public int addNewConnection(String city1, String city2, String durationString) {
         if (!cityNamesArrayList.contains(city1)) {
             return -1;
@@ -236,6 +246,7 @@ public class GraphManagement {
 
     private void updateAfterConnectionChanges() {
         buildInitialWeightMatrix();
+        buildWeightList();
         buildMatrixFloyd();
     }
 }

@@ -209,13 +209,14 @@ public class Main_skel {
 				System.out.println("[Bale:Zurich:Coire:St.-Moritz]"); // résultat pour Bale à St.-Moritz
 				break;
 			case 12:
-				//TODO-Steven : ajout d'une ville
 				System.err.println("Nom de la ville:");
 				str1 = in.next();
 				// mise à jour à faire avec votre code
+				if (!graphManagement.addCity(str1)) {
+					System.out.println("Ville déjà présente dans le graphe.");
+				}
 				break;
 			case 13:
-				//TODO-Raed : ajout d'une liaison
 				System.err.println("City d'origine:");
 				str1 = in.next();
 				System.err.println("City de destination:");
@@ -229,13 +230,14 @@ public class Main_skel {
 				}
 				break;
 			case 14:
-				//TODO-Steven : suppression d'une ville
 				System.err.println("Nom de la ville:");
 				str1 = in.next();
 				// mise à jour à faire avec votre code
+				if (!graphManagement.removeCity(str1)) {
+					System.out.println("Ville non présente dans le graphe.");
+				}
 				break;
 			case 15:
-				//TODO-Raed : suppression d'une liaison
 				System.err.println("City d'origine:");
 				str1 = in.next();
 				System.err.println("City de destination:");
@@ -251,7 +253,7 @@ public class Main_skel {
 				System.out.println(true); // réponse true ou false
 				break;
 			case 17:
-				//TODO-Raed : sauver (format XML)
+				//TODO : sauver (format XML)
 				System.err.println("Nom du fichier XML:");
 				str1 = in.next();
 				// sauvegarde à faire avec votre code

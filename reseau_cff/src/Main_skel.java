@@ -253,9 +253,13 @@ public class Main_skel {
 				System.out.println(true); // réponse true ou false
 				break;
 			case 17:
-				//TODO : sauver (format XML)
+				//TODO-Raed : sauver (format XML)
 				System.err.println("Nom du fichier XML:");
 				str1 = in.next();
+				result = graphManagement.storeXmlFormat(str1);
+				if (result == -1) {
+					System.out.println("Erreur");
+				}
 				// sauvegarde à faire avec votre code
 				break;
 			}

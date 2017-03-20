@@ -5,9 +5,7 @@ import model.Connection;
 import model.Neighbour;
 import model.Net;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.*;
 import java.io.File;
 import java.util.*;
 
@@ -15,6 +13,7 @@ import java.util.*;
  * Created by raed on 14.03.17.
  */
 public class GraphManagement {
+    private JAXBContext jaxbContext;
     private Net net;
     private ArrayList<String> cityNamesArrayList;
     private int[][] initialWeightMatrix;
@@ -28,9 +27,9 @@ public class GraphManagement {
         try {
 
             File file = new File(filePath);
-            JAXBContext jaxbContext = JAXBContext.newInstance(Net.class);
+            this.jaxbContext = JAXBContext.newInstance(Net.class);
 
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+            Unmarshaller jaxbUnmarshaller = this.jaxbContext.createUnmarshaller();
             this.net = (Net) jaxbUnmarshaller.unmarshal(file);
 
             //liste des villes
@@ -60,64 +59,64 @@ public class GraphManagement {
     }
 
     private void buildCityNamesArrayList() {
-        cityNamesArrayList = new ArrayList<>();
-        for (City c: net.getCityList()) {
-            cityNamesArrayList.add(c.getName());
+        this.cityNamesArrayList = new ArrayList<>();
+        for (City c: this.net.getCityList()) {
+            this.cityNamesArrayList.add(c.getName());
         }
     }
 
     public void displayCityNamesArrayList() {
-        for (int i = 0; i < cityNamesArrayList.size(); i++) {
-            System.out.print("[" + i + ":" + cityNamesArrayList.get(i) + "] ");
+        for (int i = 0; i < this.cityNamesArrayList.size(); i++) {
+            System.out.print("[" + i + ":" + this.cityNamesArrayList.get(i) + "] ");
         }
         System.out.println();
     }
 
     public void buildInitialWeightMatrix() {
-        int n = net.getCityList().size();
-        initialWeightMatrix = new int[n][n];
+        int n = this.net.getCityList().size();
+        this.initialWeightMatrix = new int[n][n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (i == j)
-                    initialWeightMatrix[i][j] = 0;
+                    this.initialWeightMatrix[i][j] = 0;
                 else
-                    initialWeightMatrix[i][j] = Integer.MAX_VALUE;
+                    this.initialWeightMatrix[i][j] = Integer.MAX_VALUE;
             }
         }
-        for (Connection c : net.getConnectionList()) {
-            int i = cityNamesArrayList.indexOf(c.getVil_1());
-            int j = cityNamesArrayList.indexOf(c.getVil_2());
-            initialWeightMatrix[i][j] = c.getDuratin();
+        for (Connection c : this.net.getConnectionList()) {
+            int i = this.cityNamesArrayList.indexOf(c.getVil_1());
+            int j = this.cityNamesArrayList.indexOf(c.getVil_2());
+            this.initialWeightMatrix[i][j] = c.getDuratin();
             int x = i;
             i = j;
             j = x;
-            initialWeightMatrix[i][j] = c.getDuratin();
+            this.initialWeightMatrix[i][j] = c.getDuratin();
         }
     }
 
     public void displayInitialWeightMatrix() {
-        displayMatrix(initialWeightMatrix);
+        displayMatrix(this.initialWeightMatrix);
     }
 
     private void addNeighbour(String city, String neighbour, int duration) {
-        if (!weightList.containsKey(city)) {
-            weightList.put(city, new LinkedList<>());
+        if (!this.weightList.containsKey(city)) {
+            this.weightList.put(city, new LinkedList<>());
         }
-        weightList.get(city).add(new Neighbour(neighbour, duration));
+        this.weightList.get(city).add(new Neighbour(neighbour, duration));
     }
 
     public void buildWeightList() {
-        weightList = new LinkedHashMap<>();
-        for (Connection c : net.getConnectionList()) {
+        this.weightList = new LinkedHashMap<>();
+        for (Connection c : this.net.getConnectionList()) {
             addNeighbour(c.getVil_1(), c.getVil_2(), c.getDuratin());
             addNeighbour(c.getVil_2(), c.getVil_1(), c.getDuratin());
         }
     }
 
     public void displayWeightList() {
-        for (String city : weightList.keySet()) {
+        for (String city : this.weightList.keySet()) {
             System.out.print(city);
-            for (Neighbour neighbour : weightList.get(city)) {
+            for (Neighbour neighbour : this.weightList.get(city)) {
                 System.out.print(" " + neighbour);
             }
             System.out.println();
@@ -125,18 +124,18 @@ public class GraphManagement {
     }
 
     private void buildMatrixFloyd() {
-        int n = net.getCityList().size();
-        weightMatrixFloyd = new int[n][n];
-        precMatrixFloyd = new int[n][n];
+        int n = this.net.getCityList().size();
+        this.weightMatrixFloyd = new int[n][n];
+        this.precMatrixFloyd = new int[n][n];
         initMatrixFloyd();
         for (int k = 0; k < n; k++) {
             for (int i = 0; i < n; i++) {
-                if (i != k && weightMatrixFloyd[i][k] != Integer.MAX_VALUE) {
+                if (i != k && this.weightMatrixFloyd[i][k] != Integer.MAX_VALUE) {
                     for (int j = 0; j < n; j++) {
-                        if (i != j && j != k && weightMatrixFloyd[k][j] != Integer.MAX_VALUE) {
-                            if (weightMatrixFloyd[i][k] + weightMatrixFloyd[k][j] < weightMatrixFloyd[i][j]) {
-                                weightMatrixFloyd[i][j] = weightMatrixFloyd[i][k] + weightMatrixFloyd[k][j];
-                                precMatrixFloyd[i][j] = precMatrixFloyd[k][j];
+                        if (i != j && j != k && this.weightMatrixFloyd[k][j] != Integer.MAX_VALUE) {
+                            if (this.weightMatrixFloyd[i][k] + this.weightMatrixFloyd[k][j] < this.weightMatrixFloyd[i][j]) {
+                                this.weightMatrixFloyd[i][j] = this.weightMatrixFloyd[i][k] + this.weightMatrixFloyd[k][j];
+                                this.precMatrixFloyd[i][j] = this.precMatrixFloyd[k][j];
                             }
                         }
                     }
@@ -146,49 +145,49 @@ public class GraphManagement {
     }
 
     public void displayWeightMatrixFloyd() {
-        displayMatrix(weightMatrixFloyd);
+        displayMatrix(this.weightMatrixFloyd);
     }
 
     public void displayPrecMatrixFloyd() {
-        displayMatrix(precMatrixFloyd);
+        displayMatrix(this.precMatrixFloyd);
     }
 
     private void initMatrixFloyd() {
-        int n = net.getCityList().size();
+        int n = this.net.getCityList().size();
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                weightMatrixFloyd[i][j] = initialWeightMatrix[i][j];
-                if (i == j || initialWeightMatrix[i][j] == Integer.MAX_VALUE)
-                    precMatrixFloyd[i][j] = -1;
+                this.weightMatrixFloyd[i][j] = this.initialWeightMatrix[i][j];
+                if (i == j || this.initialWeightMatrix[i][j] == Integer.MAX_VALUE)
+                    this.precMatrixFloyd[i][j] = -1;
                 else
-                    precMatrixFloyd[i][j] = i;
+                    this.precMatrixFloyd[i][j] = i;
             }
         }
     }
 
     public int timeTowCitiesFloyd(String city1, String city2) {
-        if (!cityNamesArrayList.contains(city1) || !cityNamesArrayList.contains(city2)) {
+        if (!this.cityNamesArrayList.contains(city1) || !this.cityNamesArrayList.contains(city2)) {
             return -1;
         }
-        int i = cityNamesArrayList.indexOf(city1);
-        int j = cityNamesArrayList.indexOf(city2);
-        return weightMatrixFloyd[i][j];
+        int i = this.cityNamesArrayList.indexOf(city1);
+        int j = this.cityNamesArrayList.indexOf(city2);
+        return this.weightMatrixFloyd[i][j];
     }
 
     public ArrayList<String> pathTowCitiesFloyd(String city1, String city2) {
-        if (!cityNamesArrayList.contains(city1)) {
+        if (!this.cityNamesArrayList.contains(city1)) {
             return null;
         }
-        if (!cityNamesArrayList.contains(city2)) {
+        if (!this.cityNamesArrayList.contains(city2)) {
             return null;
         }
-        int i = cityNamesArrayList.indexOf(city1);
-        int j = cityNamesArrayList.indexOf(city2);
+        int i = this.cityNamesArrayList.indexOf(city1);
+        int j = this.cityNamesArrayList.indexOf(city2);
         ArrayList<String> path = new ArrayList<>();
-        int previous = precMatrixFloyd[i][j];
+        int previous = this.precMatrixFloyd[i][j];
         while (previous != i && previous != -1) {
-            path.add(0, cityNamesArrayList.get(previous));
-            previous = precMatrixFloyd[i][previous];
+            path.add(0, this.cityNamesArrayList.get(previous));
+            previous = this.precMatrixFloyd[i][previous];
         }
         path.add(0, city1);
         path.add(city2);
@@ -197,19 +196,19 @@ public class GraphManagement {
 
     public boolean addCity(String city) {
         updateAfterConnectionChanges();
-        return cityNamesArrayList.contains(city) ? false : cityNamesArrayList.add(city);
+        return this.cityNamesArrayList.contains(city) ? false : this.cityNamesArrayList.add(city);
     }
 
     public boolean removeCity(String city) {
         updateAfterConnectionChanges();
-        return cityNamesArrayList.remove(city);
+        return this.cityNamesArrayList.remove(city);
     }
 
     public int addNewConnection(String city1, String city2, String durationString) {
-        if (!cityNamesArrayList.contains(city1)) {
+        if (!this.cityNamesArrayList.contains(city1)) {
             return -1;
         }
-        if (!cityNamesArrayList.contains(city2)) {
+        if (!this.cityNamesArrayList.contains(city2)) {
             return -1;
         }
         int duration = -1;
@@ -226,18 +225,18 @@ public class GraphManagement {
     }
 
     public int removeConnection(String city1, String city2) {
-        if (!cityNamesArrayList.contains(city1)) {
+        if (!this.cityNamesArrayList.contains(city1)) {
             return -1;
         }
-        if (!cityNamesArrayList.contains(city2)) {
+        if (!this.cityNamesArrayList.contains(city2)) {
             return -1;
         }
-        for (int i = 0; i < net.getConnectionList().size(); i++) {
-            String c1 = net.getConnectionList().get(i).getVil_1();
-            String c2 = net.getConnectionList().get(i).getVil_1();
+        for (int i = 0; i < this.net.getConnectionList().size(); i++) {
+            String c1 = this.net.getConnectionList().get(i).getVil_1();
+            String c2 = this.net.getConnectionList().get(i).getVil_1();
             if ((c1.equals(city1) && c2.equals(city2)) ||
                     c1.equals(city2) && c2.equals(city1)) {
-                net.getConnectionList().remove(i);
+                this.net.getConnectionList().remove(i);
             }
         }
         updateAfterConnectionChanges();
@@ -248,5 +247,26 @@ public class GraphManagement {
         buildInitialWeightMatrix();
         buildWeightList();
         buildMatrixFloyd();
+    }
+
+    public int storeXmlFormat(String fileName) {
+        if (!fileName.contains(".") ||
+                !fileName.substring(fileName.lastIndexOf(".")).toUpperCase().equals("XML")) {
+            fileName += ".xml";
+        }
+        try {
+            Marshaller jaxbMarshaller = this.jaxbContext.createMarshaller();
+
+            // output pretty printed
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+            File fileOut = new File(fileName);
+            jaxbMarshaller.marshal(this.net, fileOut);
+            //jaxbMarshaller.marshal(this.net, System.out);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+        return 0;
     }
 }

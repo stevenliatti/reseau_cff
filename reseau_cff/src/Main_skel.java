@@ -249,11 +249,11 @@ public class Main_skel {
 				}
 				break;
 			case 16:
-			   // format de sortie -> à générer avec votre code
+				//TODO
+			    // format de sortie -> à générer avec votre code
 				System.out.println(true); // réponse true ou false
 				break;
 			case 17:
-				//TODO-Raed : sauver (format XML)
 				System.err.println("Nom du fichier XML:");
 				str1 = in.next();
 				result = graphManagement.storeXmlFormat(str1);

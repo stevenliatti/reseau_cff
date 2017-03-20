@@ -195,13 +195,31 @@ public class GraphManagement {
     }
 
     public boolean addCity(String city) {
-        updateAfterConnectionChanges();
-        return this.cityNamesArrayList.contains(city) ? false : this.cityNamesArrayList.add(city);
+        if (this.cityNamesArrayList.contains(city)) {
+            return false;
+        }
+        else {
+            this.cityNamesArrayList.add(city);
+            this.net.getCityList().add(new City(city));
+            updateAfterChanges();
+            return true;
+        }
     }
 
     public boolean removeCity(String city) {
-        updateAfterConnectionChanges();
-        return this.cityNamesArrayList.remove(city);
+        Iterator<City> i = this.net.getCityList().iterator();
+        while (i.hasNext()) {
+            City c = i.next(); // must be called before you can call i.remove()
+            if (c.getName().equals(city)) {
+                i.remove();
+                break;
+            }
+        }
+        boolean test = this.cityNamesArrayList.remove(city);
+        if (test)
+            removeConnection(city);
+            updateAfterChanges();
+        return test;
     }
 
     public int addNewConnection(String city1, String city2, String durationString) {
@@ -220,7 +238,7 @@ public class GraphManagement {
         }
         Connection newConnection = new Connection(city1, city2, duration);
         this.net.getConnectionList().add(newConnection);
-        updateAfterConnectionChanges();
+        updateAfterChanges();
         return 0;
     }
 
@@ -231,22 +249,34 @@ public class GraphManagement {
         if (!this.cityNamesArrayList.contains(city2)) {
             return -1;
         }
-        for (int i = 0; i < this.net.getConnectionList().size(); i++) {
-            String c1 = this.net.getConnectionList().get(i).getVil_1();
-            String c2 = this.net.getConnectionList().get(i).getVil_1();
+        Iterator<Connection> i = this.net.getConnectionList().iterator();
+        while (i.hasNext()) {
+            Connection c = i.next();
+            String c1 = c.getVil_1();
+            String c2 = c.getVil_2();
             if ((c1.equals(city1) && c2.equals(city2)) ||
                     c1.equals(city2) && c2.equals(city1)) {
-                this.net.getConnectionList().remove(i);
+                i.remove();
             }
         }
-        updateAfterConnectionChanges();
+        updateAfterChanges();
         return 0;
     }
 
-    private void updateAfterConnectionChanges() {
+    public int removeConnection(String city) {
+        for (City c : this.net.getCityList()) {
+            //if ()
+            removeConnection(c.getName(), city);
+            removeConnection(city, c.getName());
+        }
+        return 0;
+    }
+
+    private void updateAfterChanges() {
         buildInitialWeightMatrix();
-        buildWeightList();
         buildMatrixFloyd();
+        buildCityNamesArrayList();
+        buildWeightList();
     }
 
     public int storeXmlFormat(String fileName) {

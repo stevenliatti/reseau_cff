@@ -207,6 +207,7 @@ public class GraphManagement {
     }
 
     public boolean removeCity(String city) {
+        removeAllConnections(city);
         Iterator<City> i = this.net.getCityList().iterator();
         while (i.hasNext()) {
             City c = i.next(); // must be called before you can call i.remove()
@@ -215,11 +216,8 @@ public class GraphManagement {
                 break;
             }
         }
-        boolean test = this.cityNamesArrayList.remove(city);
-        if (test)
-            removeConnection(city);
-            updateAfterChanges();
-        return test;
+        updateAfterChanges();
+        return true;
     }
 
     public int addNewConnection(String city1, String city2, String durationString) {
@@ -263,19 +261,23 @@ public class GraphManagement {
         return 0;
     }
 
-    public int removeConnection(String city) {
-        for (City c : this.net.getCityList()) {
-            //if ()
-            removeConnection(c.getName(), city);
-            removeConnection(city, c.getName());
+    public int removeAllConnections(String cityName) {
+        Iterator<Connection> i = this.net.getConnectionList().iterator();
+        while (i.hasNext()) {
+            Connection connection = i.next();
+            String c1 = connection.getVil_1();
+            String c2 = connection.getVil_2();
+            if (c1.equals(cityName) || c2.equals(cityName)) {
+                i.remove();
+            }
         }
         return 0;
     }
 
     private void updateAfterChanges() {
+        buildCityNamesArrayList();
         buildInitialWeightMatrix();
         buildMatrixFloyd();
-        buildCityNamesArrayList();
         buildWeightList();
     }
 

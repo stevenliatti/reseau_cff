@@ -18,7 +18,7 @@ public class GraphManagement {
     private ArrayList<String> cityNamesArrayList;
     private int[][] initialWeightMatrix;
     private Map<String, List<Neighbour>> weightList;
-    private List<Neighbour> graph;
+    private Map<String, Neighbour> graph;
 
     private int[][] weightMatrixFloyd;
     private int[][] precMatrixFloyd;
@@ -124,23 +124,42 @@ public class GraphManagement {
     }
 
     private void initDijkstra(String city) {
-        this.graph = new ArrayList<>();
-        this.graph.add(new Neighbour(city, 0, null));
+        this.graph = new HashMap<>();
+        this.graph.put(city, new Neighbour(city, 0, null));
         for (String s : this.cityNamesArrayList) {
-            if (!s.equals(city)) {
-                this.graph.add(new Neighbour(s, Integer.MAX_VALUE, null));
-            }
+        	this.graph.putIfAbsent(s, new Neighbour(s, Integer.MAX_VALUE, null));
         }
     }
 
-    private void updateGraph() {
-
+    private void relaxDijkstra(String u, String v, int weight) {
+        int newDuration = this.graph.get(u).getDuration() + weight;
+        if (this.graph.get(v).getDuration() > newDuration) {
+            this.graph.get(v).setDuration(newDuration);
+            this.graph.get(v).setPredecessor(u);
+        }
     }
 
-    private
+    public void dijkstra(String startCity) {
+    	initDijkstra(startCity);
+    	PriorityQueue<Neighbour> queue = new PriorityQueue<>(new Neighbour());
+        for (Neighbour n : graph.values()) {
+            queue.add(n);
+        }
+        while (!queue.isEmpty()) {
+			Neighbour next = queue.poll();
+			List<Neighbour> neighbours = this.weightList.get(next.getName());
+		    for (Neighbour n : neighbours) {
 
-    private void relaxDijkstra(String u, String v, int weight) {
-		if (this.weightList.get(u))
+				relaxDijkstra(next.getName(), n.getName(), graph.get(n.getName()).getDuration());
+		    }
+	    }
+    }
+
+    public void displayDijkstraTime() {
+        for (Neighbour n : graph.values()) {
+            System.out.print("[" + n.getName() + ":" + n.getDuration() + "] ");
+        }
+        System.out.println();
     }
 
     private void buildMatrixFloyd() {

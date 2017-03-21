@@ -1,12 +1,16 @@
 package model;
 
+import java.util.Comparator;
+
 /**
  * Created by stevenliatti on 18.03.17.
  */
-public class Neighbour {
+public class Neighbour implements Comparator<Neighbour> {
     private String name;
     private int duration;
     private String predecessor;
+
+    public Neighbour() {}
 
     public Neighbour(String name, int duration, String predecessor) {
         this.name = name;
@@ -41,5 +45,16 @@ public class Neighbour {
     @Override
     public String toString() {
         return "[" + name + ":" + duration + "]";
+    }
+
+
+    @Override
+    public int compare(Neighbour n1, Neighbour n2) {
+        if (n1.duration < n2.duration)
+            return -1;
+        else if (n1.duration > n2.duration)
+            return 1;
+        else
+            return 0;
     }
 }

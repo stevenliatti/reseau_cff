@@ -178,7 +178,9 @@ public class Main_skel {
 			   	System.err.println("City d'origine:");
 				str1 = in.next();
 				// format de sortie -> à générer avec votre code
-				System.out.println("[Geneve:0] [Lausanne:34] [Neuchatel:74] [Delemont:123] [Bale:157] [Berne:101] [Lucerne:184] [Zurich:180] [Schaffouse:222] [St.-Gall:246] [Coire:271] [St.-Moritz:387] [Bellinzone:316] [Andermatt:263] [Sion:101]"); // résultat pour Geneve
+				graphManagement.dijkstra(str1);
+				graphManagement.displayDijkstraTime();
+				//System.out.println("[Geneve:0] [Lausanne:34] [Neuchatel:74] [Delemont:123] [Bale:157] [Berne:101] [Lucerne:184] [Zurich:180] [Schaffouse:222] [St.-Gall:246] [Coire:271] [St.-Moritz:387] [Bellinzone:316] [Andermatt:263] [Sion:101]"); // résultat pour Geneve
 				break;
 			case 9:
 				//TODO-Steven : tableau des précédences (Dijkstra)

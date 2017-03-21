@@ -18,7 +18,7 @@ public class GraphManagement {
     private ArrayList<String> cityNamesArrayList;
     private int[][] initialWeightMatrix;
     private Map<String, List<Neighbour>> weightList;
-//    private Map<City, List<Connection>> listMap;
+    private List<Neighbour> graph;
 
     private int[][] weightMatrixFloyd;
     private int[][] precMatrixFloyd;
@@ -72,7 +72,7 @@ public class GraphManagement {
         System.out.println();
     }
 
-    public void buildInitialWeightMatrix() {
+    private void buildInitialWeightMatrix() {
         int n = this.net.getCityList().size();
         this.initialWeightMatrix = new int[n][n];
         for (int i = 0; i < n; i++) {
@@ -102,10 +102,10 @@ public class GraphManagement {
         if (!this.weightList.containsKey(city)) {
             this.weightList.put(city, new LinkedList<>());
         }
-        this.weightList.get(city).add(new Neighbour(neighbour, duration));
+        this.weightList.get(city).add(new Neighbour(neighbour, duration, city));
     }
 
-    public void buildWeightList() {
+    private void buildWeightList() {
         this.weightList = new LinkedHashMap<>();
         for (Connection c : this.net.getConnectionList()) {
             addNeighbour(c.getVil_1(), c.getVil_2(), c.getDuratin());
@@ -121,6 +121,26 @@ public class GraphManagement {
             }
             System.out.println();
         }
+    }
+
+    private void initDijkstra(String city) {
+        this.graph = new ArrayList<>();
+        this.graph.add(new Neighbour(city, 0, null));
+        for (String s : this.cityNamesArrayList) {
+            if (!s.equals(city)) {
+                this.graph.add(new Neighbour(s, Integer.MAX_VALUE, null));
+            }
+        }
+    }
+
+    private void updateGraph() {
+
+    }
+
+    private
+
+    private void relaxDijkstra(String u, String v, int weight) {
+		if (this.weightList.get(u))
     }
 
     private void buildMatrixFloyd() {
@@ -263,7 +283,7 @@ public class GraphManagement {
         return 0;
     }
 
-    public int removeConnection(String city) {
+    private int removeConnection(String city) {
         for (City c : this.net.getCityList()) {
             //if ()
             removeConnection(c.getName(), city);

@@ -185,12 +185,16 @@ public class GraphManagement {
         int j = this.cityNamesArrayList.indexOf(city2);
         ArrayList<String> path = new ArrayList<>();
         int previous = this.precMatrixFloyd[i][j];
-        while (previous != i && previous != -1) {
-            path.add(0, this.cityNamesArrayList.get(previous));
-            previous = this.precMatrixFloyd[i][previous];
+        if (previous != -1) {
+            while (previous != i && previous != -1) {
+                path.add(0, this.cityNamesArrayList.get(previous));
+                previous = this.precMatrixFloyd[i][previous];
+            }
+            path.add(0, city1);
+            if (!city2.equals(city1)) {
+                path.add(city2);
+            }
         }
-        path.add(0, city1);
-        path.add(city2);
         return path;
     }
 

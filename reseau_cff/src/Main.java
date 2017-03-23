@@ -3,7 +3,7 @@ import management.GraphManagement;
 import java.io.*;
 import java.util.*;
 
-public class Main_skel {
+public class Main {
 
 	public static void main(String[] args) throws IOException {
 		// permet de prendre les entrées pour le menu
@@ -145,10 +145,8 @@ public class Main_skel {
 				System.err.print("Distance: ");
 			   	// format de sortie -> à générer avec votre code
 				int travelTime = graphManagement.timeTowCitiesFloyd(str1, str2);
-				if (travelTime > 0 && travelTime != Integer.MAX_VALUE) {
+				if (travelTime >= 0) {
 					System.out.println(travelTime);
-				} else if(travelTime == Integer.MAX_VALUE) {
-					System.out.println("Pas de parcours entre ces deux villes!");
 				} else if (travelTime == -1){
 					System.out.println("Ville(s) inconnue(s)!");
 				}
@@ -162,8 +160,8 @@ public class Main_skel {
 				System.err.print("Parcours: ");
 				// format de sortie -> à générer avec votre code
 				ArrayList<String> pathTowCities = graphManagement.pathTowCitiesFloyd(str1, str2);
-				if (pathTowCities == null) {
-					System.out.println("Ville(s) inconnue(s)!");
+				if (pathTowCities.size() == 0) {
+					System.err.println("Ville(s) inconnue(s)!");
 				} else {
 					System.out.print("[");
 					for (int i = 0; i < pathTowCities.size() - 1; i++) {

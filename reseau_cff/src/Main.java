@@ -1,4 +1,5 @@
 import management.GraphManagement;
+import management.XmlFileManagement;
 
 import java.io.*;
 import java.util.*;
@@ -26,7 +27,7 @@ public class Main {
 		//lire le fichier villes.xml avec votre code
 		GraphManagement graphManagement = new GraphManagement(filePath);
 		System.err.println("Le fichier XML " + filePath + " a été chargé\n");
-		int choix = 0;
+		int choix;
 		do {
 		   	// les impressions du menu sont envoyées sur le canal d'erreur
 		   	// pour les différencier des sorties de l'application
@@ -249,16 +250,13 @@ public class Main {
 			case 16:
 				//TODO
 			    // format de sortie -> à générer avec votre code
-				System.out.println(true); // réponse true ou false
+				System.out.println(graphManagement.isConnectedGraph()); // réponse true ou false
 				break;
 			case 17:
 				System.err.println("Nom du fichier XML:");
 				str1 = in.next();
-				result = graphManagement.storeXmlFormat(str1);
-				if (result == -1) {
-					System.out.println("Erreur");
-				}
 				// sauvegarde à faire avec votre code
+				graphManagement.toXmlFile(str1);
 				break;
 			}
 		} while (choix!=0);

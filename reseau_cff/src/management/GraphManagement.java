@@ -18,7 +18,7 @@ public class GraphManagement {
     private ArrayList<String> cityNamesArrayList;
     private int[][] initialWeightMatrix;
     private Map<String, List<Neighbour>> weightList;
-//    private Map<City, List<Connection>> listMap;
+    private Map<String, Neighbour> graph;
 
     private int[][] weightMatrixFloyd;
     private int[][] precMatrixFloyd;
@@ -68,7 +68,7 @@ public class GraphManagement {
         System.out.println();
     }
 
-    public void buildInitialWeightMatrix() {
+    private void buildInitialWeightMatrix() {
         int n = this.net.getCityList().size();
         this.initialWeightMatrix = new int[n][n];
         for (int i = 0; i < n; i++) {
@@ -98,10 +98,10 @@ public class GraphManagement {
         if (!this.weightList.containsKey(city)) {
             this.weightList.put(city, new LinkedList<>());
         }
-        this.weightList.get(city).add(new Neighbour(neighbour, duration));
+        this.weightList.get(city).add(new Neighbour(neighbour, duration, city));
     }
 
-    public void buildWeightList() {
+    private void buildWeightList() {
         this.weightList = new LinkedHashMap<>();
         for (Connection c : this.net.getConnectionList()) {
             addNeighbour(c.getVil_1(), c.getVil_2(), c.getDuratin());
@@ -117,6 +117,61 @@ public class GraphManagement {
             }
             System.out.println();
         }
+    }
+
+    private void initDijkstra(String city) {
+        this.graph = new HashMap<>();
+        this.graph.put(city, new Neighbour(city, 0, null));
+        for (String s : this.cityNamesArrayList) {
+        	this.graph.putIfAbsent(s, new Neighbour(s, Integer.MAX_VALUE, null));
+        }
+    }
+
+    private void relaxDijkstra(String u, String v, int weight) {
+        int newDuration = this.graph.get(u).getDuration() + weight;
+        if (this.graph.get(v).getDuration() > newDuration) {
+            this.graph.get(v).setDuration(newDuration);
+            this.graph.get(v).setPredecessor(u);
+        }
+    }
+
+    public void dijkstra(String startCity) {
+    	initDijkstra(startCity);
+    	PriorityQueue<Neighbour> queue = new PriorityQueue<>(new Neighbour());
+        for (Neighbour n : graph.values()) {
+            queue.add(n);
+        }
+        while (!queue.isEmpty()) {
+			Neighbour next = queue.poll();
+			List<Neighbour> neighbours = this.weightList.get(next.getName());
+		    for (Neighbour n : neighbours) {
+				relaxDijkstra(next.getName(), n.getName(), n.getDuration());
+                Neighbour update = graph.get(n.getName());
+		        if (queue.remove(update))
+		            queue.add(update);
+		    }
+	    }
+    }
+
+    private List<Neighbour> sortGraph() {
+        List<Neighbour> list = new ArrayList<>(graph.values());
+        Collections.sort(list, new Neighbour());
+        return list;
+    }
+
+    public void displayDijkstraTime() {
+        for (Neighbour n : sortGraph()) {
+            System.out.print("[" + n.getName() + ":" + n.getDuration() + "] ");
+        }
+        System.out.println();
+    }
+
+    public void displayPrecedenceArray() {
+        for (Neighbour n : sortGraph()) {
+            if (n.getPredecessor() != null)
+                System.out.print("[" + n.getPredecessor() + "<-" + n.getName() + "] ");
+        }
+        System.out.println();
     }
 
     private void buildMatrixFloyd() {

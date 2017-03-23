@@ -157,12 +157,23 @@ public class GraphManagement {
 	    }
     }
 
-    public void displayDijkstraTime() {
-        int[] test = {1};
+    private List<Neighbour> sortGraph() {
         List<Neighbour> list = new ArrayList<>(graph.values());
         Collections.sort(list, new Neighbour());
-        for (Neighbour n : list) {
+        return list;
+    }
+
+    public void displayDijkstraTime() {
+        for (Neighbour n : sortGraph()) {
             System.out.print("[" + n.getName() + ":" + n.getDuration() + "] ");
+        }
+        System.out.println();
+    }
+
+    public void displayPrecedenceArray() {
+        for (Neighbour n : sortGraph()) {
+            if (n.getPredecessor() != null)
+                System.out.print("[" + n.getPredecessor() + "<-" + n.getName() + "] ");
         }
         System.out.println();
     }

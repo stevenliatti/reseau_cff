@@ -149,14 +149,19 @@ public class GraphManagement {
 			Neighbour next = queue.poll();
 			List<Neighbour> neighbours = this.weightList.get(next.getName());
 		    for (Neighbour n : neighbours) {
-
-				relaxDijkstra(next.getName(), n.getName(), graph.get(n.getName()).getDuration());
+				relaxDijkstra(next.getName(), n.getName(), n.getDuration());
+                Neighbour update = graph.get(n.getName());
+		        if (queue.remove(update))
+		            queue.add(update);
 		    }
 	    }
     }
 
     public void displayDijkstraTime() {
-        for (Neighbour n : graph.values()) {
+        int[] test = {1};
+        List<Neighbour> list = new ArrayList<>(graph.values());
+        Collections.sort(list, new Neighbour());
+        for (Neighbour n : list) {
             System.out.print("[" + n.getName() + ":" + n.getDuration() + "] ");
         }
         System.out.println();

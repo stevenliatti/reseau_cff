@@ -47,6 +47,15 @@ public class Neighbour implements Comparator<Neighbour> {
         return "[" + name + ":" + duration + "]";
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Neighbour neighbour = (Neighbour) o;
+
+        return name != null ? name.equals(neighbour.name) : neighbour.name == null;
+    }
 
     @Override
     public int compare(Neighbour n1, Neighbour n2) {

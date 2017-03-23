@@ -26,12 +26,8 @@ public class GraphManagement {
     public GraphManagement(String filePath) {
         try {
 
-            File file = new File(filePath);
-            this.jaxbContext = JAXBContext.newInstance(Net.class);
-
-            Unmarshaller jaxbUnmarshaller = this.jaxbContext.createUnmarshaller();
-            this.net = (Net) jaxbUnmarshaller.unmarshal(file);
-
+            //charger le fichier XML
+            this.net = XmlFileManagement.loadXmlFile(filePath);
             //liste des villes
             buildCityNamesArrayList();
             //matrice des poids
@@ -278,9 +274,10 @@ public class GraphManagement {
                 previous = this.precMatrixFloyd[i][previous];
             }
             path.add(0, city1);
-            if (!city2.equals(city1)) {
-                path.add(city2);
-            }
+            path.add(city2);
+        }
+        if (city1.equals(city2)) {
+            path.add(city1);
         }
         return path;
     }
@@ -372,24 +369,27 @@ public class GraphManagement {
         buildWeightList();
     }
 
-    public int storeXmlFormat(String fileName) {
-        if (!fileName.contains(".") ||
-                !fileName.substring(fileName.lastIndexOf(".")).toUpperCase().equals("XML")) {
-            fileName += ".xml";
+    public boolean isConnectedGraph() {
+        boolean isConnected = true;
+        for (int i = 0; i < weightMatrixFloyd.length; i++) {
+            for (int j = 0; j < weightMatrixFloyd.length; j++) {
+                if (weightMatrixFloyd[i][j] == Integer.MAX_VALUE) {
+                    isConnected = false;
+                    break;
+                }
+            }
+            if (!isConnected) {
+                break;
+            }
         }
+        return isConnected;
+    }
+
+    public void toXmlFile(String filePath) {
         try {
-            Marshaller jaxbMarshaller = this.jaxbContext.createMarshaller();
-
-            // output pretty printed
-            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-
-            File fileOut = new File(fileName);
-            jaxbMarshaller.marshal(this.net, fileOut);
-            //jaxbMarshaller.marshal(this.net, System.out);
-        } catch (Exception e) {
+            XmlFileManagement.storeXmlFormat(filePath, this.net);
+        } catch (JAXBException e) {
             e.printStackTrace();
-            return -1;
         }
-        return 0;
     }
 }

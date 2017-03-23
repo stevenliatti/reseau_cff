@@ -175,38 +175,36 @@ public class Main {
 			   	System.err.println("City d'origine:");
 				str1 = in.next();
 				// format de sortie -> à générer avec votre code
-				graphManagement.dijkstra(str1);
-				graphManagement.displayDijkstraTime();
+				graphManagement.displayDijkstraTime(str1);
 				//System.out.println("[Geneve:0] [Lausanne:34] [Neuchatel:74] [Delemont:123] [Bale:157] [Berne:101] [Lucerne:184] [Zurich:180] [Schaffouse:222] [St.-Gall:246] [Coire:271] [St.-Moritz:387] [Bellinzone:316] [Andermatt:263] [Sion:101]"); // résultat pour Geneve
 				break;
 			case 9:
 				System.err.println("City d'origine:");
 				str1 = in.next();
 				// format de sortie -> à générer avec votre code
-				graphManagement.dijkstra(str1);
-				graphManagement.displayPrecedenceArray();
+				graphManagement.displayPrecedenceArray(str1);
 //				System.out.println("[Geneve<-Lausanne] [Lausanne<-Neuchatel] [Neuchatel<-Delemont] [Delemont<-Bale] [Lausanne<-Berne] [Berne<-Lucerne] [Berne<-Zurich] [Zurich<-Schaffouse] [Zurich<-St.-Gall] [Zurich<-Coire] [Coire<-St.-Moritz] [Lucerne<-Bellinzone] [Sion<-Andermatt] [Lausanne<-Sion]"); // résultat pour Geneve
 				break;
 			case 10:
-				//TODO-Steven : temps de parcours entre deux villes (Dijkstra)
 				System.err.println("City d'origine:");
 				str1 = in.next();
 				System.err.println("City de destination:");
 				str2 = in.next();
 				System.err.print("Distance: ");
 				// format de sortie -> à générer avec votre code
+				graphManagement.displayTimeBetweenTwoCities(str1, str2);
 				// imprimer "inf" à la place Integer.MAX_VALUE
-				System.out.println(267); // résultat pour Bale à St.-Moritz
+//				System.out.println(267); // résultat pour Bale à St.-Moritz
 				break;
 			case 11:
-				//TODO-Steven : parcours entre deux villes (Dijkstra)
 				System.err.println("City d'origine:");
 				str1 = in.next();
 				System.err.println("City de destination:");
 				str2 = in.next();
 				System.err.print("Parcours: ");
 				// format de sortie -> à générer avec votre code
-				System.out.println("[Bale:Zurich:Coire:St.-Moritz]"); // résultat pour Bale à St.-Moritz
+				graphManagement.displayPathBetweenTwoCities(str1, str2);
+//				System.out.println("[Bale:Zurich:Coire:St.-Moritz]"); // résultat pour Bale à St.-Moritz
 				break;
 			case 12:
 				System.err.println("Nom de la ville:");

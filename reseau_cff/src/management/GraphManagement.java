@@ -139,7 +139,7 @@ public class GraphManagement {
         }
     }
 
-    public void dijkstra(String startCity) {
+    private void dijkstra(String startCity) {
     	initDijkstra(startCity);
     	PriorityQueue<Neighbour> queue = new PriorityQueue<>(new Neighbour());
         for (Neighbour n : graph.values()) {
@@ -148,12 +148,14 @@ public class GraphManagement {
         while (!queue.isEmpty()) {
 			Neighbour next = queue.poll();
 			List<Neighbour> neighbours = this.weightList.get(next.getName());
-		    for (Neighbour n : neighbours) {
-				relaxDijkstra(next.getName(), n.getName(), n.getDuration());
-                Neighbour update = graph.get(n.getName());
-		        if (queue.remove(update))
-		            queue.add(update);
-		    }
+			if (neighbours != null) {
+				for (Neighbour n : neighbours) {
+					relaxDijkstra(next.getName(), n.getName(), n.getDuration());
+					Neighbour update = graph.get(n.getName());
+					if (queue.remove(update))
+						queue.add(update);
+				}
+			}
 	    }
     }
 
@@ -163,19 +165,49 @@ public class GraphManagement {
         return list;
     }
 
-    public void displayDijkstraTime() {
+    public void displayDijkstraTime(String startCity) {
+    	dijkstra(startCity);
         for (Neighbour n : sortGraph()) {
             System.out.print("[" + n.getName() + ":" + n.getDuration() + "] ");
         }
         System.out.println();
     }
 
-    public void displayPrecedenceArray() {
+    public void displayPrecedenceArray(String startCity) {
+	    dijkstra(startCity);
         for (Neighbour n : sortGraph()) {
             if (n.getPredecessor() != null)
                 System.out.print("[" + n.getPredecessor() + "<-" + n.getName() + "] ");
         }
         System.out.println();
+    }
+
+    public void displayTimeBetweenTwoCities(String departure, String destination) {
+	    dijkstra(departure);
+        int duration = graph.get(destination).getDuration();
+        if (duration == Integer.MAX_VALUE)
+            System.out.println("inf");
+        else
+            System.out.println(duration);
+    }
+
+    public void displayPathBetweenTwoCities(String departure, String destination) {
+	    dijkstra(departure);
+    	Stack<String> stack = new Stack<>();
+    	Neighbour predecessor = graph.get(destination);
+    	while (predecessor.getDuration() != 0) {
+		    stack.add(predecessor.getName());
+		    predecessor = graph.get(predecessor.getPredecessor());
+	    }
+	    stack.add(predecessor.getName());
+    	StringBuilder builder = new StringBuilder();
+    	builder.append("[");
+	    while (!stack.isEmpty()) {
+	    	builder.append(stack.pop() + ":");
+	    }
+	    builder.deleteCharAt(builder.length() - 1);
+	    builder.append("]");
+	    System.out.println(builder.toString());
     }
 
     private void buildMatrixFloyd() {

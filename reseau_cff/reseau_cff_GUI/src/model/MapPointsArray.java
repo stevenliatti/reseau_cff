@@ -13,7 +13,7 @@ public class MapPointsArray extends ArrayList<Point> {
     public MapPointsArray(String filePath) throws IOException, NumberFormatException{
         LineNumberReader lineReader = null;
         lineReader = new LineNumberReader(new FileReader(filePath));
-        String line = null;
+        String line;
 
         while ((line = lineReader.readLine()) != null) {
             StringTokenizer st = new StringTokenizer(line);

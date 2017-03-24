@@ -51,34 +51,34 @@ public class TestProgram {
             String cmd1 = "cat testModule/commandes_de_test/cmd_a_tester_pt_" + x + ".txt | " +
                     "java -cp out/production/reseau_cff Main > testModule/results_out/my_results_" + x + ".txt";
             firstCommandTextArea.setText(cmd1);
-            final Process process1 = Runtime.getRuntime().exec(new String[] {"bash", "-c", cmd1});
-            process1.waitFor(1000, TimeUnit.MILLISECONDS);
-//            System.out.println(process1.exitValue());
-//            if (process1.exitValue() != 0) {
-//                BufferedReader readerErr = new BufferedReader(new InputStreamReader(process1.getErrorStream()));
-//                String l;
-//                try {
-//                    while((l = readerErr.readLine()) != null) {
-//                        System.out.println(l);
-//                    }
-//                } finally {
-//                    readerErr.close();
-//                }
-//            }
+            Process process1 = Runtime.getRuntime().exec(new String[] {"bash", "-c", cmd1});
+            process1.waitFor(5, TimeUnit.SECONDS);
+            System.out.println(process1.exitValue());
+            if (process1.exitValue() != 0) {
+                BufferedReader readerErr = new BufferedReader(new InputStreamReader(process1.getErrorStream()));
+                String l;
+                try {
+                    while((l = readerErr.readLine()) != null) {
+                        System.out.println(l);
+                    }
+                } finally {
+                    readerErr.close();
+                }
+            }
 
 //            String cmdLeft = "diff -y testModule/results_out/my_results_" + x + ".txt testModule/results_out/_" + x + ".txt";
             String cmdLeft = "cat testModule/results_out/my_results_" + x + ".txt";
             secondCommandTextArea.setText(cmdLeft);
 //            cmdLeft += " | awk -F ' ' '{print $1}' ";
-            final Process processLeft = Runtime.getRuntime().exec(new String[] {"bash", "-c", cmdLeft});
-            processLeft.waitFor(1000, TimeUnit.MILLISECONDS);
+            Process processLeft = Runtime.getRuntime().exec(new String[] {"bash", "-c", cmdLeft});
+            processLeft.waitFor(5, TimeUnit.SECONDS);
 //            System.out.println(processLeft.exitValue());
 
 //            String cmdRight = "diff -y testModule/results_out/my_results_" + x + ".txt testModule/results_out/_" + x + ".txt" +
 //                    " | awk -F ' ' '{print $2 \" \" $3}' ";
             String cmdRight = "cat testModule/results_out/_" + x + ".txt";
-            final Process processrRight = Runtime.getRuntime().exec(new String[] {"bash", "-c", cmdRight});
-            processrRight.waitFor(1000, TimeUnit.MILLISECONDS);
+            Process processrRight = Runtime.getRuntime().exec(new String[] {"bash", "-c", cmdRight});
+            processrRight.waitFor(5, TimeUnit.SECONDS);
 //            System.out.println(processrRight.exitValue());
 
             BufferedReader readerLeft = new BufferedReader(new InputStreamReader(processLeft.getInputStream()));

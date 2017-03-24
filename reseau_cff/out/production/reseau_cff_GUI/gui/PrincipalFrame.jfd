@@ -1,0 +1,93 @@
+JFDML JFormDesigner: "6.0.0.0.84" Java: "1.8.0_112-release" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+			name: "this"
+			"defaultCloseOperation": 3
+			menuBar: new FormContainer( "javax.swing.JMenuBar", new FormLayoutManager( class javax.swing.JMenuBar ) ) {
+				name: "menuBar1"
+				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
+					name: "fichierMenu"
+					"text": "Fichier"
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "exporterMenuItem"
+						"text": "Exporter fichier Xml"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "exporterMenuItemActionPerformed", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JPopupMenu$Separator" ) {
+						name: "separator1"
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "quitterMenuItem"
+						"text": "Quitter"
+					} )
+				} )
+				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
+					name: "editionMenu"
+					"text": "Edition"
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "ajoutVilleMenuItem"
+						"text": "Ajouter une ville"
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "supprVilleMenuItem"
+						"text": "Supprimer une ville"
+					} )
+					add( new FormComponent( "javax.swing.JPopupMenu$Separator" ) {
+						name: "separator2"
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "ajoutLiaisonMenuItem"
+						"text": "Ajouter une liaison"
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "supprLiaisonMenuItem"
+						"text": "Supprimer une liaison"
+					} )
+				} )
+				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
+					name: "actionMenu"
+					"text": "Actions"
+					add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
+						name: "floydMenu"
+						"text": "Floyd"
+						add( new FormComponent( "javax.swing.JMenuItem" ) {
+							name: "matParcFMenuItem"
+							"text": "Matrice des temps de parcours"
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "matParcFMenuItemActionPerformed", true ) )
+						} )
+						add( new FormComponent( "javax.swing.JMenuItem" ) {
+							name: "matPrecFMenuItem"
+							"text": "Mtrice des précédences"
+						} )
+						add( new FormComponent( "javax.swing.JMenuItem" ) {
+							name: "parcoursFMenuItem"
+							"text": "Parcours entre deux villes"
+						} )
+					} )
+					add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
+						name: "dijkstraMenu"
+						"text": "Dijkstra"
+						add( new FormComponent( "javax.swing.JMenuItem" ) {
+							name: "tabParcDMenuItem"
+							"text": "Tableau des temps de parcours"
+						} )
+						add( new FormComponent( "javax.swing.JMenuItem" ) {
+							name: "tabPrecDMenuItem"
+							"text": "Tableau des précédences"
+						} )
+						add( new FormComponent( "javax.swing.JMenuItem" ) {
+							name: "parcoursDMenuItem"
+							"text": "Parcours entre deux villes"
+						} )
+					} )
+				} )
+			}
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 400, 300 )
+		} )
+	}
+}

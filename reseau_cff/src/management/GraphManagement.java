@@ -392,4 +392,20 @@ public class GraphManagement {
             e.printStackTrace();
         }
     }
+
+    public Net getNet() {
+        return net;
+    }
+
+    public ArrayList<String> getCityNamesArrayList() {
+        return cityNamesArrayList;
+    }
+
+    public int[][] getWeightMatrixFloyd() {
+        return weightMatrixFloyd;
+    }
+
+    public int[][] getPrecMatrixFloyd() {
+        return precMatrixFloyd;
+    }
 }

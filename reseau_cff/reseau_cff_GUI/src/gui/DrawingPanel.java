@@ -1,15 +1,12 @@
+package gui;
+
 import model.CitiesPointsArray;
 import model.CityToDraw;
 import model.Point;
 import model.MapPointsArray;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
 
 /**
  * Created by raed on 23.03.17.

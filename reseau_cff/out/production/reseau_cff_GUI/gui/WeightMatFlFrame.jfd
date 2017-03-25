@@ -1,0 +1,43 @@
+JFDML JFormDesigner: "6.0.0.0.84" Java: "1.8.0_112-release" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+			name: "this"
+			"$sizePolicy": 1
+			"title": "Floyd"
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+				name: "container"
+				"border": new javax.swing.border.EmptyBorder( 10, 10, 10, 10 )
+				add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+					name: "scrollPane1"
+					add( new FormComponent( "javax.swing.JTable" ) {
+						name: "dataTable"
+						"autoCreateRowSorter": true
+						"enabled": false
+						"dragEnabled": true
+						"preferredSize": sfield com.jformdesigner.model.FormObject NULL_VALUE
+					} )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "Center"
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "label1"
+					"text": "Matrice de parcours (Floyd)"
+					"horizontalAlignment": 0
+					"font": new java.awt.Font( "Ubuntu", 1, 20 )
+					"foreground": new java.awt.Color( 0, 102, 102, 255 )
+					"border": new javax.swing.border.EmptyBorder( 0, 0, 10, 0 )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "North"
+				} )
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "Center"
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 400, 300 )
+		} )
+	}
+}

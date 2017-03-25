@@ -5,14 +5,14 @@ import java.util.Comparator;
 /**
  * Created by stevenliatti on 18.03.17.
  */
-public class Neighbour implements Comparator<Neighbour> {
+public class Node implements Comparator<Node> {
     private String name;
     private int duration;
     private String predecessor;
 
-    public Neighbour() {}
+    public Node() {}
 
-    public Neighbour(String name, int duration, String predecessor) {
+    public Node(String name, int duration, String predecessor) {
         this.name = name;
         this.duration = duration;
         this.predecessor = predecessor;
@@ -52,13 +52,13 @@ public class Neighbour implements Comparator<Neighbour> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Neighbour neighbour = (Neighbour) o;
+        Node node = (Node) o;
 
-        return name != null ? name.equals(neighbour.name) : neighbour.name == null;
+        return name != null ? name.equals(node.name) : node.name == null;
     }
 
     @Override
-    public int compare(Neighbour n1, Neighbour n2) {
+    public int compare(Node n1, Node n2) {
         if (n1.duration < n2.duration)
             return -1;
         else if (n1.duration > n2.duration)

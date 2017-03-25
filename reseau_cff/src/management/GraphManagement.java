@@ -2,11 +2,10 @@ package management;
 
 import model.City;
 import model.Connection;
-import model.Neighbour;
+import model.Node;
 import model.Net;
 
 import javax.xml.bind.*;
-import java.io.File;
 import java.util.*;
 
 /**
@@ -17,8 +16,8 @@ public class GraphManagement {
     private Net net;
     private ArrayList<String> cityNamesArrayList;
     private int[][] initialWeightMatrix;
-    private Map<String, List<Neighbour>> weightList;
-    private Map<String, Neighbour> graph;
+    private Map<String, List<Node>> weightList;
+    private Map<String, Node> graph;
 
     private int[][] weightMatrixFloyd;
     private int[][] precMatrixFloyd;
@@ -98,7 +97,7 @@ public class GraphManagement {
         if (!this.weightList.containsKey(city)) {
             this.weightList.put(city, new LinkedList<>());
         }
-        this.weightList.get(city).add(new Neighbour(neighbour, duration, city));
+        this.weightList.get(city).add(new Node(neighbour, duration, city));
     }
 
     private void buildWeightList() {
@@ -112,8 +111,8 @@ public class GraphManagement {
     public void displayWeightList() {
         for (String city : this.weightList.keySet()) {
             System.out.print(city);
-            for (Neighbour neighbour : this.weightList.get(city)) {
-                System.out.print(" " + neighbour);
+            for (Node node : this.weightList.get(city)) {
+                System.out.print(" " + node);
             }
             System.out.println();
         }
@@ -121,14 +120,15 @@ public class GraphManagement {
 
     private void initDijkstra(String city) {
         this.graph = new HashMap<>();
-        this.graph.put(city, new Neighbour(city, 0, null));
+        this.graph.put(city, new Node(city, 0, null));
         for (String s : this.cityNamesArrayList) {
-        	this.graph.putIfAbsent(s, new Neighbour(s, Integer.MAX_VALUE, null));
+        	this.graph.putIfAbsent(s, new Node(s, Integer.MAX_VALUE, null));
         }
     }
 
     private void relaxDijkstra(String u, String v, int weight) {
         int newDuration = this.graph.get(u).getDuration() + weight;
+        newDuration = newDuration < 0 ? Integer.MAX_VALUE : newDuration;
         if (this.graph.get(v).getDuration() > newDuration) {
             this.graph.get(v).setDuration(newDuration);
             this.graph.get(v).setPredecessor(u);
@@ -137,17 +137,17 @@ public class GraphManagement {
 
     private void dijkstra(String startCity) {
     	initDijkstra(startCity);
-    	PriorityQueue<Neighbour> queue = new PriorityQueue<>(new Neighbour());
-        for (Neighbour n : graph.values()) {
+    	PriorityQueue<Node> queue = new PriorityQueue<>(new Node());
+        for (Node n : graph.values()) {
             queue.add(n);
         }
         while (!queue.isEmpty()) {
-			Neighbour next = queue.poll();
-			List<Neighbour> neighbours = this.weightList.get(next.getName());
+			Node next = queue.poll();
+			List<Node> neighbours = this.weightList.get(next.getName());
 			if (neighbours != null) {
-				for (Neighbour n : neighbours) {
+				for (Node n : neighbours) {
 					relaxDijkstra(next.getName(), n.getName(), n.getDuration());
-					Neighbour update = graph.get(n.getName());
+					Node update = graph.get(n.getName());
 					if (queue.remove(update))
 						queue.add(update);
 				}
@@ -155,15 +155,15 @@ public class GraphManagement {
 	    }
     }
 
-    private List<Neighbour> sortGraph() {
-        List<Neighbour> list = new ArrayList<>(graph.values());
-        Collections.sort(list, new Neighbour());
+    private List<Node> sortGraph() {
+        List<Node> list = new ArrayList<>(graph.values());
+        Collections.sort(list, new Node());
         return list;
     }
 
     public void displayDijkstraTime(String startCity) {
     	dijkstra(startCity);
-        for (Neighbour n : sortGraph()) {
+        for (Node n : sortGraph()) {
             System.out.print("[" + n.getName() + ":" + n.getDuration() + "] ");
         }
         System.out.println();
@@ -171,7 +171,7 @@ public class GraphManagement {
 
     public void displayPrecedenceArray(String startCity) {
 	    dijkstra(startCity);
-        for (Neighbour n : sortGraph()) {
+        for (Node n : sortGraph()) {
             if (n.getPredecessor() != null)
                 System.out.print("[" + n.getPredecessor() + "<-" + n.getName() + "] ");
         }
@@ -190,7 +190,7 @@ public class GraphManagement {
     public void displayPathBetweenTwoCities(String departure, String destination) {
 	    dijkstra(departure);
     	Stack<String> stack = new Stack<>();
-    	Neighbour predecessor = graph.get(destination);
+    	Node predecessor = graph.get(destination);
     	while (predecessor.getDuration() != 0) {
 		    stack.add(predecessor.getName());
 		    predecessor = graph.get(predecessor.getPredecessor());

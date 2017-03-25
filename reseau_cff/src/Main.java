@@ -26,7 +26,7 @@ public class Main {
 		String filePath = System.getProperty("user.dir") + File.separator + "villes.xml";
 		//lire le fichier villes.xml avec votre code
 		GraphManagement graphManagement = new GraphManagement(filePath);
-		System.err.println("Le fichier XML " + filePath + " a été chargé\n");
+		//System.err.println("Le fichier XML " + filePath + " a été chargé\n");
 		int choix;
 		do {
 		   	// les impressions du menu sont envoyées sur le canal d'erreur
@@ -139,9 +139,9 @@ public class Main {
 //				System.out.println("1 14 1 2 3 1 5 5 7 7 13 10 13 14 -1");
 				break;
 			case 6:
-				System.err.println("City d'origine:");
+				System.err.println("Ville d'origine:");
 				str1 = in.next();
-				System.err.println("City de destination:");
+				System.err.println("Ville de destination:");
 				str2 = in.next();
 				System.err.print("Distance: ");
 			   	// format de sortie -> à générer avec votre code
@@ -154,9 +154,9 @@ public class Main {
 				//System.out.println(123); // valeur pour Geneve à Delemont
 				break;
 			case 7:
-				System.err.println("City d'origine:");
+				System.err.println("Ville d'origine:");
 				str1 = in.next();
-				System.err.println("City de destination:");
+				System.err.println("Ville de destination:");
 				str2 = in.next();
 				System.err.print("Parcours: ");
 				// format de sortie -> à générer avec votre code
@@ -173,23 +173,23 @@ public class Main {
 				//System.out.println("[Geneve:Lausanne:Berne:Zurich:Coire]"); // résultat pour Geneve à Coire
 				break;
 			case 8:
-			   	System.err.println("City d'origine:");
+			   	System.err.println("Ville d'origine:");
 				str1 = in.next();
 				// format de sortie -> à générer avec votre code
 				graphManagement.displayDijkstraTime(str1);
 				//System.out.println("[Geneve:0] [Lausanne:34] [Neuchatel:74] [Delemont:123] [Bale:157] [Berne:101] [Lucerne:184] [Zurich:180] [Schaffouse:222] [St.-Gall:246] [Coire:271] [St.-Moritz:387] [Bellinzone:316] [Andermatt:263] [Sion:101]"); // résultat pour Geneve
 				break;
 			case 9:
-				System.err.println("City d'origine:");
+				System.err.println("Ville d'origine:");
 				str1 = in.next();
 				// format de sortie -> à générer avec votre code
 				graphManagement.displayPrecedenceArray(str1);
 //				System.out.println("[Geneve<-Lausanne] [Lausanne<-Neuchatel] [Neuchatel<-Delemont] [Delemont<-Bale] [Lausanne<-Berne] [Berne<-Lucerne] [Berne<-Zurich] [Zurich<-Schaffouse] [Zurich<-St.-Gall] [Zurich<-Coire] [Coire<-St.-Moritz] [Lucerne<-Bellinzone] [Sion<-Andermatt] [Lausanne<-Sion]"); // résultat pour Geneve
 				break;
 			case 10:
-				System.err.println("City d'origine:");
+				System.err.println("Ville d'origine:");
 				str1 = in.next();
-				System.err.println("City de destination:");
+				System.err.println("Ville de destination:");
 				str2 = in.next();
 				System.err.print("Distance: ");
 				// format de sortie -> à générer avec votre code
@@ -198,9 +198,9 @@ public class Main {
 //				System.out.println(267); // résultat pour Bale à St.-Moritz
 				break;
 			case 11:
-				System.err.println("City d'origine:");
+				System.err.println("Ville d'origine:");
 				str1 = in.next();
-				System.err.println("City de destination:");
+				System.err.println("Ville de destination:");
 				str2 = in.next();
 				System.err.print("Parcours: ");
 				// format de sortie -> à générer avec votre code
@@ -216,9 +216,9 @@ public class Main {
 				}
 				break;
 			case 13:
-				System.err.println("City d'origine:");
+				System.err.println("Ville d'origine:");
 				str1 = in.next();
-				System.err.println("City de destination:");
+				System.err.println("Ville de destination:");
 				str2 = in.next();
 				System.err.println("Temps de parcours:");
 				str3 = in.next();
@@ -237,9 +237,9 @@ public class Main {
 				}
 				break;
 			case 15:
-				System.err.println("City d'origine:");
+				System.err.println("Ville d'origine:");
 				str1 = in.next();
-				System.err.println("City de destination:");
+				System.err.println("Ville de destination:");
 				str2 = in.next();
 				// mise à jour à faire avec votre code
 				result = graphManagement.removeConnection(str1, str2);
@@ -248,7 +248,6 @@ public class Main {
 				}
 				break;
 			case 16:
-				//TODO
 			    // format de sortie -> à générer avec votre code
 				System.out.println(graphManagement.isConnectedGraph()); // réponse true ou false
 				break;

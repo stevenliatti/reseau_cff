@@ -193,6 +193,9 @@ public class GraphManagement {
     	Node predecessor = graph.get(destination);
     	while (predecessor.getDuration() != 0) {
 		    stack.add(predecessor.getName());
+		    if (predecessor.getPredecessor() == null) {
+		        return;
+            }
 		    predecessor = graph.get(predecessor.getPredecessor());
 	    }
 	    stack.add(predecessor.getName());

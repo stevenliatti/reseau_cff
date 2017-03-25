@@ -14,10 +14,12 @@ import javax.swing.table.DefaultTableModel;
  * @author Raed Abdennadher
  */
 public class WeightMatFlFrame extends JFrame {
-    private PrincipalFrame principalFrame;
+    private int[][] matrix;
+    private ArrayList<String> names;
 
-    public WeightMatFlFrame(PrincipalFrame principalFrame) {
-        this.principalFrame = principalFrame;
+    public WeightMatFlFrame(int[][] matrix, ArrayList<String> names) {
+        this.matrix = matrix;
+        this.names = names;
         initComponents();
 //        loadData();
         loadData2();
@@ -76,27 +78,9 @@ public class WeightMatFlFrame extends JFrame {
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 
-    private void loadData() {
-        int[][] mat = this.principalFrame.getGraphManagement().getWeightMatrixFloyd();
-        ArrayList<String> namesArray = this.principalFrame.getGraphManagement().getCityNamesArrayList();
-        JPanel mainContainer = new JPanel(new GridLayout(namesArray.size() + 1, namesArray.size() + 1));
-        for (int i = 0; i < mat.length + 1; i++) {
-            for (int j = 0; j < mat.length + 1; j++) {
-                if (i == 0 && j > 0) {
-                    mainContainer.add(new JLabel(namesArray.get(j - 1)));
-                } else if (i > 0 && j == 0) {
-                    mainContainer.add(new JLabel(namesArray.get(i - 1)));
-                } else if (i != 0 && j != 0) {
-                    mainContainer.add(new JLabel(String.valueOf(mat[i-1][j-1])));
-                }
-            }
-        }
-        this.container.add(mainContainer);
-    }
-
     private void loadData2() {
-        int[][] mat = this.principalFrame.getGraphManagement().getWeightMatrixFloyd();
-        ArrayList<String> namesArray = this.principalFrame.getGraphManagement().getCityNamesArrayList();
+        int[][] mat = this.matrix;
+        ArrayList<String> namesArray = this.names;
         DefaultTableModel dtm = new DefaultTableModel(namesArray.size(), namesArray.size() + 1);
         String[] header = new String[namesArray.size() + 1];
         header[0] = "";

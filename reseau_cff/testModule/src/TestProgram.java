@@ -53,18 +53,18 @@ public class TestProgram {
             firstCommandTextArea.setText(cmd1);
             Process process1 = Runtime.getRuntime().exec(new String[] {"bash", "-c", cmd1});
             process1.waitFor(5, TimeUnit.SECONDS);
-            System.out.println(process1.exitValue());
-            if (process1.exitValue() != 0) {
-                BufferedReader readerErr = new BufferedReader(new InputStreamReader(process1.getErrorStream()));
-                String l;
-                try {
-                    while((l = readerErr.readLine()) != null) {
-                        System.out.println(l);
-                    }
-                } finally {
-                    readerErr.close();
-                }
-            }
+//            System.out.println(process1.exitValue());
+//            if (process1.exitValue() != 0) {
+//                BufferedReader readerErr = new BufferedReader(new InputStreamReader(process1.getErrorStream()));
+//                String l;
+//                try {
+//                    while((l = readerErr.readLine()) != null) {
+//                        System.out.println(l);
+//                    }
+//                } finally {
+//                    readerErr.close();
+//                }
+//            }
 
 //            String cmdLeft = "diff -y testModule/results_out/my_results_" + x + ".txt testModule/results_out/_" + x + ".txt";
             String cmdLeft = "cat testModule/results_out/my_results_" + x + ".txt";

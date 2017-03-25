@@ -34,7 +34,13 @@ public class PrincipalFrame extends JFrame {
     }
 
     private void matParcFMenuItemActionPerformed(ActionEvent e) {
-        WeightMatFlFrame weightMatFlFrame = new WeightMatFlFrame(this);
+        WeightMatFlFrame weightMatFlFrame = new WeightMatFlFrame(this.graphManagement.getWeightMatrixFloyd(), this.graphManagement.getCityNamesArrayList());
+        weightMatFlFrame.setLocationRelativeTo(this);
+        weightMatFlFrame.setVisible(true);
+    }
+
+    private void matPrecFMenuItemActionPerformed(ActionEvent e) {
+        WeightMatFlFrame weightMatFlFrame = new WeightMatFlFrame(this.graphManagement.getPrecMatrixFloyd(), this.graphManagement.getCityNamesArrayList());
         weightMatFlFrame.setLocationRelativeTo(this);
         weightMatFlFrame.setVisible(true);
     }
@@ -123,6 +129,7 @@ public class PrincipalFrame extends JFrame {
 
                     //---- matPrecFMenuItem ----
                     matPrecFMenuItem.setText("Mtrice des pr\u00e9c\u00e9dences");
+                    matPrecFMenuItem.addActionListener(e -> matPrecFMenuItemActionPerformed(e));
                     floydMenu.add(matPrecFMenuItem);
 
                     //---- parcoursFMenuItem ----

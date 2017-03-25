@@ -61,6 +61,7 @@ new FormModel {
 						add( new FormComponent( "javax.swing.JMenuItem" ) {
 							name: "matPrecFMenuItem"
 							"text": "Mtrice des précédences"
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "matPrecFMenuItemActionPerformed", true ) )
 						} )
 						add( new FormComponent( "javax.swing.JMenuItem" ) {
 							name: "parcoursFMenuItem"

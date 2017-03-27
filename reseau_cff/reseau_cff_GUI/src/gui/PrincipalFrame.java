@@ -5,9 +5,12 @@
 package gui;
 
 import management.GraphManagement;
+import model.CitiesPointsArray;
+import model.MapPointsArray;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import javax.swing.*;
 
 /**
@@ -15,15 +18,33 @@ import javax.swing.*;
  */
 public class PrincipalFrame extends JFrame {
     private GraphManagement graphManagement;
+    private JTabbedPane jTabbedPane;
+    private DrawingPanel drawingPanel;
 
     public PrincipalFrame() {
         initComponents();
+        setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
     }
 
-    public PrincipalFrame(String s, GraphManagement graphManagement) {
+    public PrincipalFrame(String s) throws IOException {
         this();
         this.setTitle(s);
-        this.graphManagement = graphManagement;
+
+        MapPointsArray mapPointsArray = new MapPointsArray("suisse.txt");
+        CitiesPointsArray citiesPointsArray = new CitiesPointsArray("villes.xml");
+        this.graphManagement = citiesPointsArray.getGraphManagement();
+
+        drawingPanel = new DrawingPanel(mapPointsArray, citiesPointsArray);
+        jTabbedPane = new JTabbedPane(SwingConstants.TOP) {
+            @Override
+            public void addTab(String title, Component component) {
+                super.addTab(title, component);
+            }
+        };
+        jTabbedPane.setUI(new CostumTabbedPaneUI());
+        jTabbedPane.addTab("Carte", drawingPanel);
+
+        this.add(jTabbedPane);
     }
 
     private void exporterMenuItemActionPerformed(ActionEvent e) {
@@ -34,15 +55,41 @@ public class PrincipalFrame extends JFrame {
     }
 
     private void matParcFMenuItemActionPerformed(ActionEvent e) {
-        WeightMatFlFrame weightMatFlFrame = new WeightMatFlFrame(this.graphManagement.getWeightMatrixFloyd(), this.graphManagement.getCityNamesArrayList());
-        weightMatFlFrame.setLocationRelativeTo(this);
-        weightMatFlFrame.setVisible(true);
+//        if (MatrixPanel.INSTANCES[0] == null) {
+            this.jTabbedPane.addTab(
+                    "Parcours Floyd",
+                    MatrixPanel.getMatrixPanelInstance(0, graphManagement).getContainer()
+            );
+            this.jTabbedPane.setSelectedIndex(this.jTabbedPane.getTabCount() - 1);
+//        } else {
+//            this.jTabbedPane.setSelectedComponent(MatrixPanel.getMatrixPanelInstance(0, graphManagement).getContainer());
+//        }
     }
 
     private void matPrecFMenuItemActionPerformed(ActionEvent e) {
-        WeightMatFlFrame weightMatFlFrame = new WeightMatFlFrame(this.graphManagement.getPrecMatrixFloyd(), this.graphManagement.getCityNamesArrayList());
-        weightMatFlFrame.setLocationRelativeTo(this);
-        weightMatFlFrame.setVisible(true);
+        this.jTabbedPane.addTab(
+                "Précédences Floyd",
+                MatrixPanel.getMatrixPanelInstance(1, graphManagement).getContainer()
+        );
+        this.jTabbedPane.setSelectedIndex(this.jTabbedPane.getTabCount() - 1);
+    }
+
+    private void parcoursFMenuItemActionPerformed(ActionEvent e) {
+        ParcoursDialog parcoursDialog = new ParcoursDialog(graphManagement.getCityNamesArrayList());
+        parcoursDialog.setLocationRelativeTo(this);
+        parcoursDialog.pack();
+        parcoursDialog.setVisible(true);
+        String[] request = parcoursDialog.getReturnedData();
+        if (request != null) {
+            JPanel parcoursPanel = new JPanel(new GridLayout(2, 1));
+            String str = "Parcours de " + request[0] + " à " + request[1] + " : " +
+                    graphManagement.displayTimeBetweenTwoCities(request[0], request[1]) +
+                    " minutes";
+            parcoursPanel.add(new JLabel(str));
+            parcoursPanel.add(new JLabel(graphManagement.displayPathBetweenTwoCities(request[0], request[1]).toString()));
+            this.add(parcoursPanel, BorderLayout.SOUTH);
+            this.revalidate();
+        }
     }
 
     private void initComponents() {
@@ -134,6 +181,7 @@ public class PrincipalFrame extends JFrame {
 
                     //---- parcoursFMenuItem ----
                     parcoursFMenuItem.setText("Parcours entre deux villes");
+                    parcoursFMenuItem.addActionListener(e -> parcoursFMenuItemActionPerformed(e));
                     floydMenu.add(parcoursFMenuItem);
                 }
                 actionMenu.add(floydMenu);

@@ -1,19 +1,27 @@
 package gui;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
-public class ExportXmlDialog extends JDialog {
+public class ParcoursDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JTextField fileNameTextField;
+    private JComboBox<String> departureComboBox;
+    private JComboBox<String> destinationComboBox;
 
-    private PrincipalFrame principalFrame;
+    private String departureCity;
+    private String destinationCity;
 
-    private ExportXmlDialog() {
-        setTitle("Exporter en xml");
+    public ParcoursDialog(ArrayList<String> citiesName) {
+        setTitle("Parcours");
+
+        for (String s : citiesName) {
+            destinationComboBox.addItem(s);
+            departureComboBox.addItem(s);
+        }
+
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -32,40 +40,25 @@ public class ExportXmlDialog extends JDialog {
 
         // call onCancel() on ESCAPE
         contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-
-        // call onChange()
-        fileNameTextField.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-                super.keyTyped(e);
-                onChange();
-            }
-        });
-    }
-
-    ExportXmlDialog(PrincipalFrame principalFrame) {
-        this();
-        this.principalFrame = principalFrame;
     }
 
     private void onOK() {
         // add your code here
-        String fileName = fileNameTextField.getText();
-        if (!fileName.isEmpty()) {
-            this.principalFrame.getGraphManagement().toXmlFile(fileName);
-            dispose();
-        } else {
-            fileNameTextField.requestFocus();
-            fileNameTextField.setBackground(Color.RED);
-        }
+        destinationCity = destinationComboBox.getSelectedItem().toString();
+        departureCity = departureComboBox.getSelectedItem().toString();
+        dispose();
     }
 
     private void onCancel() {
         // add your code here if necessary
+        destinationCity = null;
+        departureCity = null;
         dispose();
     }
 
-    private void onChange() {
-        this.fileNameTextField.setBackground(Color.WHITE);
+    public String[] getReturnedData() {
+        if (destinationCity == null)
+            return null;
+        return new String[] {departureCity, destinationCity};
     }
 }

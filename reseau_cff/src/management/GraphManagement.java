@@ -178,23 +178,24 @@ public class GraphManagement {
         System.out.println();
     }
 
-    public void displayTimeBetweenTwoCities(String departure, String destination) {
+    public int displayTimeBetweenTwoCities(String departure, String destination) {
 	    dijkstra(departure);
         int duration = graph.get(destination).getDuration();
         if (duration == Integer.MAX_VALUE)
             System.out.println("inf");
         else
             System.out.println(duration);
+        return duration;
     }
 
-    public void displayPathBetweenTwoCities(String departure, String destination) {
+    public StringBuilder displayPathBetweenTwoCities(String departure, String destination) {
 	    dijkstra(departure);
     	Stack<String> stack = new Stack<>();
     	Node predecessor = graph.get(destination);
     	while (predecessor.getDuration() != 0) {
 		    stack.add(predecessor.getName());
 		    if (predecessor.getPredecessor() == null) {
-		        return;
+		        return null;
             }
 		    predecessor = graph.get(predecessor.getPredecessor());
 	    }
@@ -207,6 +208,7 @@ public class GraphManagement {
 	    builder.deleteCharAt(builder.length() - 1);
 	    builder.append("]");
 	    System.out.println(builder.toString());
+	    return builder;
     }
 
     private void buildMatrixFloyd() {

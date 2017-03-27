@@ -23,4 +23,13 @@ public class CitiesPointsArray extends ArrayList<CityToDraw> {
     public GraphManagement getGraphManagement() {
         return graphManagement;
     }
+
+    public CityToDraw getCityToDrawByName(String name) {
+        for (CityToDraw c : this) {
+            if (c.getCityName().equals(name)) {
+                return c;
+            }
+        }
+        return null;
+    }
 }

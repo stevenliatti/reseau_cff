@@ -12,8 +12,6 @@ import java.io.File;
  * Created by raed on 23.03.17.
  */
 public class XmlFileManagement {
-
-
     private static JAXBContext jaxbContext;
 
     public static Net loadXmlFile(String fileName) throws JAXBException {
@@ -36,6 +34,5 @@ public class XmlFileManagement {
 
         File fileOut = new File(fileName);
         jaxbMarshaller.marshal(net, fileOut);
-        //jaxbMarshaller.marshal(this.net, System.out);
     }
 }

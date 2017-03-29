@@ -1,8 +1,9 @@
 package gui;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 
 public class ParcoursDialog extends JDialog {
     private JPanel contentPane;
@@ -13,11 +14,13 @@ public class ParcoursDialog extends JDialog {
 
     private String departureCity;
     private String destinationCity;
+    private PrincipalFrame principalFrame;
 
-    public ParcoursDialog(ArrayList<String> citiesName) {
+    public ParcoursDialog(PrincipalFrame principalFrame) {
+        this.principalFrame = principalFrame;
         setTitle("Parcours");
 
-        for (String s : citiesName) {
+        for (String s : principalFrame.getGraphManagement().getCityNamesArrayList()) {
             destinationComboBox.addItem(s);
             departureComboBox.addItem(s);
         }
@@ -44,9 +47,16 @@ public class ParcoursDialog extends JDialog {
 
     private void onOK() {
         // add your code here
-        destinationCity = destinationComboBox.getSelectedItem().toString();
-        departureCity = departureComboBox.getSelectedItem().toString();
-        dispose();
+        departureCity = (String) departureComboBox.getSelectedItem();
+        destinationCity = (String) destinationComboBox.getSelectedItem();
+        if (!destinationCity.equals(departureCity)) {
+            principalFrame.displayParcoursPanel(departureCity, destinationCity);
+            destinationCity = destinationComboBox.getSelectedItem().toString();
+            departureCity = departureComboBox.getSelectedItem().toString();
+            dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Faut choisir deux villes différentes");
+        }
     }
 
     private void onCancel() {
@@ -54,11 +64,5 @@ public class ParcoursDialog extends JDialog {
         destinationCity = null;
         departureCity = null;
         dispose();
-    }
-
-    public String[] getReturnedData() {
-        if (destinationCity == null)
-            return null;
-        return new String[] {departureCity, destinationCity};
     }
 }

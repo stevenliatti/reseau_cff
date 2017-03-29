@@ -12,6 +12,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
 /**
  * @author unknown
@@ -75,21 +76,10 @@ public class PrincipalFrame extends JFrame {
     }
 
     private void parcoursFMenuItemActionPerformed(ActionEvent e) {
-        ParcoursDialog parcoursDialog = new ParcoursDialog(graphManagement.getCityNamesArrayList());
+        ParcoursDialog parcoursDialog = new ParcoursDialog(this);
         parcoursDialog.setLocationRelativeTo(this);
         parcoursDialog.pack();
         parcoursDialog.setVisible(true);
-        String[] request = parcoursDialog.getReturnedData();
-        if (request != null) {
-            JPanel parcoursPanel = new JPanel(new GridLayout(2, 1));
-            String str = "Parcours de " + request[0] + " à " + request[1] + " : " +
-                    graphManagement.displayTimeBetweenTwoCities(request[0], request[1]) +
-                    " minutes";
-            parcoursPanel.add(new JLabel(str));
-            parcoursPanel.add(new JLabel(graphManagement.displayPathBetweenTwoCities(request[0], request[1]).toString()));
-            this.add(parcoursPanel, BorderLayout.SOUTH);
-            this.revalidate();
-        }
     }
 
     private void initComponents() {
@@ -236,5 +226,22 @@ public class PrincipalFrame extends JFrame {
 
     public GraphManagement getGraphManagement() {
         return graphManagement;
+    }
+
+    public void displayParcoursPanel(String departureCity, String destinationCity) {
+        JPanel parcoursPanel = new JPanel(new GridLayout(2, 1));
+        String str = "Parcours de " + departureCity + " à " + destinationCity + " : " +
+                graphManagement.displayTimeBetweenTwoCities(departureCity, destinationCity) +
+                " minutes";
+        JLabel commentLabel = new JLabel(str);
+        commentLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        parcoursPanel.add(commentLabel);
+        String pathString = graphManagement.displayPathBetweenTwoCities(departureCity, destinationCity).toString();
+        JLabel listeLabel = new JLabel(pathString);
+        listeLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        parcoursPanel.add(listeLabel);
+        this.add(parcoursPanel, BorderLayout.SOUTH);
+        this.drawingPanel.paintConnectionTowCities(pathString);
+        this.revalidate();
     }
 }

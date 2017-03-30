@@ -198,9 +198,7 @@ public class CffCompute {
                     break;
                 }
             }
-            if (!isConnected) {
-                break;
-            }
+            if (!isConnected) { break; }
         }
         return isConnected;
     }

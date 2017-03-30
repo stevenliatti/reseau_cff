@@ -16,7 +16,7 @@ public class CitiesPointsArray extends ArrayList<CityToDraw> {
         for (City c : net.getCityList()) {
             int y = c.getLatitude();
             int x = c.getLongitude();
-            this.add(new CityToDraw(x * 3 - 1400, -(y * 3) + 900, c.getName()));
+            this.add(new CityToDraw(x, y, c.getName()));
         }
     }
 

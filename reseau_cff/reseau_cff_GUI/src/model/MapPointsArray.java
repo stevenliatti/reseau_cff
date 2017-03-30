@@ -19,7 +19,7 @@ public class MapPointsArray extends ArrayList<Point> {
             StringTokenizer st = new StringTokenizer(line);
             int x = Integer.parseInt(st.nextToken());
             int y = Integer.parseInt(st.nextToken());
-            this.add(new Point(x * 3 - 1400, -(y * 3) + 900));
+            this.add(new Point(x, y));
         }
     }
 }

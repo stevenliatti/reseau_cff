@@ -30,10 +30,9 @@ public class DrawingPanel extends JPanel {
         super.paintComponent(g);
         drawMap(g);
         drawCities(g);
+        drawAllConnections(g);
         if (paintPathTowCities) {
             drawConnectionTowCities(g);
-        } else {
-            drawAllConnections(g);
         }
     }
 
@@ -46,14 +45,14 @@ public class DrawingPanel extends JPanel {
     }
 
     private void drawConnectionTowCities(Graphics g) {
-        g.setColor(Color.black);
+        g.setColor(Color.red);
         for (int i = 0; i < cities.length - 1; i++) {
             CityToDraw cityToDraw1 = citiesPointsArray.getCityToDrawByName(cities[i]);
             CityToDraw cityToDraw2 = citiesPointsArray.getCityToDrawByName(cities[i + 1]);
-            int x1 = cityToDraw1.getX();
-            int y1 = cityToDraw1.getY();
-            int x2 = cityToDraw2.getX();
-            int y2 = cityToDraw2.getY();
+            int x1 = cityToDraw1.getCoordinate().getX();
+            int y1 = cityToDraw1.getCoordinate().getY();
+            int x2 = cityToDraw2.getCoordinate().getX();
+            int y2 = cityToDraw2.getCoordinate().getY();
             g.drawLine(x1, y1, x2, y2);
             int centerX = (x1 + x2) / 2;
             int centerY = (y1 + y2) / 2;
@@ -74,21 +73,22 @@ public class DrawingPanel extends JPanel {
     }
 
     private void drawAllConnections(Graphics g) {
-        Random rand = new Random();
+//        Random rand = new Random();
         List<Connection> connectionsList = this.citiesPointsArray.getGraphManagement().getNet().getConnectionList();
         for (Connection c : connectionsList) {
             CityToDraw cityToDraw1 = citiesPointsArray.getCityToDrawByName(c.getVil_1());
             CityToDraw cityToDraw2 = citiesPointsArray.getCityToDrawByName(c.getVil_2());
             if (cityToDraw1 != null && cityToDraw2 != null) {
-                float red = rand.nextFloat();
-                float green = rand.nextFloat();
-                float blue = rand.nextFloat();
+//                float red = rand.nextFloat();
+//                float green = rand.nextFloat();
+//                float blue = rand.nextFloat();
 
-                int x1 = cityToDraw1.getX();
-                int y1 = cityToDraw1.getY();
-                int x2 = cityToDraw2.getX();
-                int y2 = cityToDraw2.getY();
-                g.setColor(new Color(red, green, blue));
+                int x1 = cityToDraw1.getCoordinate().getX();
+                int y1 = cityToDraw1.getCoordinate().getY();
+                int x2 = cityToDraw2.getCoordinate().getX();
+                int y2 = cityToDraw2.getCoordinate().getY();
+//                g.setColor(new Color(red, green, blue));
+                g.setColor(Color.lightGray);
                 g.drawLine(x1, y1, x2, y2);
                 int centerX = (x1 + x2) / 2;
                 int centerY = (y1 + y2) / 2;
@@ -100,10 +100,10 @@ public class DrawingPanel extends JPanel {
     private void drawCities(Graphics g) {
         g.setFont(new Font("Ubuntu", Font.BOLD, 16));
         for (CityToDraw p: this.citiesPointsArray) {
-            g.setColor(Color.RED);
-            g.fillRect(p.getX() - 3, p.getY() - 3, 6, 6);
+            g.setColor(Color.blue);
+            g.fillRect(p.getCoordinate().getX() - 3, p.getCoordinate().getY() - 3, 6, 6);
             g.setColor(Color.BLACK);
-            g.drawString(p.getCityName(), p.getX() - 20, p.getY() - 5);
+            g.drawString(p.getCityName(), p.getCoordinate().getX() - 20, p.getCoordinate().getY() - 5);
         }
     }
 

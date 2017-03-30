@@ -3,24 +3,19 @@ package gui;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class ParcoursDialog extends JDialog {
+public class DepatureCityDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
     private JComboBox<String> departureComboBox;
-    private JComboBox<String> destinationComboBox;
 
     private PrincipalFrame principalFrame;
-    private String algorithm;
 
-    public ParcoursDialog(PrincipalFrame principalFrame, String algorithm) {
+    public DepatureCityDialog(PrincipalFrame principalFrame) {
         this.principalFrame = principalFrame;
-        this.algorithm = algorithm;
-
         setTitle("Parcours");
 
         for (String s : principalFrame.getGraphManagement().getCityNamesArrayList()) {
-            destinationComboBox.addItem(s);
             departureComboBox.addItem(s);
         }
 
@@ -47,16 +42,8 @@ public class ParcoursDialog extends JDialog {
     private void onOK() {
         // add your code here
         String departureCity = (String) departureComboBox.getSelectedItem();
-        String destinationCity = (String) destinationComboBox.getSelectedItem();
-        if (!destinationCity.equals(departureCity)) {
-            if (algorithm.equals("F"))
-                principalFrame.courseTowCitiesFloydPanel(departureCity, destinationCity);
-            if (algorithm.equals("D"))
-                principalFrame.courseTowCitiesDijkstraPanel(departureCity, destinationCity);
-            dispose();
-        } else {
-            JOptionPane.showMessageDialog(this, "Faut choisir deux villes différentes");
-        }
+        principalFrame.courseFromCityPanel(departureCity);
+        dispose();
     }
 
     private void onCancel() {

@@ -7,12 +7,15 @@ package gui;
 import management.GraphManagement;
 import model.CitiesPointsArray;
 import model.MapPointsArray;
+import model.Node;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 /**
  * @author unknown
@@ -36,6 +39,9 @@ public class PrincipalFrame extends JFrame {
         this.graphManagement = citiesPointsArray.getGraphManagement();
 
         drawingPanel = new DrawingPanel(mapPointsArray, citiesPointsArray);
+        drawingPanel.setPreferredSize(new Dimension(1100, 700));
+        JScrollPane drawingScrollPane = new JScrollPane(drawingPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
         jTabbedPane = new JTabbedPane(SwingConstants.TOP) {
             @Override
             public void addTab(String title, Component component) {
@@ -43,9 +49,10 @@ public class PrincipalFrame extends JFrame {
             }
         };
         jTabbedPane.setUI(new CostumTabbedPaneUI());
-        jTabbedPane.addTab("Carte", drawingPanel);
+        jTabbedPane.addTab("Carte", drawingScrollPane);
 
         this.add(jTabbedPane);
+        this.rightScrollPane.setVisible(false);
     }
 
     private void exporterMenuItemActionPerformed(ActionEvent e) {
@@ -76,7 +83,21 @@ public class PrincipalFrame extends JFrame {
     }
 
     private void parcoursFMenuItemActionPerformed(ActionEvent e) {
-        ParcoursDialog parcoursDialog = new ParcoursDialog(this);
+        ParcoursDialog parcoursDialog = new ParcoursDialog(this, "D");
+        parcoursDialog.setLocationRelativeTo(this);
+        parcoursDialog.pack();
+        parcoursDialog.setVisible(true);
+    }
+
+    private void tabParcDMenuItemActionPerformed(ActionEvent e) {
+        DepatureCityDialog depatureCityDialog = new DepatureCityDialog(this);
+        depatureCityDialog.setLocationRelativeTo(this);
+        depatureCityDialog.pack();
+        depatureCityDialog.setVisible(true);
+    }
+
+    private void parcoursDMenuItemActionPerformed(ActionEvent e) {
+        ParcoursDialog parcoursDialog = new ParcoursDialog(this, "D");
         parcoursDialog.setLocationRelativeTo(this);
         parcoursDialog.pack();
         parcoursDialog.setVisible(true);
@@ -101,8 +122,13 @@ public class PrincipalFrame extends JFrame {
         parcoursFMenuItem = new JMenuItem();
         dijkstraMenu = new JMenu();
         tabParcDMenuItem = new JMenuItem();
-        tabPrecDMenuItem = new JMenuItem();
         parcoursDMenuItem = new JMenuItem();
+        rightScrollPane = new JScrollPane();
+        rightPanel = new JPanel();
+        tableContentPanel = new JPanel();
+        label1 = new JLabel();
+        label2 = new JLabel();
+        label3 = new JLabel();
 
         //======== this ========
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -181,15 +207,13 @@ public class PrincipalFrame extends JFrame {
                     dijkstraMenu.setText("Dijkstra");
 
                     //---- tabParcDMenuItem ----
-                    tabParcDMenuItem.setText("Tableau des temps de parcours");
+                    tabParcDMenuItem.setText("Tableau de parcours");
+                    tabParcDMenuItem.addActionListener(e -> tabParcDMenuItemActionPerformed(e));
                     dijkstraMenu.add(tabParcDMenuItem);
-
-                    //---- tabPrecDMenuItem ----
-                    tabPrecDMenuItem.setText("Tableau des pr\u00e9c\u00e9dences");
-                    dijkstraMenu.add(tabPrecDMenuItem);
 
                     //---- parcoursDMenuItem ----
                     parcoursDMenuItem.setText("Parcours entre deux villes");
+                    parcoursDMenuItem.addActionListener(e -> parcoursDMenuItemActionPerformed(e));
                     dijkstraMenu.add(parcoursDMenuItem);
                 }
                 actionMenu.add(dijkstraMenu);
@@ -197,6 +221,54 @@ public class PrincipalFrame extends JFrame {
             menuBar1.add(actionMenu);
         }
         setJMenuBar(menuBar1);
+
+        //======== rightScrollPane ========
+        {
+
+            //======== rightPanel ========
+            {
+                rightPanel.setBackground(Color.white);
+
+                // JFormDesigner evaluation mark
+                rightPanel.setBorder(new javax.swing.border.CompoundBorder(
+                    new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder(0, 0, 0, 0),
+                        "JFormDesigner Evaluation", javax.swing.border.TitledBorder.CENTER,
+                        javax.swing.border.TitledBorder.BOTTOM, new java.awt.Font("Dialog", java.awt.Font.BOLD, 12),
+                        java.awt.Color.red), rightPanel.getBorder())); rightPanel.addPropertyChangeListener(new java.beans.PropertyChangeListener(){public void propertyChange(java.beans.PropertyChangeEvent e){if("border".equals(e.getPropertyName()))throw new RuntimeException();}});
+
+                rightPanel.setLayout(new BorderLayout());
+
+                //======== tableContentPanel ========
+                {
+                    tableContentPanel.setBackground(Color.white);
+                    tableContentPanel.setLayout(new GridLayout(1, 3, -1, 1));
+
+                    //---- label1 ----
+                    label1.setText("Destination");
+                    label1.setHorizontalAlignment(SwingConstants.CENTER);
+                    label1.setForeground(new Color(0, 51, 51));
+                    label1.setFont(new Font("Ubuntu", Font.BOLD | Font.ITALIC, 16));
+                    tableContentPanel.add(label1);
+
+                    //---- label2 ----
+                    label2.setText("Temps de parcours");
+                    label2.setHorizontalAlignment(SwingConstants.CENTER);
+                    label2.setForeground(new Color(0, 51, 51));
+                    label2.setFont(new Font("Ubuntu", Font.BOLD | Font.ITALIC, 16));
+                    tableContentPanel.add(label2);
+
+                    //---- label3 ----
+                    label3.setText("Pr\u00e9c\u00e9dence");
+                    label3.setHorizontalAlignment(SwingConstants.CENTER);
+                    label3.setForeground(new Color(0, 51, 51));
+                    label3.setFont(new Font("Ubuntu", Font.BOLD | Font.ITALIC, 16));
+                    tableContentPanel.add(label3);
+                }
+                rightPanel.add(tableContentPanel, BorderLayout.CENTER);
+            }
+            rightScrollPane.setViewportView(rightPanel);
+        }
+        contentPane.add(rightScrollPane, BorderLayout.EAST);
         pack();
         setLocationRelativeTo(getOwner());
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
@@ -220,28 +292,100 @@ public class PrincipalFrame extends JFrame {
     private JMenuItem parcoursFMenuItem;
     private JMenu dijkstraMenu;
     private JMenuItem tabParcDMenuItem;
-    private JMenuItem tabPrecDMenuItem;
     private JMenuItem parcoursDMenuItem;
+    private JScrollPane rightScrollPane;
+    private JPanel rightPanel;
+    private JPanel tableContentPanel;
+    private JLabel label1;
+    private JLabel label2;
+    private JLabel label3;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 
     public GraphManagement getGraphManagement() {
         return graphManagement;
     }
 
-    public void displayParcoursPanel(String departureCity, String destinationCity) {
-        JPanel parcoursPanel = new JPanel(new GridLayout(2, 1));
+    public void courseTowCitiesFloydPanel(String departureCity, String destinationCity) {
+        JPanel bottomPanel = new JPanel(new GridLayout(2, 1));
+        bottomPanel.setBackground(Color.WHITE);
+        String str = "Parcours de " + departureCity + " à " + destinationCity + " : " +
+                graphManagement.timeTowCitiesFloyd(departureCity, destinationCity) +
+                " minutes";
+        JLabel commentLabel = new JLabel(str);
+        commentLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        bottomPanel.add(commentLabel);
+        String pathString = graphManagement.pathTowCitiesFloyd(departureCity, destinationCity).toString();
+        JLabel listeLabel = new JLabel(pathString);
+        listeLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        bottomPanel.add(listeLabel);
+        this.add(bottomPanel, BorderLayout.SOUTH);
+        this.drawingPanel.paintConnectionTowCities(pathString);
+        this.drawingPanel.repaint();
+        this.revalidate();
+    }
+
+    public void courseTowCitiesDijkstraPanel(String departureCity, String destinationCity) {
+        JPanel bottomPanel = new JPanel(new GridLayout(2, 1));
+        bottomPanel.setBackground(Color.WHITE);
         String str = "Parcours de " + departureCity + " à " + destinationCity + " : " +
                 graphManagement.displayTimeBetweenTwoCities(departureCity, destinationCity) +
                 " minutes";
         JLabel commentLabel = new JLabel(str);
         commentLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
-        parcoursPanel.add(commentLabel);
+        bottomPanel.add(commentLabel);
         String pathString = graphManagement.displayPathBetweenTwoCities(departureCity, destinationCity).toString();
         JLabel listeLabel = new JLabel(pathString);
         listeLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
-        parcoursPanel.add(listeLabel);
-        this.add(parcoursPanel, BorderLayout.SOUTH);
+        bottomPanel.add(listeLabel);
+        this.add(bottomPanel, BorderLayout.SOUTH);
         this.drawingPanel.paintConnectionTowCities(pathString);
+        this.drawingPanel.repaint();
+        this.revalidate();
+    }
+
+    public void courseFromCityPanel(String departureCity) {
+//        JPanel rightPanel = new JPanel(new GridLayout(2, 1));
+//        rightPanel.setBackground(Color.WHITE);
+//        String str = "Parcours depuis " + departureCity + " : ";
+//        JLabel titleLabel = new JLabel(str);
+//        titleLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
+//        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+//        rightPanel.add(titleLabel);
+//        String pathString = graphManagement.displayPathBetweenTwoCities(departureCity, destinationCity).toString();
+//        JLabel listeLabel = new JLabel(pathString);
+//        listeLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
+//        rightPanel.add(listeLabel);
+//        this.add(rightPanel, BorderLayout.SOUTH);
+//        this.drawingPanel.paintConnectionTowCities(pathString);
+//        this.drawingPanel.repaint();
+        String str = "Parcours depuis " + departureCity + " : ";
+        JLabel titleLabel = new JLabel(str);
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Ubuntu", Font.BOLD, 20));
+        titleLabel.setForeground(new Color(0, 102, 102));
+        this.rightPanel.add(titleLabel, BorderLayout.NORTH);
+
+        int raws = graphManagement.getCityNamesArrayList().size();
+        ((GridLayout) this.tableContentPanel.getLayout()).setRows(raws);
+        List<Node> citiesList = getGraphManagement().getNodesDijkstra(departureCity);
+        for (Node n : citiesList) {
+            if (!n.getName().equals(departureCity)) {
+                JLabel l1 = new JLabel(n.getName());
+                l1.setHorizontalAlignment(SwingConstants.CENTER);
+                l1.setBorder(new LineBorder(Color.lightGray));
+                tableContentPanel.add(l1);
+                JLabel l2 = new JLabel(String.valueOf(n.getDuration()));
+                l2.setHorizontalAlignment(SwingConstants.CENTER);
+                l2.setBorder(new LineBorder(Color.lightGray));
+                tableContentPanel.add(l2);
+                JLabel l3 = new JLabel(n.getPredecessor());
+                l3.setHorizontalAlignment(SwingConstants.CENTER);
+                l3.setBorder(new LineBorder(Color.lightGray));
+                tableContentPanel.add(l3);
+            }
+        }
+
+        this.rightScrollPane.setVisible(true);
         this.revalidate();
     }
 }

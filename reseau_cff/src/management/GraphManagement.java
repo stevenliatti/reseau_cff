@@ -14,6 +14,7 @@ import java.util.*;
 public class GraphManagement {
     private Net net;
     public static ArrayList<String> cityNamesArrayList;
+    private List<Node> nodesDijkstra;
     private Dijkstra dijkstra;
     private Floyd floyd;
 
@@ -268,5 +269,10 @@ public class GraphManagement {
 
     public int[][] getPrecMatrixFloyd() {
         return floyd.getPrecMatrixFloyd();
+    }
+
+    public List<Node> getNodesDijkstra(String departure) {
+        dijkstra.compute(departure);
+        return dijkstra.sortNodes();
     }
 }

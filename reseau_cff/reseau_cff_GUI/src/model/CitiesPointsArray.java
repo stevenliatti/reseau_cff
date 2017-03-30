@@ -1,6 +1,6 @@
 package model;
 
-import management.GraphManagement;
+import core.CffCompute;
 
 import java.util.ArrayList;
 
@@ -8,11 +8,11 @@ import java.util.ArrayList;
  * Created by raed on 23.03.17.
  */
 public class CitiesPointsArray extends ArrayList<CityToDraw> {
-    private GraphManagement graphManagement;
+    private CffCompute cffCompute;
 
     public CitiesPointsArray(String filePath) {
-        this.graphManagement = new GraphManagement(filePath);
-        Net net = this.graphManagement.getNet();
+        this.cffCompute = new CffCompute(filePath);
+        Net net = this.cffCompute.getNet();
         for (City c : net.getCityList()) {
             int y = c.getLatitude();
             int x = c.getLongitude();
@@ -20,8 +20,8 @@ public class CitiesPointsArray extends ArrayList<CityToDraw> {
         }
     }
 
-    public GraphManagement getGraphManagement() {
-        return graphManagement;
+    public CffCompute getCffCompute() {
+        return cffCompute;
     }
 
     public CityToDraw getCityToDrawByName(String name) {

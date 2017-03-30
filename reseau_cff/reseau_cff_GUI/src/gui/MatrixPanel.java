@@ -1,6 +1,6 @@
 package gui;
 
-import management.GraphManagement;
+import core.CffCompute;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -23,14 +23,14 @@ public class MatrixPanel {
     //patron de conception : SINGLETON
     public static MatrixPanel[] INSTANCES = new MatrixPanel[2];
 
-    private MatrixPanel(int id, GraphManagement graphManagement) {
-        this.names = graphManagement.getCityNamesArrayList();
+    private MatrixPanel(int id, CffCompute cffCompute) {
+        this.names = cffCompute.getCityNames();
         if (id == 0) {
             subTitlelabel.setText("Matrice de temps de parcours (Floyd)");
-            this.matrix = graphManagement.getWeightMatrixFloyd();
+            this.matrix = cffCompute.getWeightMatrixFloyd();
         } else {
             subTitlelabel.setText("Matrice de précédences (Floyd)");
-            this.matrix = graphManagement.getPrecMatrixFloyd();
+            this.matrix = cffCompute.getPrecMatrixFloyd();
         }
         loadData();
         dataTable.setAutoCreateRowSorter(false);
@@ -44,9 +44,9 @@ public class MatrixPanel {
         subTitlelabel.setBorder(new EmptyBorder(0, 0, 10, 0));
     }
 
-    public static MatrixPanel getMatrixPanelInstance(int id, GraphManagement graphManagement) {
+    public static MatrixPanel getMatrixPanelInstance(int id, CffCompute cffCompute) {
         if (INSTANCES[id] == null) {
-            INSTANCES[id] = new MatrixPanel(id, graphManagement);
+            INSTANCES[id] = new MatrixPanel(id, cffCompute);
         }
         return INSTANCES[id];
     }

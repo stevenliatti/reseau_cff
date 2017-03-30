@@ -1,4 +1,4 @@
-package management;
+package core;
 
 import model.City;
 import model.Connection;

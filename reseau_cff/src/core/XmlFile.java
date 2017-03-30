@@ -1,4 +1,4 @@
-package management;
+package core;
 
 import model.Net;
 
@@ -11,7 +11,7 @@ import java.io.File;
 /**
  * Created by raed on 23.03.17.
  */
-public class XmlFileManagement {
+public class XmlFile {
     private static JAXBContext jaxbContext;
 
     public static Net loadXmlFile(String fileName) throws JAXBException {

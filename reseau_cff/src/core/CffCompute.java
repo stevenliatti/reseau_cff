@@ -1,4 +1,4 @@
-package management;
+package core;
 
 import model.City;
 import model.Connection;
@@ -11,34 +11,35 @@ import java.util.*;
 /**
  * Created by raed on 14.03.17.
  */
-public class GraphManagement {
+public class CffCompute {
     private Net net;
-    public static ArrayList<String> cityNamesArrayList;
-    private List<Node> nodesDijkstra;
+    public static ArrayList<String> cityNames;
     private Dijkstra dijkstra;
     private Floyd floyd;
 
-    public GraphManagement(String filePath) {
+    public CffCompute(String filePath) {
         try {
             //charger le fichier XML
-            net = XmlFileManagement.loadXmlFile(filePath);
+            net = XmlFile.loadXmlFile(filePath);
             dijkstra = new Dijkstra(net);
             //liste des villes
-            buildCityNamesArrayList();
+            buildCityNames();
             floyd = new Floyd(net);
         } catch (JAXBException e) {
             e.printStackTrace();
         }
     }
 
-    public void displayCityNamesArrayList() {
-        for (int i = 0; i < cityNamesArrayList.size(); i++) {
-            System.out.print("[" + i + ":" + cityNamesArrayList.get(i) + "] ");
+    public void outCityNames() {
+        for (int i = 0; i < cityNames.size(); i++) {
+            System.out.print("[" + i + ":" + cityNames.get(i) + "] ");
         }
         System.out.println();
     }
 
-    public void displayWeightList() {
+    public void outInitialWeightMatrix() { outMatrix(floyd.getInitialWeightMatrix()); }
+
+    public void outWeightList() {
         for (String city : dijkstra.getWeightList().keySet()) {
             System.out.print(city);
             for (Node node : dijkstra.getWeightList().get(city)) { System.out.print(" " + node); }
@@ -46,29 +47,29 @@ public class GraphManagement {
         }
     }
 
-    public void displayWeightMatrixFloyd() { displayMatrix(floyd.getWeightMatrixFloyd()); }
+    public void outWeightMatrixFloyd() { outMatrix(floyd.getWeightMatrixFloyd()); }
 
-    public void displayPrecMatrixFloyd() { displayMatrix(floyd.getPrecMatrixFloyd()); }
+    public void outPrecMatrixFloyd() { outMatrix(floyd.getPrecMatrixFloyd()); }
 
-    public int timeTowCitiesFloyd(String city1, String city2) {
-        if (!cityNamesArrayList.contains(city1) || !cityNamesArrayList.contains(city2))
+    public int outTimeTowCitiesFloyd(String city1, String city2) {
+        if (!cityNames.contains(city1) || !cityNames.contains(city2))
             return -1;
-        int i = cityNamesArrayList.indexOf(city1);
-        int j = cityNamesArrayList.indexOf(city2);
+        int i = cityNames.indexOf(city1);
+        int j = cityNames.indexOf(city2);
         return floyd.getWeightMatrixFloyd()[i][j];
     }
 
-    public ArrayList<String> pathTowCitiesFloyd(String city1, String city2) {
-        if (!cityNamesArrayList.contains(city1)) return null;
-        if (!cityNamesArrayList.contains(city2)) return null;
+    public ArrayList<String> outPathTowCitiesFloyd(String city1, String city2) {
+        if (!cityNames.contains(city1)) return null;
+        if (!cityNames.contains(city2)) return null;
 
-        int i = cityNamesArrayList.indexOf(city1);
-        int j = cityNamesArrayList.indexOf(city2);
+        int i = cityNames.indexOf(city1);
+        int j = cityNames.indexOf(city2);
         ArrayList<String> path = new ArrayList<>();
         int previous = floyd.getPrecMatrixFloyd()[i][j];
         if (previous != -1) {
             while (previous != i && previous != -1) {
-                path.add(0, cityNamesArrayList.get(previous));
+                path.add(0, cityNames.get(previous));
                 previous = floyd.getPrecMatrixFloyd()[i][previous];
             }
             path.add(0, city1);
@@ -78,7 +79,7 @@ public class GraphManagement {
         return path;
     }
 
-    public void displayDijkstraTime(String startCity) {
+    public void outTimeDijkstra(String startCity) {
         dijkstra.compute(startCity);
         for (Node n : dijkstra.sortNodes()) {
             System.out.print("[" + n.getName() + ":" + n.getDuration() + "] ");
@@ -86,7 +87,7 @@ public class GraphManagement {
         System.out.println();
     }
 
-    public void displayPrecedenceArray(String startCity) {
+    public void outPrecArrayDijkstra(String startCity) {
         dijkstra.compute(startCity);
         for (Node n : dijkstra.sortNodes()) {
             if (n.getPredecessor() != null)
@@ -95,17 +96,14 @@ public class GraphManagement {
         System.out.println();
     }
 
-    public int displayTimeBetweenTwoCities(String departure, String destination) {
+    public int outTimeTwoCitiesDijkstra(String departure, String destination) {
         dijkstra.compute(departure);
         int duration = dijkstra.getGraph().get(destination).getDuration();
-        if (duration == Integer.MAX_VALUE)
-            System.out.println("inf");
-        else
-            System.out.println(duration);
+        System.out.println(duration);
         return duration;
     }
 
-    public StringBuilder displayPathBetweenTwoCities(String departure, String destination) {
+    public StringBuilder outPathTwoCitiesDijkstra(String departure, String destination) {
         dijkstra.compute(departure);
         Stack<String> stack = new Stack<>();
         Node predecessor = dijkstra.getGraph().get(destination);
@@ -128,25 +126,23 @@ public class GraphManagement {
         return builder;
     }
 
-    public void displayInitialWeightMatrix() { displayMatrix(floyd.getInitialWeightMatrix()); }
-
     public boolean addCity(String city) {
-        if (cityNamesArrayList.contains(city)) {
+        if (cityNames.contains(city)) {
             return false;
         }
         else {
-            cityNamesArrayList.add(city);
+            cityNames.add(city);
             net.getCityList().add(new City(city));
             updateAfterChanges();
             return true;
         }
     }
 
-    public int addNewConnection(String city1, String city2, String durationString) {
-        if (!cityNamesArrayList.contains(city1)) {
+    public int addConnection(String city1, String city2, String durationString) {
+        if (!cityNames.contains(city1)) {
             return -1;
         }
-        if (!cityNamesArrayList.contains(city2)) {
+        if (!cityNames.contains(city2)) {
             return -1;
         }
         int duration = -1;
@@ -177,8 +173,8 @@ public class GraphManagement {
     }
 
     public int removeConnection(String city1, String city2) {
-        if (!cityNamesArrayList.contains(city1)) { return -1; }
-        if (!cityNamesArrayList.contains(city2)) { return -1; }
+        if (!cityNames.contains(city1)) { return -1; }
+        if (!cityNames.contains(city2)) { return -1; }
         Iterator<Connection> i = net.getConnectionList().iterator();
         while (i.hasNext()) {
             Connection c = i.next();
@@ -211,13 +207,13 @@ public class GraphManagement {
 
     public void toXmlFile(String filePath) {
         try {
-            XmlFileManagement.storeXmlFormat(filePath, net);
+            XmlFile.storeXmlFormat(filePath, net);
         } catch (JAXBException e) {
             e.printStackTrace();
         }
     }
 
-    private void displayMatrix(int[][] m) {
+    private void outMatrix(int[][] m) {
         for (int i = 0; i < m.length; i++) {
             for (int j = 0; j < m.length; j++) {
                 if (m[i][j] == Integer.MAX_VALUE)
@@ -229,9 +225,9 @@ public class GraphManagement {
         }
     }
 
-    private void buildCityNamesArrayList() {
-        cityNamesArrayList = new ArrayList<>();
-        for (City c: net.getCityList()) { cityNamesArrayList.add(c.getName()); }
+    private void buildCityNames() {
+        cityNames = new ArrayList<>();
+        for (City c: net.getCityList()) { cityNames.add(c.getName()); }
     }
 
     private int removeAllConnections(String cityName) {
@@ -248,7 +244,7 @@ public class GraphManagement {
     }
 
     private void updateAfterChanges() {
-        buildCityNamesArrayList();
+        buildCityNames();
         floyd.update();
         dijkstra.buildWeightList();
     }
@@ -259,8 +255,8 @@ public class GraphManagement {
         return net;
     }
 
-    public ArrayList<String> getCityNamesArrayList() {
-        return cityNamesArrayList;
+    public ArrayList<String> getCityNames() {
+        return cityNames;
     }
 
     public int[][] getWeightMatrixFloyd() {

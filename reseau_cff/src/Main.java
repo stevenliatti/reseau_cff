@@ -1,4 +1,4 @@
-import management.GraphManagement;
+import core.CffCompute;
 
 import java.io.*;
 import java.util.*;
@@ -24,7 +24,7 @@ public class Main {
 
 		String filePath = System.getProperty("user.dir") + File.separator + "villes.xml";
 		//lire le fichier villes.xml avec votre code
-		GraphManagement graphManagement = new GraphManagement(filePath);
+		CffCompute cffCompute = new CffCompute(filePath);
 		int choix;
 		do {
 		   	// les impressions du menu sont envoyées sur le canal d'erreur
@@ -54,22 +54,22 @@ public class Main {
 			String str1, str2, str3;
 			switch(choix) {
 			case 1:
-				graphManagement.displayCityNamesArrayList();
+				cffCompute.outCityNames();
 				break;
 			case 2:
 				// imprimer "inf" à la place Integer.MAX_VALUE
-				graphManagement.displayInitialWeightMatrix();
+				cffCompute.outInitialWeightMatrix();
 				break;
 			case 3:
-				graphManagement.displayWeightList();
+				cffCompute.outWeightList();
 				break;
 			case 4:
 			   	// imprimer "inf" à la place Integer.MAX_VALUE
-				graphManagement.displayWeightMatrixFloyd();
+				cffCompute.outWeightMatrixFloyd();
 				break;
 			case 5:
 			   	// imprimer -1 si pas de prédécesseur
-				graphManagement.displayPrecMatrixFloyd();
+				cffCompute.outPrecMatrixFloyd();
 				break;
 			case 6:
 				System.err.println("Ville d'origine:");
@@ -77,7 +77,7 @@ public class Main {
 				System.err.println("Ville de destination:");
 				str2 = in.next();
 				System.err.print("Distance: ");
-				int travelTime = graphManagement.timeTowCitiesFloyd(str1, str2);
+				int travelTime = cffCompute.outTimeTowCitiesFloyd(str1, str2);
 				if (travelTime >= 0) {
 					System.out.println(travelTime);
 				} else if (travelTime == -1){
@@ -90,7 +90,7 @@ public class Main {
 				System.err.println("Ville de destination:");
 				str2 = in.next();
 				System.err.print("Parcours: ");
-				ArrayList<String> pathTowCities = graphManagement.pathTowCitiesFloyd(str1, str2);
+				ArrayList<String> pathTowCities = cffCompute.outPathTowCitiesFloyd(str1, str2);
 				if (pathTowCities.size() == 0) {
 					System.err.println("Ville(s) inconnue(s)!");
 				} else {
@@ -104,12 +104,12 @@ public class Main {
 			case 8:
 			   	System.err.println("Ville d'origine:");
 				str1 = in.next();
-				graphManagement.displayDijkstraTime(str1);
+				cffCompute.outTimeDijkstra(str1);
 				break;
 			case 9:
 				System.err.println("Ville d'origine:");
 				str1 = in.next();
-				graphManagement.displayPrecedenceArray(str1);
+				cffCompute.outPrecArrayDijkstra(str1);
 				break;
 			case 10:
 				System.err.println("Ville d'origine:");
@@ -118,7 +118,7 @@ public class Main {
 				str2 = in.next();
 				System.err.print("Distance: ");
 				// imprimer "inf" à la place Integer.MAX_VALUE
-				graphManagement.displayTimeBetweenTwoCities(str1, str2);
+				cffCompute.outTimeTwoCitiesDijkstra(str1, str2);
 				break;
 			case 11:
 				System.err.println("Ville d'origine:");
@@ -126,12 +126,12 @@ public class Main {
 				System.err.println("Ville de destination:");
 				str2 = in.next();
 				System.err.print("Parcours: ");
-				graphManagement.displayPathBetweenTwoCities(str1, str2);
+				cffCompute.outPathTwoCitiesDijkstra(str1, str2);
 				break;
 			case 12:
 				System.err.println("Nom de la ville:");
 				str1 = in.next();
-				if (!graphManagement.addCity(str1)) {
+				if (!cffCompute.addCity(str1)) {
 					System.out.println("Ville déjà présente dans le graphe.");
 				}
 				break;
@@ -142,7 +142,7 @@ public class Main {
 				str2 = in.next();
 				System.err.println("Temps de parcours:");
 				str3 = in.next();
-				int result = graphManagement.addNewConnection(str1, str2, str3);
+				int result = cffCompute.addConnection(str1, str2, str3);
 				if (result == -1) {
 					System.out.println("Erreur");
 				}
@@ -150,7 +150,7 @@ public class Main {
 			case 14:
 				System.err.println("Nom de la ville:");
 				str1 = in.next();
-				if (!graphManagement.removeCity(str1)) {
+				if (!cffCompute.removeCity(str1)) {
 					System.out.println("Ville non présente dans le graphe.");
 				}
 				break;
@@ -159,18 +159,18 @@ public class Main {
 				str1 = in.next();
 				System.err.println("Ville de destination:");
 				str2 = in.next();
-				result = graphManagement.removeConnection(str1, str2);
+				result = cffCompute.removeConnection(str1, str2);
 				if (result == -1) {
 					System.out.println("Erreur");
 				}
 				break;
 			case 16:
-				System.out.println(graphManagement.isConnectedGraph()); // réponse true ou false
+				System.out.println(cffCompute.isConnectedGraph()); // réponse true ou false
 				break;
 			case 17:
 				System.err.println("Nom du fichier XML:");
 				str1 = in.next();
-				graphManagement.toXmlFile(str1);
+				cffCompute.toXmlFile(str1);
 				break;
 			}
 		} while (choix!=0);

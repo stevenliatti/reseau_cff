@@ -4,7 +4,7 @@
 
 package gui;
 
-import management.GraphManagement;
+import core.CffCompute;
 import model.CitiesPointsArray;
 import model.MapPointsArray;
 import model.Node;
@@ -21,7 +21,7 @@ import javax.swing.border.LineBorder;
  * @author unknown
  */
 public class PrincipalFrame extends JFrame {
-    private GraphManagement graphManagement;
+    private CffCompute cffCompute;
     private JTabbedPane jTabbedPane;
     private DrawingPanel drawingPanel;
 
@@ -36,7 +36,7 @@ public class PrincipalFrame extends JFrame {
 
         MapPointsArray mapPointsArray = new MapPointsArray("suisse.txt");
         CitiesPointsArray citiesPointsArray = new CitiesPointsArray("villes.xml");
-        this.graphManagement = citiesPointsArray.getGraphManagement();
+        this.cffCompute = citiesPointsArray.getCffCompute();
 
         drawingPanel = new DrawingPanel(mapPointsArray, citiesPointsArray);
         drawingPanel.setPreferredSize(new Dimension(1100, 700));
@@ -66,18 +66,18 @@ public class PrincipalFrame extends JFrame {
 //        if (MatrixPanel.INSTANCES[0] == null) {
             this.jTabbedPane.addTab(
                     "Parcours Floyd",
-                    MatrixPanel.getMatrixPanelInstance(0, graphManagement).getContainer()
+                    MatrixPanel.getMatrixPanelInstance(0, cffCompute).getContainer()
             );
             this.jTabbedPane.setSelectedIndex(this.jTabbedPane.getTabCount() - 1);
 //        } else {
-//            this.jTabbedPane.setSelectedComponent(MatrixPanel.getMatrixPanelInstance(0, graphManagement).getContainer());
+//            this.jTabbedPane.setSelectedComponent(MatrixPanel.getMatrixPanelInstance(0, cffCompute).getContainer());
 //        }
     }
 
     private void matPrecFMenuItemActionPerformed(ActionEvent e) {
         this.jTabbedPane.addTab(
                 "Précédences Floyd",
-                MatrixPanel.getMatrixPanelInstance(1, graphManagement).getContainer()
+                MatrixPanel.getMatrixPanelInstance(1, cffCompute).getContainer()
         );
         this.jTabbedPane.setSelectedIndex(this.jTabbedPane.getTabCount() - 1);
     }
@@ -301,20 +301,20 @@ public class PrincipalFrame extends JFrame {
     private JLabel label3;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 
-    public GraphManagement getGraphManagement() {
-        return graphManagement;
+    public CffCompute getCffCompute() {
+        return cffCompute;
     }
 
     public void courseTowCitiesFloydPanel(String departureCity, String destinationCity) {
         JPanel bottomPanel = new JPanel(new GridLayout(2, 1));
         bottomPanel.setBackground(Color.WHITE);
         String str = "Parcours de " + departureCity + " à " + destinationCity + " : " +
-                graphManagement.timeTowCitiesFloyd(departureCity, destinationCity) +
+                cffCompute.outTimeTowCitiesFloyd(departureCity, destinationCity) +
                 " minutes";
         JLabel commentLabel = new JLabel(str);
         commentLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
         bottomPanel.add(commentLabel);
-        String pathString = graphManagement.pathTowCitiesFloyd(departureCity, destinationCity).toString();
+        String pathString = cffCompute.outPathTowCitiesFloyd(departureCity, destinationCity).toString();
         JLabel listeLabel = new JLabel(pathString);
         listeLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
         bottomPanel.add(listeLabel);
@@ -328,12 +328,12 @@ public class PrincipalFrame extends JFrame {
         JPanel bottomPanel = new JPanel(new GridLayout(2, 1));
         bottomPanel.setBackground(Color.WHITE);
         String str = "Parcours de " + departureCity + " à " + destinationCity + " : " +
-                graphManagement.displayTimeBetweenTwoCities(departureCity, destinationCity) +
+                cffCompute.outTimeTwoCitiesDijkstra(departureCity, destinationCity) +
                 " minutes";
         JLabel commentLabel = new JLabel(str);
         commentLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
         bottomPanel.add(commentLabel);
-        String pathString = graphManagement.displayPathBetweenTwoCities(departureCity, destinationCity).toString();
+        String pathString = cffCompute.outPathTwoCitiesDijkstra(departureCity, destinationCity).toString();
         JLabel listeLabel = new JLabel(pathString);
         listeLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
         bottomPanel.add(listeLabel);
@@ -351,7 +351,7 @@ public class PrincipalFrame extends JFrame {
 //        titleLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
 //        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 //        rightPanel.add(titleLabel);
-//        String pathString = graphManagement.displayPathBetweenTwoCities(departureCity, destinationCity).toString();
+//        String pathString = cffCompute.outPathTwoCitiesDijkstra(departureCity, destinationCity).toString();
 //        JLabel listeLabel = new JLabel(pathString);
 //        listeLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
 //        rightPanel.add(listeLabel);
@@ -365,9 +365,9 @@ public class PrincipalFrame extends JFrame {
         titleLabel.setForeground(new Color(0, 102, 102));
         this.rightPanel.add(titleLabel, BorderLayout.NORTH);
 
-        int raws = graphManagement.getCityNamesArrayList().size();
+        int raws = cffCompute.getCityNames().size();
         ((GridLayout) this.tableContentPanel.getLayout()).setRows(raws);
-        List<Node> citiesList = getGraphManagement().getNodesDijkstra(departureCity);
+        List<Node> citiesList = getCffCompute().getNodesDijkstra(departureCity);
         for (Node n : citiesList) {
             if (!n.getName().equals(departureCity)) {
                 JLabel l1 = new JLabel(n.getName());

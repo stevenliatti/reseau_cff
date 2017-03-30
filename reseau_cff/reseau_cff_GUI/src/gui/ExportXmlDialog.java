@@ -52,7 +52,7 @@ public class ExportXmlDialog extends JDialog {
         // add your code here
         String fileName = fileNameTextField.getText();
         if (!fileName.isEmpty()) {
-            this.principalFrame.getGraphManagement().toXmlFile(fileName);
+            this.principalFrame.getCffCompute().toXmlFile(fileName);
             dispose();
         } else {
             fileNameTextField.requestFocus();

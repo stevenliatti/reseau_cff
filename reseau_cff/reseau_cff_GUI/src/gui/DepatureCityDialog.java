@@ -15,7 +15,7 @@ public class DepatureCityDialog extends JDialog {
         this.principalFrame = principalFrame;
         setTitle("Parcours");
 
-        for (String s : principalFrame.getGraphManagement().getCityNamesArrayList()) {
+        for (String s : principalFrame.getCffCompute().getCityNames()) {
             departureComboBox.addItem(s);
         }
 

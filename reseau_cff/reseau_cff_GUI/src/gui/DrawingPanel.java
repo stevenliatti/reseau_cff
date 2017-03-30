@@ -6,8 +6,6 @@ import model.Point;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
-import java.util.Random;
-import java.util.StringTokenizer;
 
 /**
  * Created by raed on 23.03.17.
@@ -62,7 +60,7 @@ public class DrawingPanel extends JPanel {
     }
 
     private int getTowCitiesDuration(String c1, String c2) {
-        List<Connection> connectionsList = this.citiesPointsArray.getGraphManagement().getNet().getConnectionList();
+        List<Connection> connectionsList = this.citiesPointsArray.getCffCompute().getNet().getConnectionList();
         for (Connection c : connectionsList) {
             if (c.getVil_1().equals(c1) && c.getVil_2().equals(c2) ||
                     c.getVil_1().equals(c2) && c.getVil_2().equals(c1)) {
@@ -74,7 +72,7 @@ public class DrawingPanel extends JPanel {
 
     private void drawAllConnections(Graphics g) {
 //        Random rand = new Random();
-        List<Connection> connectionsList = this.citiesPointsArray.getGraphManagement().getNet().getConnectionList();
+        List<Connection> connectionsList = this.citiesPointsArray.getCffCompute().getNet().getConnectionList();
         for (Connection c : connectionsList) {
             CityToDraw cityToDraw1 = citiesPointsArray.getCityToDrawByName(c.getVil_1());
             CityToDraw cityToDraw2 = citiesPointsArray.getCityToDrawByName(c.getVil_2());

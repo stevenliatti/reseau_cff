@@ -1,4 +1,4 @@
-package management;
+package core;
 
 import model.Connection;
 import model.Net;
@@ -47,8 +47,8 @@ public class Floyd {
             }
         }
         for (Connection c : net.getConnectionList()) {
-            int i = GraphManagement.cityNamesArrayList.indexOf(c.getVil_1());
-            int j = GraphManagement.cityNamesArrayList.indexOf(c.getVil_2());
+            int i = CffCompute.cityNames.indexOf(c.getVil_1());
+            int j = CffCompute.cityNames.indexOf(c.getVil_2());
             initialWeightMatrix[i][j] = c.getDuratin();
             int x = i;
             i = j;

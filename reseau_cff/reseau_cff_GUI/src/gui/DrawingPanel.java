@@ -39,7 +39,6 @@ public class DrawingPanel extends JPanel {
         path = path.replace("[", "");
         path = path.replace("]", "");
         cities = path.split(":");
-
     }
 
     private void drawConnectionTowCities(Graphics g) {
@@ -107,7 +106,7 @@ public class DrawingPanel extends JPanel {
 
     private void drawMap(Graphics g) {
         Point firstPoint = this.mapPointsArray.get(0);
-        Point previousPoint = new Point(firstPoint);
+        Point previousPoint = this.mapPointsArray.get(0);
         g.setColor(Color.GRAY);
         for (int i = 1; i < this.mapPointsArray.size(); i++) {
             Point currentPoint = this.mapPointsArray.get(i);

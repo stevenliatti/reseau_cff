@@ -7,8 +7,8 @@ public class CityToDraw {
     private String cityName;
     private Point coordinate;
 
-    public CityToDraw(int x, int y, String cityName) {
-        this.coordinate = new Point(x, y);
+    public CityToDraw(int x, int y, String cityName, boolean withScale) {
+        this.coordinate = new Point(x, y, withScale);
         this.cityName = cityName;
     }
 
@@ -18,5 +18,9 @@ public class CityToDraw {
 
     public Point getCoordinate() {
         return coordinate;
+    }
+
+    public void setCoordinate(Point coordinate) {
+        this.coordinate = coordinate;
     }
 }

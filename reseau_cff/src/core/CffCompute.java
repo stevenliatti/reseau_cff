@@ -205,6 +205,12 @@ public class CffCompute {
         return isConnected;
     }
 
+    public boolean idConnectedCity(String cityName) {
+        int index = cityNames.indexOf(cityName);
+        int time = floyd.getWeightMatrixFloyd()[index][0];
+        return !(time == Integer.MAX_VALUE);
+    }
+
     public void toXmlFile(String filePath) {
         try {
             XmlFile.storeXmlFormat(filePath, net);

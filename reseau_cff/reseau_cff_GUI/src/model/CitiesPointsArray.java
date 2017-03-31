@@ -16,7 +16,7 @@ public class CitiesPointsArray extends ArrayList<CityToDraw> {
         for (City c : net.getCityList()) {
             int y = c.getLatitude();
             int x = c.getLongitude();
-            this.add(new CityToDraw(x, y, c.getName()));
+            this.add(new CityToDraw(x, y, c.getName(), true));
         }
     }
 
@@ -31,5 +31,12 @@ public class CitiesPointsArray extends ArrayList<CityToDraw> {
             }
         }
         return null;
+    }
+
+    public void changeScale(double scale) {
+        Point.scale = scale;
+        for (int i = 0; i < size(); i++) {
+            get(i).setCoordinate(new Point(get(i).getCoordinate()));
+        }
     }
 }

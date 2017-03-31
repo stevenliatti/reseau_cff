@@ -11,7 +11,7 @@ import java.util.StringTokenizer;
  */
 public class MapPointsArray extends ArrayList<Point> {
     public MapPointsArray(String filePath) throws IOException, NumberFormatException{
-        LineNumberReader lineReader = null;
+        LineNumberReader lineReader;
         lineReader = new LineNumberReader(new FileReader(filePath));
         String line;
 
@@ -19,7 +19,14 @@ public class MapPointsArray extends ArrayList<Point> {
             StringTokenizer st = new StringTokenizer(line);
             int x = Integer.parseInt(st.nextToken());
             int y = Integer.parseInt(st.nextToken());
-            this.add(new Point(x, y));
+            this.add(new Point(x, y, true));
+        }
+    }
+
+    public void changeScale(double scale) {
+        Point.scale = scale;
+        for (int i = 0; i < size(); i++) {
+            set(i, new Point(get(i)));
         }
     }
 }

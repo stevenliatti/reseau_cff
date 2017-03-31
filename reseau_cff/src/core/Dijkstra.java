@@ -14,10 +14,12 @@ public class Dijkstra {
     private Net net;
     private Map<String, List<Node>> weightList;
     private Map<String, Node> graph;
+    private Map<String, Map<String, Node>> dijkstraPaths;
 
     public Dijkstra(Net net) {
         this.net = net;
         buildWeightList();
+        dijkstraPaths = new HashMap<>();
     }
 
     public void buildWeightList() {
@@ -29,6 +31,7 @@ public class Dijkstra {
     }
 
     public Map<String, Node> compute(String startCity) {
+        if (dijkstraPaths.containsKey(startCity)) { return dijkstraPaths.get(startCity); }
         initDijkstra(startCity);
         PriorityQueue<Node> queue = new PriorityQueue<>(new Node());
         for (Node n : graph.values()) { queue.add(n); }
@@ -45,6 +48,7 @@ public class Dijkstra {
                 }
             }
         }
+        dijkstraPaths.put(startCity, graph);
         return graph;
     }
 

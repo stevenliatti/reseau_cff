@@ -77,12 +77,7 @@ public class Main {
 				System.err.println("Ville de destination:");
 				str2 = in.next();
 				System.err.print("Distance: ");
-				int travelTime = cffCompute.outTimeTowCitiesFloyd(str1, str2);
-				if (travelTime >= 0) {
-					System.out.println(travelTime);
-				} else if (travelTime == -1){
-					System.out.println("Ville(s) inconnue(s)!");
-				}
+				cffCompute.outTimeTowCitiesFloyd(str1, str2);
 				break;
 			case 7:
 				System.err.println("Ville d'origine:");
@@ -90,16 +85,7 @@ public class Main {
 				System.err.println("Ville de destination:");
 				str2 = in.next();
 				System.err.print("Parcours: ");
-				ArrayList<String> pathTowCities = cffCompute.outPathTowCitiesFloyd(str1, str2);
-				if (pathTowCities.size() == 0) {
-					System.err.println("Ville(s) inconnue(s)!");
-				} else {
-					System.out.print("[");
-					for (int i = 0; i < pathTowCities.size() - 1; i++) {
-						System.out.print(pathTowCities.get(i) + ":");
-					}
-					System.out.println(pathTowCities.get(pathTowCities.size() - 1) + "]");
-				}
+				cffCompute.outPathTowCitiesFloyd(str1, str2);
 				break;
 			case 8:
 			   	System.err.println("Ville d'origine:");

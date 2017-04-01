@@ -20,7 +20,7 @@ public class ParcoursDialog extends JDialog {
         setTitle("Parcours");
 
         for (String s : principalFrame.getCffCompute().getCityNames()) {
-            if (principalFrame.getCffCompute().idConnectedCity(s)) {
+            if (principalFrame.getCffCompute().iaConnectedCity(s)) {
                 destinationComboBox.addItem(s);
                 departureComboBox.addItem(s);
             }
@@ -51,11 +51,21 @@ public class ParcoursDialog extends JDialog {
         String departureCity = (String) departureComboBox.getSelectedItem();
         String destinationCity = (String) destinationComboBox.getSelectedItem();
         if (!destinationCity.equals(departureCity)) {
+            int result = 0;
             if (algorithm.equals("F"))
-                principalFrame.courseTowCitiesFloydPanel(departureCity, destinationCity);
-            if (algorithm.equals("D"))
-                principalFrame.courseTowCitiesDijkstraPanel(departureCity, destinationCity);
-            dispose();
+                result =  principalFrame.courseTowCitiesFloydPanel(departureCity, destinationCity);
+            else if (algorithm.equals("D"))
+                result = principalFrame.courseTowCitiesDijkstraPanel(departureCity, destinationCity);
+            if (result == -1) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Les deux villes ne sont pas connectées!",
+                        "Avertissement",
+                        JOptionPane.WARNING_MESSAGE
+                );
+            } else {
+                dispose();
+            }
         } else {
             JOptionPane.showMessageDialog(this, "Faut choisir deux villes différentes");
         }

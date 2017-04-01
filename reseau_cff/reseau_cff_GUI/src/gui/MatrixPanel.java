@@ -7,6 +7,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.StringJoiner;
 
 /**
  * Created by raed on 26.03.17.
@@ -17,25 +18,18 @@ public class MatrixPanel {
     private JLabel subTitlelabel;
     private JScrollPane scrollPane1;
 
+    int id;
     private int[][] matrix;
     private ArrayList<String> names;
 
-    //patron de conception : SINGLETON
-    public static MatrixPanel[] INSTANCES = new MatrixPanel[2];
-
-    private MatrixPanel(int id, CffCompute cffCompute) {
-        this.names = cffCompute.getCityNames();
-        if (id == 0) {
-            subTitlelabel.setText("Matrice de temps de parcours (Floyd)");
-            this.matrix = cffCompute.getWeightMatrixFloyd();
-        } else {
-            subTitlelabel.setText("Matrice de précédences (Floyd)");
-            this.matrix = cffCompute.getPrecMatrixFloyd();
-        }
-        loadData();
+    public MatrixPanel(int id, CffCompute cffCompute) {
+        loadData(id, cffCompute);
         dataTable.setAutoCreateRowSorter(false);
         dataTable.setDragEnabled(false);
         dataTable.setPreferredSize(null);
+        dataTable.setDefaultRenderer(Object.class, new CustomCellRender(dataTable));
+        dataTable.setTableHeader(null);
+        dataTable.setRowHeight(20);
         scrollPane1.setViewportView(dataTable);
 
         subTitlelabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -44,38 +38,49 @@ public class MatrixPanel {
         subTitlelabel.setBorder(new EmptyBorder(0, 0, 10, 0));
     }
 
-    public static MatrixPanel getMatrixPanelInstance(int id, CffCompute cffCompute) {
-        if (INSTANCES[id] == null) {
-            INSTANCES[id] = new MatrixPanel(id, cffCompute);
+    private void loadData(int id, CffCompute cffCompute) {
+        this.id = id;
+        this.names = cffCompute.getCityNames();
+        if (id == 0) {
+            subTitlelabel.setText("Matrice de temps de parcours (Floyd)");
+            this.matrix = cffCompute.getWeightMatrixFloyd();
+        } else {
+            subTitlelabel.setText("Matrice de précédences (Floyd)");
+            this.matrix = cffCompute.getPrecMatrixFloyd();
         }
-        return INSTANCES[id];
-    }
-
-    private void loadData() {
         int[][] mat = this.matrix;
         ArrayList<String> namesArray = this.names;
-        DefaultTableModel dtm = new DefaultTableModel(namesArray.size(), namesArray.size() + 1) {
+        DefaultTableModel dtm = new DefaultTableModel(namesArray.size() + 2, namesArray.size() + 2) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
-        String[] header = new String[namesArray.size() + 1];
-        header[0] = "";
-        for (int i = 1; i < header.length; i++) {
-            header[i] = namesArray.get(i - 1);
+        for (int i = 2; i < namesArray.size() + 2; i++) {
+            dtm.setValueAt(i - 2, 0, i);
+            dtm.setValueAt(namesArray.get(i - 2), 1, i);
+
+            dtm.setValueAt(i - 2, i, 0);
+            dtm.setValueAt(namesArray.get(i - 2), i, 1);
         }
-        dtm.setColumnIdentifiers(header);
+
         for (int i = 0; i < mat.length; i++) {
-            dtm.setValueAt(namesArray.get(i), i, 0);
-            for (int j = 1; j < mat.length + 1; j++) {
-                dtm.setValueAt(mat[i][j - 1], i, j);
+            for (int j = 0; j < mat.length; j++) {
+                dtm.setValueAt(mat[i][j], i + 2, j + 2);
             }
         }
         dataTable.setModel(dtm);
     }
 
+    public void refrech(int id, CffCompute cffCompute) {
+        loadData(id, cffCompute);
+    }
+
     public JPanel getContainer() {
         return container;
+    }
+
+    public int getId() {
+        return id;
     }
 }

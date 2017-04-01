@@ -16,7 +16,9 @@ public class DepatureCityDialog extends JDialog {
         setTitle("Parcours");
 
         for (String s : principalFrame.getCffCompute().getCityNames()) {
-            departureComboBox.addItem(s);
+            if (principalFrame.getCffCompute().iaConnectedCity(s)) {
+                departureComboBox.addItem(s);
+            }
         }
 
         setContentPane(contentPane);

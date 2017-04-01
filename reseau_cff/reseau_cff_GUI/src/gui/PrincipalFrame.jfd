@@ -63,6 +63,7 @@ new FormModel {
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "supprVilleMenuItem"
 						"text": "Supprimer une ville"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "supprVilleMenuItemActionPerformed", true ) )
 					} )
 					add( new FormComponent( "javax.swing.JPopupMenu$Separator" ) {
 						name: "separator2"

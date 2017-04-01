@@ -56,10 +56,12 @@ public class CffCompute {
             return -1;
         int i = cityNames.indexOf(city1);
         int j = cityNames.indexOf(city2);
-        return floyd.getWeightMatrixFloyd()[i][j];
+        int duration = floyd.getWeightMatrixFloyd()[i][j];
+        System.out.println(duration);
+        return duration;
     }
 
-    public ArrayList<String> outPathTowCitiesFloyd(String city1, String city2) {
+    public StringBuilder outPathTowCitiesFloyd(String city1, String city2) {
         if (!cityNames.contains(city1)) return null;
         if (!cityNames.contains(city2)) return null;
 
@@ -76,7 +78,15 @@ public class CffCompute {
             path.add(city2);
         }
         if (city1.equals(city2)) { path.add(city1); }
-        return path;
+        StringBuilder builder = new StringBuilder();
+        builder.append("[");
+        for (String s: path) {
+            builder.append(s + ":");
+        }
+        builder.deleteCharAt(builder.length() - 1);
+        builder.append("]");
+        System.out.println(builder.toString());
+        return builder;
     }
 
     public void outTimeDijkstra(String startCity) {
@@ -203,10 +213,15 @@ public class CffCompute {
         return isConnected;
     }
 
-    public boolean idConnectedCity(String cityName) {
+    public boolean iaConnectedCity(String cityName) {
         int index = cityNames.indexOf(cityName);
-        int time = floyd.getWeightMatrixFloyd()[index][0];
-        return !(time == Integer.MAX_VALUE);
+        int x = 0;
+        for (int i = 0; i < floyd.getWeightMatrixFloyd()[index].length; i++) {
+            if (floyd.getWeightMatrixFloyd()[index][i] == Integer.MAX_VALUE) {
+                x++;
+            }
+        }
+        return !(x == floyd.getWeightMatrixFloyd()[index].length - 1);
     }
 
     public void toXmlFile(String filePath) {

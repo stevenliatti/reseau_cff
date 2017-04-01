@@ -115,4 +115,8 @@ public class DrawingPanel extends JPanel {
         }
         g.drawLine(previousPoint.getX(), previousPoint.getY(), firstPoint.getX(), firstPoint.getY());
     }
+
+    public void setPaintPathTowCities(boolean paintPathTowCities) {
+        this.paintPathTowCities = paintPathTowCities;
+    }
 }

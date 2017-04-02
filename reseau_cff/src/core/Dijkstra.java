@@ -8,7 +8,9 @@ import model.Net;
 import java.util.*;
 
 /**
- * Created by stevenliatti on 29.03.17.
+ * Classe implémentant la construction de la liste des poids dans un graphe et l'algorithme de Dijkstra.
+ * @author Raed Abdennadher
+ * @author Steven Liatti
  */
 public class Dijkstra {
     private Net net;
@@ -16,12 +18,19 @@ public class Dijkstra {
     private Map<String, Node> graph;
     private Map<String, Map<String, Node>> dijkstraPaths;
 
+    /**
+     * Construit un objet Dijkstra à partir d'un réseau de villes ({@link Net}.
+     * @param net
+     */
     public Dijkstra(Net net) {
         this.net = net;
         buildWeightList();
         dijkstraPaths = new HashMap<>();
     }
 
+    /**
+     * Construit la liste des poids avec le réseau de villes et connexions courantes.
+     */
     public void buildWeightList() {
         weightList = new LinkedHashMap<>();
         for (Connection c : net.getConnectionList()) {
@@ -30,11 +39,20 @@ public class Dijkstra {
         }
     }
 
+    /**
+     * Algorithme de Dijkstra, construit le plus court chemin entre la ville donnée en paramètres
+     * et toutes les autres villes atteignables du réseau.
+     * @param startCity La ville de départ ({@link String}
+     * @return Une {@link Map} associant la ville de départ avec les poids et les précédences pour
+     * chaque ville du réseau.
+     */
     public Map<String, Node> compute(String startCity) {
+        // "Cache" de Dijkstra, retourne le chemin si déjà calculé.
         if (dijkstraPaths.containsKey(startCity)) {
             graph = dijkstraPaths.get(startCity);
             return dijkstraPaths.get(startCity);
         }
+        // Implémentation de l'algo comme vue en cours.
         initDijkstra(startCity);
         PriorityQueue<Node> queue = new PriorityQueue<>(new Node());
         for (Node n : graph.values()) { queue.add(n); }
@@ -55,16 +73,29 @@ public class Dijkstra {
         return graph;
     }
 
+    /**
+     * Renvoie les {@link Node} d'un graphe courant dans l'ordre alphabétique (principalement
+     * pour l'affichage).
+     * @return Une {@link List} de {@link Node} triés par ordre alphabétique.
+     */
     public List<Node> sortNodes() {
         List<Node> list = new ArrayList<>(graph.values());
         list.sort(new Node());
         return list;
     }
 
+    /**
+     * Retourne le graphe courant ({@link Map} entre un nom de ville et ses "voisins")
+     * @return
+     */
     public Map<String, Node> getGraph() {
         return graph;
     }
 
+    /**
+     * Retourne la liste des poids.
+     * @return Une {@link Map} entre chaque ville et ses voisins directs ({@link List} de {@link Node}).
+     */
     public Map<String, List<Node>> getWeightList() {
         return weightList;
     }

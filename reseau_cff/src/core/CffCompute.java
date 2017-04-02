@@ -78,6 +78,7 @@ public class CffCompute {
             path.add(city2);
         }
         if (city1.equals(city2)) { path.add(city1); }
+        if (path.isEmpty()) return null;
         StringBuilder builder = new StringBuilder();
         builder.append("[");
         for (String s: path) {

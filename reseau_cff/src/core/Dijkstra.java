@@ -31,7 +31,10 @@ public class Dijkstra {
     }
 
     public Map<String, Node> compute(String startCity) {
-        if (dijkstraPaths.containsKey(startCity)) { return dijkstraPaths.get(startCity); }
+        if (dijkstraPaths.containsKey(startCity)) {
+            graph = dijkstraPaths.get(startCity);
+            return dijkstraPaths.get(startCity);
+        }
         initDijkstra(startCity);
         PriorityQueue<Node> queue = new PriorityQueue<>(new Node());
         for (Node n : graph.values()) { queue.add(n); }

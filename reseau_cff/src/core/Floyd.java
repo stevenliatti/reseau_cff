@@ -4,7 +4,9 @@ import model.Connection;
 import model.Net;
 
 /**
- * Created by stevenliatti on 29.03.17.
+ * Classe implémentant la construction de la matrice des poids dans un graphe et l'algorithme de Floyd.
+ * @author Raed Abdennadher
+ * @author Steven Liatti
  */
 public class Floyd {
     private Net net;
@@ -12,25 +14,44 @@ public class Floyd {
     private int[][] weightMatrixFloyd;
     private int[][] precMatrixFloyd;
 
+    /**
+     * Construit un objet Floyd à partir d'un réseau de villes {@link Net}.
+     * @param net Un réseau de villes
+     */
     public Floyd(Net net) {
         this.net = net;
         buildInitialWeightMatrix();
         buildMatrixFloyd();
     }
 
+    /**
+     * Recalcule la matrice des poids et la matrice de Floyd après un changement dans le réseau.
+     */
     public void update() {
         buildInitialWeightMatrix();
         buildMatrixFloyd();
     }
 
+    /**
+     * Retourne la matrice des poids initiale.
+     * @return La matrice des poids initiale
+     */
     public int[][] getInitialWeightMatrix() {
         return initialWeightMatrix;
     }
 
+    /**
+     * Retourne la matrice des poids calculée.
+     * @return La matrice des poids calculée
+     */
     public int[][] getWeightMatrixFloyd() {
         return weightMatrixFloyd;
     }
 
+    /**
+     * Retourne la matrice des précédences de Floyd
+     * @return La matrice des précédences de Floyd
+     */
     public int[][] getPrecMatrixFloyd() {
         return precMatrixFloyd;
     }

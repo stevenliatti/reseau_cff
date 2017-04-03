@@ -20,7 +20,7 @@ public class Dijkstra {
 
     /**
      * Construit un objet Dijkstra à partir d'un réseau de villes ({@link Net}.
-     * @param net
+     * @param net Un réseau de villes
      */
     public Dijkstra(Net net) {
         this.net = net;

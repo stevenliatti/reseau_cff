@@ -34,7 +34,7 @@ public class DrawingPanel extends JPanel {
         }
     }
 
-    protected void paintConnectionTowCities(String path) {
+    public void parsePathToCities(String path) {
         this.paintPathTowCities = true;
         path = path.replace("[", "");
         path = path.replace("]", "");
@@ -53,21 +53,51 @@ public class DrawingPanel extends JPanel {
             g.drawLine(x1, y1, x2, y2);
             int centerX = (x1 + x2) / 2;
             int centerY = (y1 + y2) / 2;
-            String duration = String.valueOf(getTowCitiesDuration(cityToDraw1.getCityName(), cityToDraw2.getCityName()));
+            String duration = String.valueOf(
+                    citiesPointsArray.getCffCompute().outTimeTowCitiesFloyd(
+                            cityToDraw1.getCityName(),
+                            cityToDraw2.getCityName()
+                    )
+            );
             g.drawString(duration, centerX, centerY);
         }
     }
 
-    private int getTowCitiesDuration(String c1, String c2) {
-        List<Connection> connectionsList = this.citiesPointsArray.getCffCompute().getNet().getConnectionList();
-        for (Connection c : connectionsList) {
-            if (c.getVil_1().equals(c1) && c.getVil_2().equals(c2) ||
-                    c.getVil_1().equals(c2) && c.getVil_2().equals(c1)) {
-                return c.getDuratin();
-            }
-        }
-        return 0;
-    }
+//    private void drawRectangles(Graphics g) {
+//        g.setColor(Color.black);
+//        List<Connection> connectionsList = this.citiesPointsArray.getCffCompute().getNet().getConnectionList();
+//        for (Connection c : connectionsList) {
+//            CityToDraw cityToDraw1 = citiesPointsArray.getCityToDrawByName(c.getVil_1());
+//            CityToDraw cityToDraw2 = citiesPointsArray.getCityToDrawByName(c.getVil_2());
+//            if (cityToDraw1 != null && cityToDraw2 != null) {
+//
+//                int x1 = cityToDraw1.getCoordinate().getX();
+//                int y1 = cityToDraw1.getCoordinate().getY();
+//                int x2 = cityToDraw2.getCoordinate().getX();
+//                int y2 = cityToDraw2.getCoordinate().getY();
+//
+//                double pente = (y1 - y2) / (x1 - x2);
+//                if (Math.abs(pente) < 1) {
+//                    Polygon polygon = new Polygon(
+//                            new int[]{x1, x2, x2, x1},
+//                            new int[]{y1 - 5, y2 - 5, y2 + 5, y1 + 5},
+//                            4);
+//                    g.drawPolygon(polygon);
+//                } else {
+//                    Polygon polygon = new Polygon(
+//                            new int[]{x1 - 5, x2 - 5, x2 + 5, x1 + 5},
+//                            new int[]{y1, y2, y2, y1},
+//                            4);
+//                    g.drawPolygon(polygon);
+//                }
+//
+//                g.drawLine(x1, y1, x2, y2);
+//                int centerX = (x1 + x2) / 2;
+//                int centerY = (y1 + y2) / 2;
+//                g.drawString(String.valueOf(c.getDuratin()), centerX, centerY);
+//            }
+//        }
+//    }
 
     private void drawAllConnections(Graphics g) {
 //        Random rand = new Random();
@@ -119,4 +149,8 @@ public class DrawingPanel extends JPanel {
     public void setPaintPathTowCities(boolean paintPathTowCities) {
         this.paintPathTowCities = paintPathTowCities;
     }
+
+//    public void setPaintRemoveConn(boolean paintRemoveConn) {
+//        this.paintRemoveConn = paintRemoveConn;
+//    }
 }

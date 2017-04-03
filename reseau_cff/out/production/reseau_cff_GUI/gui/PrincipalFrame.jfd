@@ -76,6 +76,7 @@ new FormModel {
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "supprLiaisonMenuItem"
 						"text": "Supprimer une liaison"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "supprLiaisonMenuItemActionPerformed", true ) )
 					} )
 				} )
 				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {

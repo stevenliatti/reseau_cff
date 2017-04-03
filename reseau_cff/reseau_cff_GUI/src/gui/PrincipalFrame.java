@@ -4,10 +4,12 @@
 
 package gui;
 
+import java.awt.event.*;
 import core.CffCompute;
 import gui.listeners.AddCityListener;
 import gui.listeners.AddConnecListener;
 import gui.listeners.RemoveCityListener;
+import gui.listeners.RemoveConnListener;
 import model.CitiesPointsArray;
 import model.CityToDraw;
 import model.MapPointsArray;
@@ -32,11 +34,13 @@ public class PrincipalFrame extends JFrame {
     private JPanel cancelAddPanel;
     private JLabel addLabel;
     private JPanel bottomPanel;
+    private JScrollPane rightScrollPane1;
     private MatrixPanel matPrecFTab;
     private MatrixPanel matParcFTab;
     private AddCityListener addCityListener;
     private AddConnecListener addConnecListener;
     private RemoveCityListener removeCityListener;
+    private RemoveConnListener removeConnListener;
 
     private CitiesPointsArray citiesPointsArray;
 
@@ -84,6 +88,10 @@ public class PrincipalFrame extends JFrame {
         cancelAddPanel.add(addLabel);
         cancelAddPanel.add(jp);
 
+        bottomPanel = new JPanel();
+
+        rightScrollPane1 = rightScrollPane;// à supprimer apràs avoir supprimer JFormDesigner
+
         centerPanel.add(cancelAddPanel, BorderLayout.SOUTH);
         centerPanel.add(centerRightPanel, BorderLayout.EAST);
         centerPanel.add(drawingScrollPane, BorderLayout.CENTER);
@@ -115,14 +123,14 @@ public class PrincipalFrame extends JFrame {
     }
 
 
-    private void exporterMenuItemActionPerformed() {
+    private void exporterMenuItemActionPerformed(ActionEvent e) {
         ExportXmlDialog dialog = new ExportXmlDialog(this);
         dialog.setLocationRelativeTo(this);
         dialog.pack();
         dialog.setVisible(true);
     }
 
-    private void matParcFMenuItemActionPerformed() {
+    private void matParcFMenuItemActionPerformed(ActionEvent e) {
 //        if (MatrixPanel.INSTANCES[0] == null) {
         if (!jTabbedMap.containsKey(matParcFTab)) {
             matParcFTab = new MatrixPanel(0, cffCompute);
@@ -141,7 +149,7 @@ public class PrincipalFrame extends JFrame {
 //        }
     }
 
-    private void matPrecFMenuItemActionPerformed() {
+    private void matPrecFMenuItemActionPerformed(ActionEvent e) {
         if (!jTabbedMap.containsKey(matPrecFTab)) {
             matPrecFTab = new MatrixPanel(1, cffCompute);
             jTabbedMap.put(matPrecFTab, jTabbedPane.getTabCount());
@@ -153,28 +161,28 @@ public class PrincipalFrame extends JFrame {
         jTabbedPane.setSelectedComponent(matPrecFTab.getContainer());
     }
 
-    private void parcoursFMenuItemActionPerformed() {
+    private void parcoursFMenuItemActionPerformed(ActionEvent e) {
         ParcoursDialog parcoursDialog = new ParcoursDialog(this, "F");
         parcoursDialog.setLocationRelativeTo(this);
         parcoursDialog.pack();
         parcoursDialog.setVisible(true);
     }
 
-    private void tabParcDMenuItemActionPerformed() {
+    private void tabParcDMenuItemActionPerformed(ActionEvent e) {
         DepatureCityDialog depatureCityDialog = new DepatureCityDialog(this);
         depatureCityDialog.setLocationRelativeTo(this);
         depatureCityDialog.pack();
         depatureCityDialog.setVisible(true);
     }
 
-    private void parcoursDMenuItemActionPerformed() {
+    private void parcoursDMenuItemActionPerformed(ActionEvent e) {
         ParcoursDialog parcoursDialog = new ParcoursDialog(this, "D");
         parcoursDialog.setLocationRelativeTo(this);
         parcoursDialog.pack();
         parcoursDialog.setVisible(true);
     }
 
-    private void ajoutVilleMenuItemActionPerformed() {
+    private void ajoutVilleMenuItemActionPerformed(ActionEvent e) {
         addLabel.setText("Cliquer sur la carte pour ajouter une ville.");
         cancelAddPanel.setVisible(true);
         drawingPanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -183,6 +191,7 @@ public class PrincipalFrame extends JFrame {
         drawingPanel.setPaintPathTowCities(false);
         bottomPanel.removeAll();
         bottomPanel.setVisible(false);
+        rightScrollPane1.setVisible(false);
         menuBar1.setVisible(false);
         jTabbedPane.setSelectedIndex(0);
     }
@@ -191,12 +200,13 @@ public class PrincipalFrame extends JFrame {
         drawingPanel.removeMouseListener(addCityListener);
         drawingPanel.removeMouseListener(addConnecListener);
         drawingPanel.removeMouseListener(removeCityListener);
+        drawingPanel.removeMouseListener(removeConnListener);
         drawingPanel.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         cancelAddPanel.setVisible(false);
         menuBar1.setVisible(true);
     }
 
-    private void ajoutLiaisonMenuItemActionPerformed() {
+    private void ajoutLiaisonMenuItemActionPerformed(ActionEvent e) {
         addLabel.setText("Cliquer sur deux villes pour ajouter une liaison.");
         cancelAddPanel.setVisible(true);
         drawingPanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -205,11 +215,12 @@ public class PrincipalFrame extends JFrame {
         drawingPanel.setPaintPathTowCities(false);
         bottomPanel.removeAll();
         bottomPanel.setVisible(false);
+        rightScrollPane1.setVisible(false);
         menuBar1.setVisible(false);
         jTabbedPane.setSelectedIndex(0);
     }
 
-    private void supprVilleMenuItemActionPerformed() {
+    private void supprVilleMenuItemActionPerformed(ActionEvent e) {
         addLabel.setText("Cliquer sur une ville pour la supprimer.");
         cancelAddPanel.setVisible(true);
         removeCityListener = new RemoveCityListener(this);
@@ -218,6 +229,21 @@ public class PrincipalFrame extends JFrame {
         drawingPanel.setPaintPathTowCities(false);
         bottomPanel.removeAll();
         bottomPanel.setVisible(false);
+        rightScrollPane1.setVisible(false);
+        menuBar1.setVisible(false);
+        jTabbedPane.setSelectedIndex(0);
+    }
+
+    private void supprLiaisonMenuItemActionPerformed(ActionEvent e) {
+        addLabel.setText("Cliquer sur une liaison pour la supprimer.");
+        cancelAddPanel.setVisible(true);
+        removeConnListener = new RemoveConnListener(this);
+        drawingPanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        drawingPanel.addMouseListener(removeConnListener);
+        drawingPanel.setPaintPathTowCities(false);
+        bottomPanel.removeAll();
+        bottomPanel.setVisible(false);
+        rightScrollPane1.setVisible(false);
         menuBar1.setVisible(false);
         jTabbedPane.setSelectedIndex(0);
     }
@@ -226,24 +252,24 @@ public class PrincipalFrame extends JFrame {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         // Generated using JFormDesigner Evaluation license - Raed Abdennadher
         menuBar1 = new JMenuBar();
-        JMenu fichierMenu = new JMenu();
-        JMenuItem exporterMenuItem = new JMenuItem();
-        JMenuItem quitterMenuItem = new JMenuItem();
-        JMenu editionMenu = new JMenu();
-        JMenuItem ajoutVilleMenuItem = new JMenuItem();
-        JMenuItem supprVilleMenuItem = new JMenuItem();
-        JMenuItem ajoutLiaisonMenuItem = new JMenuItem();
-        JMenuItem supprLiaisonMenuItem = new JMenuItem();
-        JMenu actionMenu = new JMenu();
-        JMenu floydMenu = new JMenu();
-        JMenuItem matParcFMenuItem = new JMenuItem();
-        JMenuItem matPrecFMenuItem = new JMenuItem();
-        JMenuItem parcoursFMenuItem = new JMenuItem();
-        JMenu dijkstraMenu = new JMenu();
-        JMenuItem tabParcDMenuItem = new JMenuItem();
-        JMenuItem parcoursDMenuItem = new JMenuItem();
+        fichierMenu = new JMenu();
+        exporterMenuItem = new JMenuItem();
+        quitterMenuItem = new JMenuItem();
+        editionMenu = new JMenu();
+        ajoutVilleMenuItem = new JMenuItem();
+        supprVilleMenuItem = new JMenuItem();
+        ajoutLiaisonMenuItem = new JMenuItem();
+        supprLiaisonMenuItem = new JMenuItem();
+        actionMenu = new JMenu();
+        floydMenu = new JMenu();
+        matParcFMenuItem = new JMenuItem();
+        matPrecFMenuItem = new JMenuItem();
+        parcoursFMenuItem = new JMenuItem();
+        dijkstraMenu = new JMenu();
+        tabParcDMenuItem = new JMenuItem();
+        parcoursDMenuItem = new JMenuItem();
         rightScrollPane = new JScrollPane();
-        JPanel rightPanel = new JPanel();
+        rightPanel = new JPanel();
         tableContentPanel = new JPanel();
         titleLabel = new JLabel();
 
@@ -261,7 +287,7 @@ public class PrincipalFrame extends JFrame {
 
                 //---- exporterMenuItem ----
                 exporterMenuItem.setText("Exporter fichier Xml");
-                exporterMenuItem.addActionListener(e -> exporterMenuItemActionPerformed());
+                exporterMenuItem.addActionListener(e -> exporterMenuItemActionPerformed(e));
                 fichierMenu.add(exporterMenuItem);
                 fichierMenu.addSeparator();
 
@@ -277,22 +303,23 @@ public class PrincipalFrame extends JFrame {
 
                 //---- ajoutVilleMenuItem ----
                 ajoutVilleMenuItem.setText("Ajouter une ville");
-                ajoutVilleMenuItem.addActionListener(e -> ajoutVilleMenuItemActionPerformed());
+                ajoutVilleMenuItem.addActionListener(e -> ajoutVilleMenuItemActionPerformed(e));
                 editionMenu.add(ajoutVilleMenuItem);
 
                 //---- supprVilleMenuItem ----
                 supprVilleMenuItem.setText("Supprimer une ville");
-                supprVilleMenuItem.addActionListener(e -> supprVilleMenuItemActionPerformed());
+                supprVilleMenuItem.addActionListener(e -> supprVilleMenuItemActionPerformed(e));
                 editionMenu.add(supprVilleMenuItem);
                 editionMenu.addSeparator();
 
                 //---- ajoutLiaisonMenuItem ----
                 ajoutLiaisonMenuItem.setText("Ajouter une liaison");
-                ajoutLiaisonMenuItem.addActionListener(e -> ajoutLiaisonMenuItemActionPerformed());
+                ajoutLiaisonMenuItem.addActionListener(e -> ajoutLiaisonMenuItemActionPerformed(e));
                 editionMenu.add(ajoutLiaisonMenuItem);
 
                 //---- supprLiaisonMenuItem ----
                 supprLiaisonMenuItem.setText("Supprimer une liaison");
+                supprLiaisonMenuItem.addActionListener(e -> supprLiaisonMenuItemActionPerformed(e));
                 editionMenu.add(supprLiaisonMenuItem);
             }
             menuBar1.add(editionMenu);
@@ -307,17 +334,17 @@ public class PrincipalFrame extends JFrame {
 
                     //---- matParcFMenuItem ----
                     matParcFMenuItem.setText("Matrice des temps de parcours");
-                    matParcFMenuItem.addActionListener(e -> matParcFMenuItemActionPerformed());
+                    matParcFMenuItem.addActionListener(e -> matParcFMenuItemActionPerformed(e));
                     floydMenu.add(matParcFMenuItem);
 
                     //---- matPrecFMenuItem ----
                     matPrecFMenuItem.setText("Mtrice des pr\u00e9c\u00e9dences");
-                    matPrecFMenuItem.addActionListener(e -> matPrecFMenuItemActionPerformed());
+                    matPrecFMenuItem.addActionListener(e -> matPrecFMenuItemActionPerformed(e));
                     floydMenu.add(matPrecFMenuItem);
 
                     //---- parcoursFMenuItem ----
                     parcoursFMenuItem.setText("Parcours entre deux villes");
-                    parcoursFMenuItem.addActionListener(e -> parcoursFMenuItemActionPerformed());
+                    parcoursFMenuItem.addActionListener(e -> parcoursFMenuItemActionPerformed(e));
                     floydMenu.add(parcoursFMenuItem);
                 }
                 actionMenu.add(floydMenu);
@@ -328,12 +355,12 @@ public class PrincipalFrame extends JFrame {
 
                     //---- tabParcDMenuItem ----
                     tabParcDMenuItem.setText("Tableau de parcours");
-                    tabParcDMenuItem.addActionListener(e -> tabParcDMenuItemActionPerformed());
+                    tabParcDMenuItem.addActionListener(e -> tabParcDMenuItemActionPerformed(e));
                     dijkstraMenu.add(tabParcDMenuItem);
 
                     //---- parcoursDMenuItem ----
                     parcoursDMenuItem.setText("Parcours entre deux villes");
-                    parcoursDMenuItem.addActionListener(e -> parcoursDMenuItemActionPerformed());
+                    parcoursDMenuItem.addActionListener(e -> parcoursDMenuItemActionPerformed(e));
                     dijkstraMenu.add(parcoursDMenuItem);
                 }
                 actionMenu.add(dijkstraMenu);
@@ -354,7 +381,7 @@ public class PrincipalFrame extends JFrame {
                     new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder(0, 0, 0, 0),
                         "JFormDesigner Evaluation", javax.swing.border.TitledBorder.CENTER,
                         javax.swing.border.TitledBorder.BOTTOM, new java.awt.Font("Dialog", java.awt.Font.BOLD, 12),
-                        java.awt.Color.red), rightPanel.getBorder())); rightPanel.addPropertyChangeListener(e -> {if("border".equals(e.getPropertyName()))throw new RuntimeException();});
+                        java.awt.Color.red), rightPanel.getBorder())); rightPanel.addPropertyChangeListener(new java.beans.PropertyChangeListener(){public void propertyChange(java.beans.PropertyChangeEvent e){if("border".equals(e.getPropertyName()))throw new RuntimeException();}});
 
                 rightPanel.setLayout(new BorderLayout());
 
@@ -383,7 +410,24 @@ public class PrincipalFrame extends JFrame {
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     // Generated using JFormDesigner Evaluation license - Raed Abdennadher
     private JMenuBar menuBar1;
+    private JMenu fichierMenu;
+    private JMenuItem exporterMenuItem;
+    private JMenuItem quitterMenuItem;
+    private JMenu editionMenu;
+    private JMenuItem ajoutVilleMenuItem;
+    private JMenuItem supprVilleMenuItem;
+    private JMenuItem ajoutLiaisonMenuItem;
+    private JMenuItem supprLiaisonMenuItem;
+    private JMenu actionMenu;
+    private JMenu floydMenu;
+    private JMenuItem matParcFMenuItem;
+    private JMenuItem matPrecFMenuItem;
+    private JMenuItem parcoursFMenuItem;
+    private JMenu dijkstraMenu;
+    private JMenuItem tabParcDMenuItem;
+    private JMenuItem parcoursDMenuItem;
     private JScrollPane rightScrollPane;
+    private JPanel rightPanel;
     private JPanel tableContentPanel;
     private JLabel titleLabel;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
@@ -407,7 +451,7 @@ public class PrincipalFrame extends JFrame {
         listeLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
         bottomPanel.add(listeLabel);
         this.add(bottomPanel, BorderLayout.SOUTH);
-        this.drawingPanel.paintConnectionTowCities(pathString);
+        this.drawingPanel.parsePathToCities(pathString);
         this.drawingPanel.repaint();
         this.revalidate();
         return 0;
@@ -428,7 +472,7 @@ public class PrincipalFrame extends JFrame {
         listeLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
         bottomPanel.add(listeLabel);
         this.add(bottomPanel, BorderLayout.SOUTH);
-        this.drawingPanel.paintConnectionTowCities(pathString);
+        this.drawingPanel.parsePathToCities(pathString);
         this.drawingPanel.repaint();
         this.revalidate();
         return 0;
@@ -514,6 +558,12 @@ public class PrincipalFrame extends JFrame {
     public void removeCity(String city) {
         this.cffCompute.removeCity(city);
         citiesPointsArray.remove(citiesPointsArray.getCityToDrawByName(city));
+        drawingPanel.repaint();
+        revalidate();
+    }
+
+    public void removeConnection(String cityName1, String cityName2) {
+        this.cffCompute.removeConnection(cityName1, cityName2);
         drawingPanel.repaint();
         revalidate();
     }

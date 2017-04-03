@@ -67,7 +67,7 @@ public class ParcoursDialog extends JDialog {
                 dispose();
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Faut choisir deux villes différentes");
+            JOptionPane.showMessageDialog(this, "Il faut choisir deux villes différentes");
         }
     }
 

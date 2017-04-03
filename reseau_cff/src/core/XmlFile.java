@@ -9,11 +9,19 @@ import javax.xml.bind.Unmarshaller;
 import java.io.File;
 
 /**
- * Created by raed on 23.03.17.
+ * Classe permettant de lire et écrire un fichier XML de données.
+ * @author Raed Abdennadher
+ * @author Steven Liatti
  */
 public class XmlFile {
     private static JAXBContext jaxbContext;
 
+    /**
+     * Crée un réseau {@link Net} à partir d'un fichier XML donné en paramètres.
+     * @param fileName Le nom du fichier à lire.
+     * @return Un réseau de villes et connexions
+     * @throws JAXBException
+     */
     public static Net loadXmlFile(String fileName) throws JAXBException {
         File file = new File(fileName);
         jaxbContext = JAXBContext.newInstance(Net.class);
@@ -22,6 +30,12 @@ public class XmlFile {
         return (Net) jaxbUnmarshaller.unmarshal(file);
     }
 
+    /**
+     * Sauvegarde un {@link Net} donné en paramètres dans un fichier.
+     * @param fileName Le nom du fichier
+     * @param net Le réseau/graphe courant
+     * @throws JAXBException
+     */
     public static void storeXmlFormat(String fileName, Net net) throws JAXBException {
         if (!fileName.toUpperCase().contains(".XML") ||
                 fileName.toUpperCase().lastIndexOf(".XML") != (fileName.length() - 4)) {

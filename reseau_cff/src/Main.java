@@ -90,7 +90,7 @@ public class Main {
 			case 8:
 			   	System.err.println("Ville d'origine:");
 				str1 = in.next();
-				cffCompute.outTimeDijkstra(str1);
+				cffCompute.outTimeArrayDijkstra(str1);
 				break;
 			case 9:
 				System.err.println("Ville d'origine:");

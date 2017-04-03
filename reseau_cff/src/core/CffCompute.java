@@ -9,7 +9,10 @@ import javax.xml.bind.*;
 import java.util.*;
 
 /**
- * Created by raed on 14.03.17.
+ * Classe implémentant tous les calculs demandés dans le programme principal.
+ * Les fonctions sont données dans l'ordre du menu fourni.
+ * @author Raed Abdennadher
+ * @author Steven Liatti
  */
 public class CffCompute {
     private Net net;
@@ -17,19 +20,24 @@ public class CffCompute {
     private Dijkstra dijkstra;
     private Floyd floyd;
 
+    /**
+     * Construit un CffCompute à partir d'un fichier de données.
+     * @param filePath Le nom du fichier.
+     */
     public CffCompute(String filePath) {
         try {
-            //charger le fichier XML
             net = XmlFile.loadXmlFile(filePath);
-            dijkstra = new Dijkstra(net);
-            //liste des villes
             buildCityNames();
+            dijkstra = new Dijkstra(net);
             floyd = new Floyd(net);
         } catch (JAXBException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Imprime la liste des noms des villes du réseau.
+     */
     public void outCityNames() {
         for (int i = 0; i < cityNames.size(); i++) {
             System.out.print("[" + i + ":" + cityNames.get(i) + "] ");
@@ -37,8 +45,14 @@ public class CffCompute {
         System.out.println();
     }
 
+    /**
+     * Imprime la matrice des poids initiale.
+     */
     public void outInitialWeightMatrix() { outMatrix(floyd.getInitialWeightMatrix()); }
 
+    /**
+     * Imprime la liste des poids calculée grâce à Dijkstra.
+     */
     public void outWeightList() {
         for (String city : dijkstra.getWeightList().keySet()) {
             System.out.print(city);
@@ -47,26 +61,44 @@ public class CffCompute {
         }
     }
 
+    /**
+     * Imprime la matrice des temps de parcours de Floyd.
+     */
     public void outWeightMatrixFloyd() { outMatrix(floyd.getWeightMatrixFloyd()); }
 
+    /**
+     * Imprime la matrice des précédences de Floyd.
+     */
     public void outPrecMatrixFloyd() { outMatrix(floyd.getPrecMatrixFloyd()); }
 
-    public int outTimeTowCitiesFloyd(String city1, String city2) {
-        if (!cityNames.contains(city1) || !cityNames.contains(city2))
+    /**
+     * Imprime le temps/poids de parcours entre les deux villes données en arguments selon Floyd.
+     * @param departure Le nom de la ville de départ
+     * @param destination Le nom de la ville de destination
+     * @return Le temps/poids de parcours entre les deux villes en int
+     */
+    public int outTimeTowCitiesFloyd(String departure, String destination) {
+        if (!cityNames.contains(departure) || !cityNames.contains(destination))
             return -1;
-        int i = cityNames.indexOf(city1);
-        int j = cityNames.indexOf(city2);
+        int i = cityNames.indexOf(departure);
+        int j = cityNames.indexOf(destination);
         int duration = floyd.getWeightMatrixFloyd()[i][j];
         System.out.println(duration);
         return duration;
     }
 
-    public StringBuilder outPathTowCitiesFloyd(String city1, String city2) {
-        if (!cityNames.contains(city1)) return null;
-        if (!cityNames.contains(city2)) return null;
+    /**
+     * Imprime le parcours entre deux villes selon Floyd.
+     * @param departure Le nom de la ville de départ
+     * @param destination Le nom de la ville de destination
+     * @return Le parcours, les différentes villes à traverser
+     */
+    public StringBuilder outPathTowCitiesFloyd(String departure, String destination) {
+        if (!cityNames.contains(departure)) return null;
+        if (!cityNames.contains(destination)) return null;
 
-        int i = cityNames.indexOf(city1);
-        int j = cityNames.indexOf(city2);
+        int i = cityNames.indexOf(departure);
+        int j = cityNames.indexOf(destination);
         ArrayList<String> path = new ArrayList<>();
         int previous = floyd.getPrecMatrixFloyd()[i][j];
         if (previous != -1) {
@@ -74,10 +106,10 @@ public class CffCompute {
                 path.add(0, cityNames.get(previous));
                 previous = floyd.getPrecMatrixFloyd()[i][previous];
             }
-            path.add(0, city1);
-            path.add(city2);
+            path.add(0, departure);
+            path.add(destination);
         }
-        if (city1.equals(city2)) { path.add(city1); }
+        if (departure.equals(destination)) { path.add(departure); }
         if (path.isEmpty()) return null;
         StringBuilder builder = new StringBuilder();
         builder.append("[");
@@ -90,7 +122,12 @@ public class CffCompute {
         return builder;
     }
 
-    public void outTimeDijkstra(String startCity) {
+    /**
+     * Imprime le temps de parcours depuis une ville de départ vers toutes les villes du réseau
+     * avec l'algorithme de Dijkstra.
+     * @param startCity Le nom de la ville de départ
+     */
+    public void outTimeArrayDijkstra(String startCity) {
         dijkstra.compute(startCity);
         for (Node n : dijkstra.sortNodes()) {
             System.out.print("[" + n.getName() + ":" + n.getDuration() + "] ");
@@ -98,6 +135,10 @@ public class CffCompute {
         System.out.println();
     }
 
+    /**
+     * Imprime le tableau des précédences en appliquant l'algorithme de Dijkstra.
+     * @param startCity Le nom de la ville de départ
+     */
     public void outPrecArrayDijkstra(String startCity) {
         dijkstra.compute(startCity);
         for (Node n : dijkstra.sortNodes()) {
@@ -107,6 +148,12 @@ public class CffCompute {
         System.out.println();
     }
 
+    /**
+     * Imprime le temps/poids de parcours entre les deux villes données en arguments selon Dijkstra.
+     * @param departure Le nom de la ville de départ
+     * @param destination Le nom de la ville de destination
+     * @return Le temps/poids de parcours entre les deux villes en int
+     */
     public int outTimeTwoCitiesDijkstra(String departure, String destination) {
         dijkstra.compute(departure);
         int duration = dijkstra.getGraph().get(destination).getDuration();
@@ -114,6 +161,12 @@ public class CffCompute {
         return duration;
     }
 
+    /**
+     * Imprime le parcours entre deux villes selon Dijkstra.
+     * @param departure Le nom de la ville de départ
+     * @param destination Le nom de la ville de destination
+     * @return Le parcours, les différentes villes à traverser
+     */
     public StringBuilder outPathTwoCitiesDijkstra(String departure, String destination) {
         dijkstra.compute(departure);
         Stack<String> stack = new Stack<>();
@@ -137,10 +190,13 @@ public class CffCompute {
         return builder;
     }
 
+    /**
+     * Ajoute une ville au réseau, si elle n'est pas déjà présente.
+     * @param city Le nom de la ville à ajouter
+     * @return True si ajout, False sinon
+     */
     public boolean addCity(String city) {
-        if (cityNames.contains(city)) {
-            return false;
-        }
+        if (cityNames.contains(city)) { return false; }
         else {
             cityNames.add(city);
             net.getCityList().add(new City(city));
@@ -149,6 +205,13 @@ public class CffCompute {
         }
     }
 
+    /**
+     * Ajoute une connexion entre deux villes.
+     * @param city1 Le nom de la 1ère ville
+     * @param city2 Le nom de la 2ème ville
+     * @param durationString La durée, en String
+     * @return 0 si ajout, -1 sinon
+     */
     public int addConnection(String city1, String city2, String durationString) {
         if (!cityNames.contains(city1)) {
             return -1;
@@ -169,6 +232,11 @@ public class CffCompute {
         return 0;
     }
 
+    /**
+     * Supprime une ville du réseau, si présente.
+     * @param city Le nom de la ville à supprimer
+     * @return True si la suppression a réussi, False sinon
+     */
     public boolean removeCity(String city) {
         removeAllConnections(city);
         Iterator<City> i = net.getCityList().iterator();
@@ -183,6 +251,12 @@ public class CffCompute {
         return true;
     }
 
+    /**
+     * Supprime une connexion entre deux villes, si elle existe.
+     * @param city1 Le nom de la 1ère ville
+     * @param city2 Le nom de la 2ème ville
+     * @return 0 si suppression, -1 sinon
+     */
     public int removeConnection(String city1, String city2) {
         if (!cityNames.contains(city1)) { return -1; }
         if (!cityNames.contains(city2)) { return -1; }
@@ -200,6 +274,10 @@ public class CffCompute {
         return 0;
     }
 
+    /**
+     * Indique si le graphe courant est connexe ou non.
+     * @return True si le graphe est connexe, False sinon
+     */
     public boolean isConnectedGraph() {
         boolean isConnected = true;
         for (int i = 0; i < floyd.getWeightMatrixFloyd().length; i++) {
@@ -214,17 +292,10 @@ public class CffCompute {
         return isConnected;
     }
 
-    public boolean iaConnectedCity(String cityName) {
-        int index = cityNames.indexOf(cityName);
-        int x = 0;
-        for (int i = 0; i < floyd.getWeightMatrixFloyd()[index].length; i++) {
-            if (floyd.getWeightMatrixFloyd()[index][i] == Integer.MAX_VALUE) {
-                x++;
-            }
-        }
-        return !(x == floyd.getWeightMatrixFloyd()[index].length - 1);
-    }
-
+    /**
+     * Sauvegarde le graphe courant vers un fichier XML.
+     * @param filePath Le nom du fichier XML
+     */
     public void toXmlFile(String filePath) {
         try {
             XmlFile.storeXmlFormat(filePath, net);
@@ -271,24 +342,61 @@ public class CffCompute {
 
     // GUI
 
+    /**
+     * Retourne le graphe {@link Net} courant.
+     * @return Le graphe {@link Net} courant
+     */
     public Net getNet() {
         return net;
     }
 
+    /**
+     * Retourne la liste des noms des villes.
+     * @return La liste des noms des villes
+     */
     public ArrayList<String> getCityNames() {
         return cityNames;
     }
 
+    /**
+     * Retourne la matrice de Floyd.
+     * @return La matrice de Floyd
+     */
     public int[][] getWeightMatrixFloyd() {
         return floyd.getWeightMatrixFloyd();
     }
 
+    /**
+     * Retourne la matrice des précédences de Floyd.
+     * @return La matrice des précédences de Floyd
+     */
     public int[][] getPrecMatrixFloyd() {
         return floyd.getPrecMatrixFloyd();
     }
 
+    /**
+     * Retourne les noeuds Dijkstra dans l'ordre croissant.
+     * @param departure La ville de départ
+     * @return
+     */
     public List<Node> getNodesDijkstra(String departure) {
         dijkstra.compute(departure);
         return dijkstra.sortNodes();
+    }
+
+    /**
+     * Indique si une ville est connectée (pour la GUI).
+     * @param cityName Le nom de la ville
+     * @return True si la ville est connectée, False sinon
+     */
+    public boolean isConnectedCity(String cityName) {
+        int index = cityNames.indexOf(cityName);
+        int x = 0;
+        for (int i = 0; i < floyd.getWeightMatrixFloyd()[index].length; i++) {
+            if (floyd.getWeightMatrixFloyd()[index][i] == Integer.MAX_VALUE) {
+                x++;
+            }
+        }
+        return !(x == floyd.getWeightMatrixFloyd()[index].length - 1);
     }
 }

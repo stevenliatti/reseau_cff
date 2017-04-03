@@ -20,7 +20,7 @@ public class ParcoursDialog extends JDialog {
         setTitle("Parcours");
 
         for (String s : principalFrame.getCffCompute().getCityNames()) {
-            if (principalFrame.getCffCompute().iaConnectedCity(s)) {
+            if (principalFrame.getCffCompute().isConnectedCity(s)) {
                 destinationComboBox.addItem(s);
                 departureComboBox.addItem(s);
             }

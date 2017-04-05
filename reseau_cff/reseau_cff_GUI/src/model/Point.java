@@ -21,11 +21,6 @@ public class Point {
         }
     }
 
-    public Point(Point point) {
-        this.x = (int)(point.x * scale) + tx;
-        this.y = (int)(-point.y * scale) + ty;
-    }
-
     public int getX() {
         return x;
     }

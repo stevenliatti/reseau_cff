@@ -29,6 +29,18 @@ public class City {
     }
 
     /**
+     * Construit une ville à partir d'un nom (longitude et latitude à 0).
+     * @param name Le nom de la ville.
+     * @param longitude Le longitude de la ville.
+     * @param latitude Le latitude de la ville.
+     */
+    public City(String name, int longitude, int latitude) {
+        this.name = name;
+        this.longitude = longitude;
+        this.latitude = latitude;
+    }
+
+    /**
      * Retourne le nom de la ville.
      * @return le nom de la ville
      */

@@ -19,8 +19,4 @@ public class CityToDraw {
     public Point getCoordinate() {
         return coordinate;
     }
-
-    public void setCoordinate(Point coordinate) {
-        this.coordinate = coordinate;
-    }
 }

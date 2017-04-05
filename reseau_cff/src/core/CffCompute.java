@@ -206,6 +206,21 @@ public class CffCompute {
     }
 
     /**
+     * Ajoute une ville au réseau, si elle n'est pas déjà présente.
+     * @param city Le nom de la ville à ajouter
+     * @return True si ajout, False sinon
+     */
+    public boolean addCity(String city, int longitude, int latitude) {
+        if (cityNames.contains(city)) { return false; }
+        else {
+            cityNames.add(city);
+            net.getCityList().add(new City(city, longitude, latitude));
+            updateAfterChanges();
+            return true;
+        }
+    }
+
+    /**
      * Ajoute une connexion entre deux villes.
      * @param city1 Le nom de la 1ère ville
      * @param city2 Le nom de la 2ème ville

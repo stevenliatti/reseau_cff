@@ -40,8 +40,13 @@ new FormModel {
 					name: "fichierMenu"
 					"text": "Fichier"
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "importerMenuItem"
+						"text": "Importer fichier Xml..."
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "importerMenuItemActionPerformed", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "exporterMenuItem"
-						"text": "Exporter fichier Xml"
+						"text": "Exporter fichier Xml..."
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "exporterMenuItemActionPerformed", true ) )
 					} )
 					add( new FormComponent( "javax.swing.JPopupMenu$Separator" ) {

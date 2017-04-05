@@ -18,10 +18,14 @@ public class CustomCellRender extends DefaultTableCellRenderer {
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
+        String val = String.valueOf(value);
+        if (val.equals(String.valueOf(Integer.MAX_VALUE)) || val.equals("-1")) {
+            val = String.valueOf('\u221e');
+        }
         String toolTip = "<html><body>" +
                 "Ligne : <strong>" + dataTable.getValueAt(row, 1) + "</strong><br>" +
                 "Colonne : <strong>" + dataTable.getValueAt(1, column) + "</strong><br>" +
-                "Valeur : <strong>" + String.valueOf(value) + "</strong>" +
+                "Valeur : <strong>" + val + "</strong>" +
                 "</body></html>";
         JLabel c = this;
         if (row > 1 && column > 1 && (row % 2) == 0) {
@@ -57,7 +61,9 @@ public class CustomCellRender extends DefaultTableCellRenderer {
                 Integer x = new Integer(String.valueOf(value));
                 if (x == -1 || x == Integer.MAX_VALUE) {
                     setBackground(Color.red);
-                    setText("--");
+                    setForeground(Color.white);
+                    setFont(new Font("Ubuntu", 0, 20));
+                    setText(String.valueOf('\u221e'));
                 }
             } catch (Exception e) {}
         }

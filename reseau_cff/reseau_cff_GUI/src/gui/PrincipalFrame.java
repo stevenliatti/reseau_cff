@@ -6,16 +6,16 @@ package gui;
 
 import java.awt.event.*;
 import core.CffCompute;
+import core.XmlFile;
 import gui.listeners.AddCityListener;
 import gui.listeners.AddConnecListener;
 import gui.listeners.RemoveCityListener;
 import gui.listeners.RemoveConnListener;
-import model.CitiesPointsArray;
-import model.CityToDraw;
-import model.MapPointsArray;
-import model.Node;
+import model.*;
+import model.Point;
 
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
@@ -23,6 +23,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
+import javax.xml.bind.JAXBException;
 
 /**
  * @author Abdennadher Raed
@@ -51,12 +52,12 @@ public class PrincipalFrame extends JFrame {
         setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
     }
 
-    public PrincipalFrame(String s) throws IOException {
+    public PrincipalFrame(String s, String path) throws IOException {
         this();
         this.setTitle(s);
 
         MapPointsArray mapPointsArray = new MapPointsArray("suisse.txt");
-        citiesPointsArray = new CitiesPointsArray("villes.xml");
+        citiesPointsArray = new CitiesPointsArray(path);
         cffCompute = citiesPointsArray.getCffCompute();
 
         drawingPanel = new DrawingPanel(mapPointsArray, citiesPointsArray);
@@ -69,10 +70,6 @@ public class PrincipalFrame extends JFrame {
         JPanel centerPanel = new JPanel(new BorderLayout());
 
         JScrollPane drawingScrollPane = new JScrollPane(drawingPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
-        ZoomCommand zoomCommand = new ZoomCommand(mapPointsArray, citiesPointsArray, this);
-        JPanel centerRightPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        centerRightPanel.add(zoomCommand.getZoomPanel());
 
         cancelAddPanel = new JPanel(new GridLayout(1, 2));
         cancelAddPanel.setBorder(null);
@@ -93,7 +90,6 @@ public class PrincipalFrame extends JFrame {
         rightScrollPane1 = rightScrollPane;// à supprimer apràs avoir supprimer JFormDesigner
 
         centerPanel.add(cancelAddPanel, BorderLayout.SOUTH);
-        centerPanel.add(centerRightPanel, BorderLayout.EAST);
         centerPanel.add(drawingScrollPane, BorderLayout.CENTER);
 
         jTabbedPane = new JTabbedPane(SwingConstants.TOP);
@@ -122,16 +118,49 @@ public class PrincipalFrame extends JFrame {
         }
     }
 
+    private void importerMenuItemActionPerformed(ActionEvent e) {
+        try {
+            importFile();
+        } catch (JAXBException e1) {
+            e1.printStackTrace();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+    }
+
+    private void importFile() throws JAXBException, IOException {
+        JFileChooser fc = new JFileChooser();
+        int returnVal = fc.showOpenDialog(this);
+        File file;
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            file = fc.getSelectedFile();
+            XmlFile.loadXmlFile(file.getPath());
+            //This is where a real application would save the file.
+            System.out.println("Opening: " + file.getName() + ".");
+            PrincipalFrame frame = new PrincipalFrame("Réseau CFF", file.getPath());
+            frame.setSize(1200, 800);
+            frame.setLocation(0, 0);
+            frame.setVisible(true);
+            dispose();
+        } else {
+            System.out.println("Save command cancelled by user.");
+        }
+    }
 
     private void exporterMenuItemActionPerformed(ActionEvent e) {
-        ExportXmlDialog dialog = new ExportXmlDialog(this);
-        dialog.setLocationRelativeTo(this);
-        dialog.pack();
-        dialog.setVisible(true);
+        JFileChooser fc = new JFileChooser();
+        int returnVal = fc.showSaveDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            this.getCffCompute().toXmlFile(file.getPath());
+            //This is where a real application would save the file.
+            System.out.println("Saving: " + file.getName() + ".");
+        } else {
+            System.out.println("Save command cancelled by user.");
+        }
     }
 
     private void matParcFMenuItemActionPerformed(ActionEvent e) {
-//        if (MatrixPanel.INSTANCES[0] == null) {
         if (!jTabbedMap.containsKey(matParcFTab)) {
             matParcFTab = new MatrixPanel(0, cffCompute);
             jTabbedMap.put(matParcFTab, jTabbedPane.getTabCount());
@@ -143,10 +172,6 @@ public class PrincipalFrame extends JFrame {
             matParcFTab.refrech(0, cffCompute);
         }
         jTabbedPane.setSelectedComponent(matParcFTab.getContainer());
-//            this.jTabbedPane.setSelectedIndex(this.jTabbedPane.getTabCount() - 1);
-//        } else {
-//            this.jTabbedPane.setSelectedComponent(MatrixPanel.getMatrixPanelInstance(0, cffCompute).getContainer());
-//        }
     }
 
     private void matPrecFMenuItemActionPerformed(ActionEvent e) {
@@ -253,6 +278,7 @@ public class PrincipalFrame extends JFrame {
         // Generated using JFormDesigner Evaluation license - Raed Abdennadher
         menuBar1 = new JMenuBar();
         fichierMenu = new JMenu();
+        importerMenuItem = new JMenuItem();
         exporterMenuItem = new JMenuItem();
         quitterMenuItem = new JMenuItem();
         editionMenu = new JMenu();
@@ -285,8 +311,13 @@ public class PrincipalFrame extends JFrame {
             {
                 fichierMenu.setText("Fichier");
 
+                //---- importerMenuItem ----
+                importerMenuItem.setText("Importer fichier Xml...");
+                importerMenuItem.addActionListener(e -> importerMenuItemActionPerformed(e));
+                fichierMenu.add(importerMenuItem);
+
                 //---- exporterMenuItem ----
-                exporterMenuItem.setText("Exporter fichier Xml");
+                exporterMenuItem.setText("Exporter fichier Xml...");
                 exporterMenuItem.addActionListener(e -> exporterMenuItemActionPerformed(e));
                 fichierMenu.add(exporterMenuItem);
                 fichierMenu.addSeparator();
@@ -411,6 +442,7 @@ public class PrincipalFrame extends JFrame {
     // Generated using JFormDesigner Evaluation license - Raed Abdennadher
     private JMenuBar menuBar1;
     private JMenu fichierMenu;
+    private JMenuItem importerMenuItem;
     private JMenuItem exporterMenuItem;
     private JMenuItem quitterMenuItem;
     private JMenu editionMenu;
@@ -543,8 +575,9 @@ public class PrincipalFrame extends JFrame {
 
     public void addCity(String cityName, int x, int y) {
         citiesPointsArray.add(new CityToDraw(x, y, cityName, false));
-
-        this.cffCompute.addCity(cityName);
+        x = (int) ((x - Point.tx) / Point.scale);
+        y = (int) (-(y - Point.ty) / Point.scale);
+        this.cffCompute.addCity(cityName, x, y);
         drawingPanel.repaint();
         revalidate();
     }

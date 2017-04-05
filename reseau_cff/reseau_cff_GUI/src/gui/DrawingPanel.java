@@ -5,6 +5,8 @@ import model.Point;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 /**
@@ -63,42 +65,6 @@ public class DrawingPanel extends JPanel {
         }
     }
 
-//    private void drawRectangles(Graphics g) {
-//        g.setColor(Color.black);
-//        List<Connection> connectionsList = this.citiesPointsArray.getCffCompute().getNet().getConnectionList();
-//        for (Connection c : connectionsList) {
-//            CityToDraw cityToDraw1 = citiesPointsArray.getCityToDrawByName(c.getVil_1());
-//            CityToDraw cityToDraw2 = citiesPointsArray.getCityToDrawByName(c.getVil_2());
-//            if (cityToDraw1 != null && cityToDraw2 != null) {
-//
-//                int x1 = cityToDraw1.getCoordinate().getX();
-//                int y1 = cityToDraw1.getCoordinate().getY();
-//                int x2 = cityToDraw2.getCoordinate().getX();
-//                int y2 = cityToDraw2.getCoordinate().getY();
-//
-//                double pente = (y1 - y2) / (x1 - x2);
-//                if (Math.abs(pente) < 1) {
-//                    Polygon polygon = new Polygon(
-//                            new int[]{x1, x2, x2, x1},
-//                            new int[]{y1 - 5, y2 - 5, y2 + 5, y1 + 5},
-//                            4);
-//                    g.drawPolygon(polygon);
-//                } else {
-//                    Polygon polygon = new Polygon(
-//                            new int[]{x1 - 5, x2 - 5, x2 + 5, x1 + 5},
-//                            new int[]{y1, y2, y2, y1},
-//                            4);
-//                    g.drawPolygon(polygon);
-//                }
-//
-//                g.drawLine(x1, y1, x2, y2);
-//                int centerX = (x1 + x2) / 2;
-//                int centerY = (y1 + y2) / 2;
-//                g.drawString(String.valueOf(c.getDuratin()), centerX, centerY);
-//            }
-//        }
-//    }
-
     private void drawAllConnections(Graphics g) {
 //        Random rand = new Random();
         List<Connection> connectionsList = this.citiesPointsArray.getCffCompute().getNet().getConnectionList();
@@ -106,15 +72,10 @@ public class DrawingPanel extends JPanel {
             CityToDraw cityToDraw1 = citiesPointsArray.getCityToDrawByName(c.getVil_1());
             CityToDraw cityToDraw2 = citiesPointsArray.getCityToDrawByName(c.getVil_2());
             if (cityToDraw1 != null && cityToDraw2 != null) {
-//                float red = rand.nextFloat();
-//                float green = rand.nextFloat();
-//                float blue = rand.nextFloat();
-
                 int x1 = cityToDraw1.getCoordinate().getX();
                 int y1 = cityToDraw1.getCoordinate().getY();
                 int x2 = cityToDraw2.getCoordinate().getX();
                 int y2 = cityToDraw2.getCoordinate().getY();
-//                g.setColor(new Color(red, green, blue));
                 g.setColor(Color.lightGray);
                 g.drawLine(x1, y1, x2, y2);
                 int centerX = (x1 + x2) / 2;
@@ -128,9 +89,15 @@ public class DrawingPanel extends JPanel {
         g.setFont(new Font("Ubuntu", Font.BOLD, 16));
         for (CityToDraw p: this.citiesPointsArray) {
             g.setColor(Color.blue);
-            g.fillRect(p.getCoordinate().getX() - 3, p.getCoordinate().getY() - 3, 6, 6);
+            int x = p.getCoordinate().getX() - 3;
+            int y = p.getCoordinate().getY() - 3;
+            int width = 6;
+            int height = 6;
+            g.fillRect(x, y, width, height);
             g.setColor(Color.BLACK);
-            g.drawString(p.getCityName(), p.getCoordinate().getX() - 20, p.getCoordinate().getY() - 5);
+            x = p.getCoordinate().getX() - 20;
+            y = p.getCoordinate().getY() - 5;
+            g.drawString(p.getCityName(), x, y);
         }
     }
 
@@ -140,17 +107,21 @@ public class DrawingPanel extends JPanel {
         g.setColor(Color.GRAY);
         for (int i = 1; i < this.mapPointsArray.size(); i++) {
             Point currentPoint = this.mapPointsArray.get(i);
-            g.drawLine(previousPoint.getX(), previousPoint.getY(), currentPoint.getX(), currentPoint.getY());
+            int x1 = previousPoint.getX();
+            int y1 = previousPoint.getY();
+            int x2 = currentPoint.getX();
+            int y2 = currentPoint.getY();
+            g.drawLine(x1, y1, x2, y2);
             previousPoint = currentPoint;
         }
-        g.drawLine(previousPoint.getX(), previousPoint.getY(), firstPoint.getX(), firstPoint.getY());
+        int x1 = previousPoint.getX();
+        int y1 = previousPoint.getY();
+        int x2 = firstPoint.getX();
+        int y2 = firstPoint.getY();
+        g.drawLine(x1, y1, x2, y2);
     }
 
     public void setPaintPathTowCities(boolean paintPathTowCities) {
         this.paintPathTowCities = paintPathTowCities;
     }
-
-//    public void setPaintRemoveConn(boolean paintRemoveConn) {
-//        this.paintRemoveConn = paintRemoveConn;
-//    }
 }

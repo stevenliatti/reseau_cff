@@ -22,11 +22,4 @@ public class MapPointsArray extends ArrayList<Point> {
             this.add(new Point(x, y, true));
         }
     }
-
-    public void changeScale(double scale) {
-        Point.scale = scale;
-        for (int i = 0; i < size(); i++) {
-            set(i, new Point(get(i)));
-        }
-    }
 }

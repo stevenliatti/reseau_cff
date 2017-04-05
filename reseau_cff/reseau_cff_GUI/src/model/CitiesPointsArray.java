@@ -32,11 +32,4 @@ public class CitiesPointsArray extends ArrayList<CityToDraw> {
         }
         return null;
     }
-
-    public void changeScale(double scale) {
-        Point.scale = scale;
-        for (int i = 0; i < size(); i++) {
-            get(i).setCoordinate(new Point(get(i).getCoordinate()));
-        }
-    }
 }

@@ -8,9 +8,6 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-/**
- * Created by raed on 01.04.17.
- */
 public class RemoveCityListener implements MouseListener {
     private PrincipalFrame principalFrame;
 

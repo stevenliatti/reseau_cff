@@ -4,13 +4,10 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 
-/**
- * Created by raed on 01.04.17.
- */
 public class CustomCellRender extends DefaultTableCellRenderer {
     private JTable dataTable;
 
-    public CustomCellRender(JTable dataTable) {
+    CustomCellRender(JTable dataTable) {
         this.dataTable = dataTable;
     }
 
@@ -62,10 +59,10 @@ public class CustomCellRender extends DefaultTableCellRenderer {
                 if (x == -1 || x == Integer.MAX_VALUE) {
                     setBackground(Color.red);
                     setForeground(Color.white);
-                    setFont(new Font("Ubuntu", 0, 20));
+                    setFont(new Font("Ubuntu", Font.PLAIN, 20));
                     setText(String.valueOf('\u221e'));
                 }
-            } catch (Exception e) {}
+            } catch (Exception ignored) {}
         }
         setHorizontalAlignment(CENTER);
         return this;

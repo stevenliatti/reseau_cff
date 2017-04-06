@@ -11,7 +11,7 @@ public class DepatureCityDialog extends JDialog {
 
     private PrincipalFrame principalFrame;
 
-    public DepatureCityDialog(PrincipalFrame principalFrame) {
+    DepatureCityDialog(PrincipalFrame principalFrame) {
         this.principalFrame = principalFrame;
         setTitle("Parcours");
 

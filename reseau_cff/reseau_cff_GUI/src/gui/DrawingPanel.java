@@ -5,13 +5,8 @@ import model.Point;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
 import java.util.List;
 
-/**
- * Created by raed on 23.03.17.
- */
 public class DrawingPanel extends JPanel {
     private MapPointsArray mapPointsArray;
     private CitiesPointsArray citiesPointsArray;
@@ -19,7 +14,7 @@ public class DrawingPanel extends JPanel {
     private boolean paintPathTowCities;
     private String[] cities;
 
-    public DrawingPanel(MapPointsArray mapPointsArray, CitiesPointsArray citiesPointsArray) {
+    DrawingPanel(MapPointsArray mapPointsArray, CitiesPointsArray citiesPointsArray) {
         this.mapPointsArray = mapPointsArray;
         this.citiesPointsArray = citiesPointsArray;
         this.paintPathTowCities = false;
@@ -36,7 +31,7 @@ public class DrawingPanel extends JPanel {
         }
     }
 
-    public void parsePathToCities(String path) {
+    void parsePathToCities(String path) {
         this.paintPathTowCities = true;
         path = path.replace("[", "");
         path = path.replace("]", "");
@@ -121,7 +116,7 @@ public class DrawingPanel extends JPanel {
         g.drawLine(x1, y1, x2, y2);
     }
 
-    public void setPaintPathTowCities(boolean paintPathTowCities) {
+    void setPaintPathTowCities(boolean paintPathTowCities) {
         this.paintPathTowCities = paintPathTowCities;
     }
 }

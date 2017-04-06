@@ -4,9 +4,6 @@ import core.CffCompute;
 
 import java.util.ArrayList;
 
-/**
- * Created by raed on 23.03.17.
- */
 public class CitiesPointsArray extends ArrayList<CityToDraw> {
     private CffCompute cffCompute;
 

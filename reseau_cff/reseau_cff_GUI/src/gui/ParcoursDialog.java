@@ -13,7 +13,7 @@ public class ParcoursDialog extends JDialog {
     private PrincipalFrame principalFrame;
     private String algorithm;
 
-    public ParcoursDialog(PrincipalFrame principalFrame, String algorithm) {
+    ParcoursDialog(PrincipalFrame principalFrame, String algorithm) {
         this.principalFrame = principalFrame;
         this.algorithm = algorithm;
 

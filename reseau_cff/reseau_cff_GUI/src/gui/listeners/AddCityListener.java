@@ -6,11 +6,8 @@ import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-/**
- * Created by raed on 31.03.17.
- */
 public class AddCityListener implements MouseListener{
-    PrincipalFrame principalFrame;
+    private PrincipalFrame principalFrame;
     public AddCityListener(PrincipalFrame principalFrame) {
         this.principalFrame = principalFrame;
     }

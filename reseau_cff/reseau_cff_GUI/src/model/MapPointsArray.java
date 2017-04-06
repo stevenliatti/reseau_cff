@@ -1,18 +1,14 @@
 package model;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.LineNumberReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-/**
- * Created by raed on 23.03.17.
- */
 public class MapPointsArray extends ArrayList<Point> {
     public MapPointsArray(String filePath) throws IOException, NumberFormatException{
         LineNumberReader lineReader;
-        lineReader = new LineNumberReader(new FileReader(filePath));
+        InputStream file = getClass().getResourceAsStream(filePath);
+        lineReader = new LineNumberReader(new InputStreamReader(file));
         String line;
 
         while ((line = lineReader.readLine()) != null) {

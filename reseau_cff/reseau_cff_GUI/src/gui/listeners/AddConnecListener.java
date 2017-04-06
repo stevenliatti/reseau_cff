@@ -3,16 +3,12 @@ package gui.listeners;
 import gui.PrincipalFrame;
 import model.CityToDraw;
 import model.Connection;
-import model.Node;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-/**
- * Created by raed on 31.03.17.
- */
 public class AddConnecListener implements MouseListener{
     private PrincipalFrame principalFrame;
     private static int clickCount = 0;

@@ -1,8 +1,5 @@
 package model;
 
-/**
- * Created by raed on 23.03.17.
- */
 public class CityToDraw {
     private String cityName;
     private Point coordinate;

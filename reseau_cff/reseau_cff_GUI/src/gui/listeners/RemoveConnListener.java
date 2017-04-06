@@ -9,11 +9,8 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-/**
- * Created by raed on 04.04.17.
- */
 public class RemoveConnListener implements MouseListener {
-    PrincipalFrame principalFrame;
+    private PrincipalFrame principalFrame;
 
     public RemoveConnListener(PrincipalFrame principalFrame) {
         this.principalFrame = principalFrame;

@@ -6,6 +6,7 @@ import model.Node;
 import model.Net;
 
 import javax.xml.bind.*;
+import java.io.FileNotFoundException;
 import java.util.*;
 
 /**
@@ -30,7 +31,7 @@ public class CffCompute {
             buildCityNames();
             dijkstra = new Dijkstra(net);
             floyd = new Floyd(net);
-        } catch (JAXBException e) {
+        } catch (JAXBException | FileNotFoundException e) {
             e.printStackTrace();
         }
     }

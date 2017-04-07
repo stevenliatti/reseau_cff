@@ -7,6 +7,8 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 /**
@@ -23,8 +25,11 @@ public class XmlFile {
      * @return Un réseau de villes et connexions
      * @throws JAXBException
      */
-    public static Net loadXmlFile(String fileName) throws JAXBException {
+    public static Net loadXmlFile(String fileName) throws JAXBException, FileNotFoundException {
         InputStream file = XmlFile.class.getResourceAsStream(fileName);
+        if (file == null) {
+            file = new FileInputStream(fileName);
+        }
         jaxbContext = JAXBContext.newInstance(Net.class);
 
         Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();

@@ -13,16 +13,17 @@ import gui.listeners.RemoveConnListener;
 import model.*;
 import model.Point;
 
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
-import java.util.List;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.xml.bind.JAXBException;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Abdennadher Raed
@@ -265,6 +266,11 @@ public class PrincipalFrame extends JFrame {
         jTabbedPane.setSelectedIndex(0);
     }
 
+    private void aboutMenuItemActionPerformed() {
+        String text = "Application réalisée par Raed Abdennadher et Steven Liatti\nHepia - ITI - Algorithmes avancés";
+        JOptionPane.showMessageDialog(this, text, "À propos", JOptionPane.INFORMATION_MESSAGE);
+    }
+
     private void initComponents() {
         JMenu fichierMenu = new JMenu();
         JMenuItem importerMenuItem = new JMenuItem();
@@ -288,6 +294,8 @@ public class PrincipalFrame extends JFrame {
         tableContentPanel = new JPanel();
         titleLabel = new JLabel();
         menuBar1 = new JMenuBar();
+        JMenu aideMenu = new JMenu();
+        JMenuItem aboutMenuItem = new JMenuItem();
 
         //======== this ========
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -359,7 +367,7 @@ public class PrincipalFrame extends JFrame {
                     floydMenu.add(matParcFMenuItem);
 
                     //---- matPrecFMenuItem ----
-                    matPrecFMenuItem.setText("Mtrice des pr\u00e9c\u00e9dences");
+                    matPrecFMenuItem.setText("Matrice des pr\u00e9c\u00e9dences");
                     matPrecFMenuItem.addActionListener(e -> matPrecFMenuItemActionPerformed());
                     floydMenu.add(matPrecFMenuItem);
 
@@ -387,6 +395,17 @@ public class PrincipalFrame extends JFrame {
                 actionMenu.add(dijkstraMenu);
             }
             menuBar1.add(actionMenu);
+
+            //======== aideMenu ========
+            {
+                aideMenu.setText("À propos");
+
+                //---- aboutMenuItem ----
+                aboutMenuItem.setText("À propos");
+                aboutMenuItem.addActionListener(e -> aboutMenuItemActionPerformed());
+                aideMenu.add(aboutMenuItem);
+            }
+            menuBar1.add(aideMenu);
         }
         setJMenuBar(menuBar1);
 
